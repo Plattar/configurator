@@ -5,3 +5,6 @@ dist/
 .project
 npm-debug.log
 .buildpath
+
+app/dist/
+app/temp/
