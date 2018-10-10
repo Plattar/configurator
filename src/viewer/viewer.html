@@ -1,0 +1,23 @@
+<div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
+	<div class='header'>
+		<div class='header-button' ng-click='toggleCamera()'>
+			<icon src='/icons/icon-camera.svg'></icon>
+		</div>
+
+		<div class='header-button' ng-click='goFullscreen()'>
+			<icon src='/icons/icon-fullscreen.svg'></icon>
+		</div>
+
+		<div class='header-button' ng-click='activateHelp($event)'>
+			<icon src='/icons/icon-help.svg'></icon>
+		</div>
+
+		<div class='header-button' ng-click='resetTransforms()'>
+			<icon src='/icons/icon-reset.svg'></icon>
+		</div>
+	</div>
+
+	<div class='frame-padding'>
+		<iframe id="plattar-frame" ng-src="{{embedUrl}}" frameBorder="0" allow="camera; vr; autoplay" allowfullscreen></iframe>
+	</div>
+</div>

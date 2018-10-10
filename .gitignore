@@ -1,0 +1,7 @@
+bower_components/
+node_modules/
+.settings/
+dist/
+.project
+npm-debug.log
+.buildpath
