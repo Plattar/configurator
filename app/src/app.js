@@ -2,7 +2,8 @@
 /* App Module */
 angular.module('PlattarEmbed', [])
 .constant('config', {
-	apiUrl: 'https://10.2.47.120',
+	apiUrl: location.origin,
+	// apiUrl: 'https://localhost',
 	sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272'
 })
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {

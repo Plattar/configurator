@@ -11,18 +11,22 @@
 	transition: top 0.75s @bounceOutSmall;
 	background: rgba(255, 255, 255, 0.8);
 }
-.configurator-container-visible{
-	top: 10%;
-	height: 90%;
-	transition: top 0.75s @bounceInSmall;
+@media (max-width: 768px) {
+	.configurator-container-visible{
+		top: 70px;
+		height: 90%;
+		transition: top 0.75s @bounceInSmall;
+		border-top-right-radius: 20px;
+		border-top-left-radius: 20px;
 
-	.configurator{
-		.configurator-toggle{
-			top: -30px;
-			left: 75%;
+		.configurator{
+			.configurator-toggle{
+				top: -30px;
+				left: 75%;
 
-			icon svg{
-				transform: rotate(45deg);
+				icon svg{
+					transform: rotate(45deg);
+				}
 			}
 		}
 	}
@@ -31,6 +35,7 @@
 	.configurator-container{
 		position: unset;
 		top: unset;
+		background: white;
 	}
 }
 
@@ -72,6 +77,7 @@
 		color: #282828;
 		font-size: 24px;
 		font-weight: 600;
+		margin: 20px 0 10px 0;
 	}
 
 	h3{
