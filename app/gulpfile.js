@@ -107,7 +107,7 @@ gulp.task('views', function (cb) {
     .pipe(plumber())
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(angularTemplatecache({
-      module: 'PlattarEmbed'
+      module: 'PlattarConfigurator'
     }))
     .pipe(gulp.dest(buildFolder))
     /*.pipe(gulpif(env == 'prod',rev()))
