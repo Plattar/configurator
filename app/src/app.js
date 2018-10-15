@@ -25,30 +25,6 @@ angular.module('PlattarConfigurator', [])
 		'https://**.cloudfront.net/**',
 		]);
 }])
-/*.config([
-	'$locationProvider', '$routeProvider',
-	function ($locationProvider, $routeProvider) {
-	$routeProvider
-		.when('/verify/:token', {
-			templateUrl: 'verify/verify.html',
-			controller: 'verifyController',
-			reloadOnSearch: false,
-			title: 'Verifying Your Account'
-		})
-		.when('/dashboard', {
-			templateUrl: 'dashboard/dashboard.html',
-			controller: 'dashboardController',
-			reloadOnSearch: false,
-			tabName: 'dashboard',
-			title: 'Dashboard'
-		})
-		.otherwise({
-			redirectTo: '/dashboard'
-		});
-
-		$locationProvider.hashPrefix('');
-	}
-])*/
 /*.config(['$uibTooltipProvider',
 	function ($uibTooltipProvider) {
 		$uibTooltipProvider.options({
@@ -65,6 +41,7 @@ angular.module('PlattarConfigurator', [])
 	function($scope, $element, $interval, config) {
 
 		$scope.loaded = false;
+		$scope.sceneId = config.sceneId;
 
 		$scope.requestFullscreen = function(){
 			$scope.plattar.toggleFullscreen($element[0])
@@ -72,12 +49,24 @@ angular.module('PlattarConfigurator', [])
 
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
-			$scope.plattar = new PlattarIntegration(config);
+			$scope.plattar = window.plattarIntegration;
+			$scope.plattar.onSceneChange = function(sceneId){
+				if(sceneId && config.sceneId != sceneId){
+					$scope.sceneId = undefined;
+					$scope.$apply();
+
+					config.sceneId = sceneId;
+					$scope.sceneId = sceneId;
+				}
+				$scope.$apply();
+			};
 
 			var intv = $interval(function(){
-				$scope.plattar.init(function(){
+				$scope.plattar.init(config, function(){
 					$interval.cancel(intv);
-					$scope.plattar.openScene(config.sceneId);
+					if(config.sceneId){
+						$scope.plattar.openScene(config.sceneId);
+					}
 					$scope.loaded = true;
 					$scope.$apply();
 				});

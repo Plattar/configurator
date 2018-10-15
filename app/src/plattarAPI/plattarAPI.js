@@ -2,15 +2,24 @@
 function PlattarIntegration(params){
 	var params = params || {};
 	if(params.apiUrl === undefined){
-		params.apiUrl = 'https://app.plattar.com'
+		params.apiUrl = 'https://app.plattar.com';
 	}
 
+	var apiUrl = params.apiUrl;
   var iframe = document.querySelector('#plattar-frame');
   var self = this;
-  this.readyFunc = function(){console.log('not ready')};
 
-  this.init = function(cb){
-  	this.readyFunc = cb;
+  this.onReady = function(){console.log('Not initialised properly')};
+  this.onSceneChange = function(){console.log('No scene change listener set')};
+
+  this.init = function(params, cb){
+  	this.onReady = cb;
+	  iframe = document.querySelector('#plattar-frame');
+
+  	if(params.apiUrl){
+  		apiUrl = params.apiUrl;
+  	}
+
   	sendMessage('initpreview', {
 	    origin: origin,
 	    options: {
@@ -31,8 +40,7 @@ function PlattarIntegration(params){
 		action = action.toLowerCase();
 		if(iframe !== window){
     	console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
-    	targetOrigin = params.apiUrl;
-      iframe.contentWindow.postMessage({eventName: action, data: data || {}}, params.apiUrl);
+      iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
 
@@ -42,7 +50,7 @@ function PlattarIntegration(params){
 
     switch(e.data.eventName){
       case 'previewready':
-      	self.readyFunc();
+      	self.onReady();
         break;
 
       case 'openurl':
@@ -66,16 +74,23 @@ function PlattarIntegration(params){
         	// Set config.sceneId to new sceneId
         	config.sceneId = data.scene_id;
           // Open the new scene
-          self.openScene(data.scceneId);
+          self.openScene(data.sceneId);
         }
         break;
     }
   });
 
 	this.openScene = function(sceneId) {
+		sendMessage('losescene', {
+			// sceneId: sceneId
+		});
 		sendMessage('loadscene', {
 			sceneId: sceneId
 		});
+
+		if(self.onSceneChange){
+			self.onSceneChange(sceneId);
+		}
 	};
 
 	this.loadVariation = function(productId, variationId) {
@@ -164,7 +179,7 @@ function PlattarIntegration(params){
 
 	this.api = {
 		getScene: function(sceneId, successFunc, errorFunc) {
-			$.get(params.apiUrl + '/api/v2/scene/'+sceneId, function(result){
+			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -175,7 +190,7 @@ function PlattarIntegration(params){
 		},
 
 		listProducts: function(sceneId, successFunc, errorFunc) {
-			$.get(params.apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.file,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.file', function(result){
+			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.file,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.file', function(result){
 				if(result.included && result.included.length){
 					var products = result.included.filter(function(include){
 						return (include.type == 'product' && include.attributes.scene_id == sceneId);
@@ -245,3 +260,5 @@ function PlattarIntegration(params){
 		}
 	};
 }
+
+window.plattarIntegration = new PlattarIntegration();
