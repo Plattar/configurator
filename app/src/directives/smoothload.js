@@ -1,5 +1,5 @@
 
-angular.module('PlattarEmbed')
+angular.module('PlattarConfigurator')
 .directive('img', function() {
 	return {
 		restrict: 'E',

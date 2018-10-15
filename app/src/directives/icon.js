@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('PlattarEmbed')
+angular.module('PlattarConfigurator')
 .directive('icon', function() {
 	return {
 		templateUrl: function(elem, attr) {

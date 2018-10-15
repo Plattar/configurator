@@ -1,10 +1,21 @@
 
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 /* App Module */
-angular.module('PlattarEmbed', [])
+angular.module('PlattarConfigurator', [])
 .constant('config', {
-	apiUrl: location.origin,
-	// apiUrl: 'https://localhost',
-	sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272'
+	apiUrl: location.origin, // 'https://app.plattar.com'
+	// sceneId: getParameterByName('sceneId') // getting sceneId from url
+	// sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272' // local test scene
+	sceneId: 'f584ab37-c542-4536-9b63-dd41a167144a' // staging test scene
 })
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site

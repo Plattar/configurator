@@ -1,9 +1,9 @@
 
-angular.module('PlattarEmbed')
+angular.module('PlattarConfigurator')
 .controller('configurator', ['$scope', 'config',
 	function($scope, config) {
-		$scope.scene;
-		$scope.products;
+		// $scope.scene;
+		// $scope.products;
 
 		$scope.plattar.api.getScene(config.sceneId, function(result){
 			$scope.scene = result;
