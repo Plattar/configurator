@@ -6,27 +6,31 @@ function PlattarIntegration(params){
 	}
 
 	var apiUrl = params.apiUrl;
-  var iframe = document.querySelector('#plattar-frame');
-  var self = this;
+	var cdnUrl = params.cdnUrl;
+	var iframe = document.querySelector('#plattar-frame');
+	var self = this;
 
-  this.onReady = function(){console.log('Not initialised properly')};
-  this.onSceneChange = function(){console.log('No scene change listener set')};
+	this.onReady = function(){console.log('Not initialised properly')};
+	this.onSceneChange = function(){console.log('No scene change listener set')};
 
-  this.init = function(params, cb){
-  	this.onReady = cb;
-	  iframe = document.querySelector('#plattar-frame');
+	this.init = function(params, cb){
+		this.onReady = cb;
+		iframe = document.querySelector('#plattar-frame');
 
-  	if(params.apiUrl){
-  		apiUrl = params.apiUrl;
-  	}
+		if(params.apiUrl){
+			apiUrl = params.apiUrl;
+		}
+		if(params.cdnUrl){
+			cdnUrl = params.cdnUrl;
+		}
 
-  	sendMessage('initpreview', {
-	    origin: origin,
-	    options: {
-	    	helpslides: false,
-	    }
-	  });
-  };
+		sendMessage('initpreview', {
+			origin: origin,
+			options: {
+				helpslides: false,
+			}
+		});
+	};
 
 	function sendMessage(action, data){
 		// make this timeout after 5 attempts
@@ -39,46 +43,46 @@ function PlattarIntegration(params){
 
 		action = action.toLowerCase();
 		if(iframe !== window){
-    	console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
-      iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
+			console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
+			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
 
 	window.addEventListener('message', function(e){
-    console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
-    var data = e.data.data;
+		console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
+		var data = e.data.data;
 
-    switch(e.data.eventName){
-      case 'previewready':
-      	self.onReady();
-        break;
+		switch(e.data.eventName){
+			case 'previewready':
+				self.onReady();
+				break;
 
-      case 'openurl':
-        if(e.data.data.url){
-          window.open(data.url, '_blank');
-        }
-        break;
+			case 'openurl':
+				if(e.data.data.url){
+					window.open(data.url, '_blank');
+				}
+				break;
 
-      case 'selectannotation':
-      	// Annotation has content to display
-        if(data.title){
-          // create annotation popup within the theme
-        }
-        // Annotation is linking to a website
-        else if(data.url){
-        	// Open the website in a new tab
-          window.open(data.url, '_blank');
-        }
-        // Annotation is linking to a different scene
-        else if(data.scene_id){
-        	// Set config.sceneId to new sceneId
-        	config.sceneId = data.scene_id;
-          // Open the new scene
-          self.openScene(data.sceneId);
-        }
-        break;
-    }
-  });
+			case 'selectannotation':
+				// Annotation has content to display
+				if(data.title){
+					// create annotation popup within the theme
+				}
+				// Annotation is linking to a website
+				else if(data.url){
+					// Open the website in a new tab
+					window.open(data.url, '_blank');
+				}
+				// Annotation is linking to a different scene
+				else if(data.scene_id){
+					// Set config.sceneId to new sceneId
+					config.sceneId = data.scene_id;
+					// Open the new scene
+					self.openScene(data.sceneId);
+				}
+				break;
+		}
+	});
 
 	this.openScene = function(sceneId) {
 		sendMessage('losescene', {
@@ -240,7 +244,7 @@ function PlattarIntegration(params){
 								});
 							}
 							if(thumb){
-								variation.thumbnail = encodeURI('https://cdn-dev.plattar.space/' + thumb.attributes.path + thumb.attributes.thumbnail);
+								variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
 							}
 						});
 
