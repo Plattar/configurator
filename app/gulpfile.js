@@ -74,11 +74,6 @@ gulp.task('less', () => {
     .pipe(concat('local-styles.css'))
     .pipe(gulpif(env == 'dev', sourcemaps.write()))
     .pipe(gulp.dest(buildFolder));
-
-    // Create manifest and and write to build folder
-    /*.pipe(gulpif(env == 'prod', rev()))
-    .pipe(gulpif(env == 'prod', rev.manifest('css-manifest.json')))
-    .pipe(gulpif(env == 'prod', gulp.dest(buildFolder)));*/
 });
 
 gulp.task('localScripts', () => {
@@ -86,18 +81,12 @@ gulp.task('localScripts', () => {
 
   return gulp.src(scripts)
     .pipe(plumber())
-
     .pipe(sourcemaps.init())
     .pipe(uglify({mangle:true}))
-    // .pipe(gulpif(env == 'prod', uglify({mangle:true})))
     .pipe(concat('local-bundle.js'))
     .pipe(gulpif(env == 'dev', sourcemaps.write()))
 
     .pipe(gulp.dest(buildFolder))
-
-    /*.pipe(gulpif(env == 'prod', rev()))
-    .pipe(gulpif(env == 'prod', rev.manifest('js-manifest.json')))
-    .pipe(gulpif(env == 'prod', gulp.dest(buildFolder)));*/
 });
 
 gulp.task('views', function (cb) {
@@ -110,9 +99,6 @@ gulp.task('views', function (cb) {
       module: 'PlattarConfigurator'
     }))
     .pipe(gulp.dest(buildFolder))
-    /*.pipe(gulpif(env == 'prod',rev()))
-    .pipe(gulpif(env == 'prod', rev.manifest('templates-manifest.json')))
-    .pipe(gulpif(env == 'prod', gulp.dest(buildFolder)));*/
 });
 
 gulp.task('externalScripts', function () {
@@ -125,15 +111,10 @@ gulp.task('externalScripts', function () {
   return gulp.src(scripts)
     .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(gulpif(env == 'prod', uglify({})))
+    // .pipe(gulpif(env == 'prod', uglify({})))
     .pipe(concat('external-bundle.js'))
     .pipe(gulpif(env == 'dev', sourcemaps.write()))
-
     .pipe(gulp.dest(buildFolder))
-
-    /*.pipe(gulpif(env == 'prod',rev()))
-    .pipe(gulpif(env == 'prod',rev.manifest('externaljs-manifest.json')))
-    .pipe(gulpif(env == 'prod',gulp.dest(buildFolder)));*/
 });
 
 gulp.task('externalStyles', function (cb) {
@@ -148,13 +129,8 @@ gulp.task('externalStyles', function (cb) {
     .pipe(sourcemaps.init())
     .pipe(concat('external-styles.css'))
     .pipe(gulpif(env == 'dev', sourcemaps.write()))
-    // .pipe(minifyCSS(opts))
-
     .pipe(gulp.dest(buildFolder))
 
-    /*.pipe(gulpif(env == 'prod',rev()))
-    .pipe(gulpif(env == 'prod', rev.manifest('externalcss-manifest.json')))
-    .pipe(gulpif(env == 'prod', gulp.dest(buildFolder)));*/
   return stream;
 });
 
@@ -177,6 +153,9 @@ gulp.task('setprod', (cb) => {
 });
 
 gulp.task('compileScripts', () => {
+    /*.pipe(gulpif(env == 'prod',rev()))
+    .pipe(gulpif(env == 'prod', rev.manifest('externalcss-manifest.json')))
+    .pipe(gulpif(env == 'prod', gulp.dest(buildFolder)));*/
 
   if(env == 'prod'){
     //do rev stuff here
@@ -230,10 +209,11 @@ gulp.task('watchTemp', gulp.parallel('compileScripts', 'compileStyles', () => {
 }));
 
 gulp.task('serve', () => {
-  connect.server({
+  // uncomment to run a local server for the files
+  /*connect.server({
     root: './dist',
     port: 3000
-  });
+  });*/
 });
 
 
@@ -245,6 +225,26 @@ gulp.task('clean', (cb) => {
     .pipe(clean());
 });
 
-gulp.task('dev', gulp.series('setdev', gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'), gulp.parallel('watchTemp', 'watch', 'serve')));
-gulp.task('prod', gulp.series('clean', 'setprod', gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'), gulp.parallel('compileScripts', 'compileStyles')));
+gulp.task('dev', gulp.series(
+  //sets environment to dev
+  'setdev',
+  // builds all working files and copies them to temp location
+  gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'),
+  // watches the working files and triggers rebuilds if they change. runs a local server if needed
+  gulp.parallel('watchTemp', 'watch', 'serve')
+));
+
+gulp.task('prod',
+  gulp.series(
+    // Cleans build and temporary file locations
+    'clean',
+    // sets the environment to production
+    'setprod',
+    // builds all working files
+    gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'),
+    // builds all temporary files
+    gulp.parallel('compileScripts', 'compileStyles')
+  )
+);
+
 gulp.task('default', gulp.series('dev'));
