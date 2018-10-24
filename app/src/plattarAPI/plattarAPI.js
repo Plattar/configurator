@@ -222,7 +222,6 @@ function PlattarIntegration(params){
 						return product;
 					})
 					.sort(function(a, b){
-						console.log(a);
 						return a.attributes.sort_order - b.attributes.sort_order;
 					});
 

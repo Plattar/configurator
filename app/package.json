@@ -17,7 +17,7 @@
     "popper.js": "^1.14.4"
   },
   "devDependencies": {
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "gulpjs/gulp#v4.0.0-alpha.3",
     "gulp-angular-templatecache": "^2.2.1",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
