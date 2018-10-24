@@ -216,9 +216,14 @@ function PlattarIntegration(params){
 						product = JSON.parse(JSON.stringify(product));
 						//overwrite variables
 						product.instanceid = sceneproduct.id;
+						product.attributes.sort_order = sceneproduct.attributes.sort_order;
 						product.attributes.title = sceneproduct.attributes.title;
 						product.attributes.scene_id = sceneproduct.attributes.scene_id;
 						return product;
+					})
+					.sort(function(a, b){
+						console.log(a);
+						return a.attributes.sort_order - b.attributes.sort_order;
 					});
 
 					//add to products array
@@ -229,9 +234,12 @@ function PlattarIntegration(params){
 					products.forEach(function(product){
 						product.variations = result.included.filter(function(include){
 							return include.type == 'productvariation' && (include.attributes.product_id == product.id);
+						})
+						.sort(function(a, b){
+							return a.attributes.sort_order - b.attributes.sort_order;
 						});
 
-						product.variations.forEach(function(variation){
+						product.variations.map(function(variation){
 							var thumb;
 							if(variation.attributes.swatch_id){
 								thumb = result.included.find(function(include){
@@ -246,6 +254,7 @@ function PlattarIntegration(params){
 							if(thumb){
 								variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
 							}
+							return variation;
 						});
 
 						product.selectedVariation = product.variations.find(function(variation){
