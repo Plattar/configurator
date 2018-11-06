@@ -13,23 +13,24 @@ function getParameterByName(name, url) {
 angular.module('PlattarConfigurator', [])
 
 //production
-/*.constant('config', {
+.constant('config', {
 	apiUrl: location.origin,
 	cdnUrl: 'https://cdn.plattar.com/',
 	sceneId: getParameterByName('sceneId') // getting sceneId from url
-})*/
+})
 
 //staging
-.constant('config', {
+/*.constant('config', {
 	apiUrl: location.origin,
 	cdnUrl: 'https://cdn-staging.plattar.space/',
 	sceneId: 'f584ab37-c542-4536-9b63-dd41a167144a' // staging test scene
-})
+})*/
 
 // local
 /*.constant('config', {
 	apiUrl: location.origin,
 	cdnUrl: 'https://cdn-dev.plattar.space/',
+	// sceneId: '6f5ef36c-4fe4-4633-bc69-1f481b4783d9' // local test scene
 	sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272' // local test scene
 })*/
 
