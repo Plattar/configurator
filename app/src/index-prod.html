@@ -8,18 +8,19 @@
 		<script type="text/javascript" src='./bundle.js'></script>
 		<link rel="icon" type="image/png" href="https://app.plattar.com/cms/img/favicon.png">
 
-
 		<style type="text/css">
-			.main-container{
-				min-height: 400px;
+			.plattar-container{
+				min-height: 500px;
+				height: 50vh;
 				background: white;
+				position: relative;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div ng-app="PlattarConfigurator">
-			<ng-include src='"/embed-frame.html"'></ng-include>
+		<div class='plattar-container' ng-app="PlattarConfigurator">
+			<ng-include class='top' src='"/embed-frame.html"'></ng-include>
 		</div>
 	</body>
 </html>

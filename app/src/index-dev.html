@@ -9,9 +9,14 @@
 		<link rel="icon" type="image/png" href="https://app.plattar.com/cms/img/favicon.png">
 
 		<style type="text/css">
-			.main-container{
-				height: 500px;
+			.plattar-container{
+				min-height: 500px;
+				height: 50vh;
 				background: white;
+				position: relative;
+			}
+			body{
+				position: relative;
 			}
 		</style>
 
@@ -29,8 +34,8 @@
 		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-		<div ng-app="PlattarConfigurator">
-			<ng-include src='"/embed-frame.html"'></ng-include>
+		<div class='plattar-container' ng-app="PlattarConfigurator">
+			<ng-include class='top' src='"/embed-frame.html"'></ng-include>
 		</div>
 
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
