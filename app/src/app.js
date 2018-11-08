@@ -9,13 +9,25 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+const isProd = () => {
+  return location.hostname == 'app.plattar.com' || location.hostname == 'd189usitq2l7i3.cloudfront.net';
+}
+
+const isStaging = () => {
+  return location.hostname == 'staging.plattar.space' || location.hostname == 'cdn-staging.plattar.space';
+}
+
+const isDev = () => {
+  return !isProd() && !isStaging();
+}
+
 /* App Module */
 angular.module('PlattarConfigurator', [])
 
 //production
 .constant('config', {
 	apiUrl: location.origin,
-	cdnUrl: 'https://cdn.plattar.com/',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
 	sceneId: getParameterByName('sceneId') // getting sceneId from url
 })
 
