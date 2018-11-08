@@ -9,15 +9,15 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-const isProd = () => {
+var isProd = () => {
   return location.hostname == 'app.plattar.com' || location.hostname == 'd189usitq2l7i3.cloudfront.net';
 }
 
-const isStaging = () => {
+var isStaging = () => {
   return location.hostname == 'staging.plattar.space' || location.hostname == 'cdn-staging.plattar.space';
 }
 
-const isDev = () => {
+var isDev = () => {
   return !isProd() && !isStaging();
 }
 
