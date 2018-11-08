@@ -12,12 +12,15 @@
 		<div class='slider-container'>
 			<div class='slider'>
 				<!-- slider of variations -->
-				<div class='variation-container'
-					ng-repeat='variation in product.variations'
-					ng-click='selectVariation(product, variation)'
+				<div class='variation-selected'
 					ng-class='{"selected": variation == product.selectedVariation}'
+					ng-repeat='variation in product.variations'
 				>
-					<img ng-src="{{variation.thumbnail}}" smoothload>
+					<div class='variation-container'
+						ng-click='selectVariation(product, variation)'
+					>
+						<img ng-src="{{variation.thumbnail}}" smoothload>
+					</div>
 				</div>
 			</div>
 		</div>
