@@ -104,9 +104,12 @@
 		width: 40px;
 		display: inline-block;
 		margin: 0 10px;
+		transition: border-color 0.3s;
+		border-width: 2px;
+		border-color: transparent;
+		border-bottom-style: solid;
 
 		.variation-container{
-			transition: border-color 0.3s;
 			margin: 10px 0;
 			height: 40px;
 			width: 40px;
@@ -124,7 +127,7 @@
 			}
 		}
 		&.selected{
-			border-bottom: #9B9B9B 2px solid;
+			border-color: #9B9B9B;
 		}
 	}
 }
