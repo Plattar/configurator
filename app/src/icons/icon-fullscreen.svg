@@ -1,8 +1,8 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 38.19" transform='translate(0, -3)'>
-    <polygon stroke='none' points="20.14 27.72 14.69 27.72 14.69 28.72 21.14 28.72 21.14 22.32 20.14 22.32 20.14 27.72" />
-    <polygon stroke='none' points="21.14 12.46 14.69 12.46 14.69 13.46 20.14 13.46 20.14 18.98 21.14 18.98 21.14 12.46" />
-    <polygon stroke='none' points="5.88 13.46 11.34 13.46 11.34 12.46 4.88 12.46 4.88 18.98 5.88 18.98 5.88 13.46" />
-    <polygon stroke='none' points="4.88 22.32 4.88 28.72 11.34 28.72 11.34 27.72 5.88 27.72 5.88 22.32 4.88 22.32" />
-    <line stroke-miterlimit='10' fill='none' x1="20.67" y1="13.02" x2="5.34" y2="28.29" />
-    <line stroke-miterlimit='10' fill='none' x1="5.29" y1="12.87" x2="20.73" y2="28.29" />
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+  <polygon stroke='none' points="19.63 19.63 14.17 19.63 14.17 20.63 20.63 20.63 20.63 14.23 19.63 14.23 19.63 19.63" />
+  <polygon stroke='none' points="20.63 4.37 14.17 4.37 14.17 5.37 19.63 5.37 19.63 10.88 20.63 10.88 20.63 4.37" />
+  <polygon stroke='none' points="5.37 5.37 10.82 5.37 10.82 4.37 4.37 4.37 4.37 10.88 5.37 10.88 5.37 5.37" />
+  <polygon stroke='none' points="4.37 14.23 4.37 20.63 10.82 20.63 10.82 19.63 5.37 19.63 5.37 14.23 4.37 14.23" />
+  <line fill='none' stroke-miterlimit='10' x1="20.16" y1="4.93" x2="4.83" y2="20.2" />
+  <line fill='none' stroke-miterlimit='10' x1="4.78" y1="4.78" x2="20.22" y2="20.2" />
 </svg>
