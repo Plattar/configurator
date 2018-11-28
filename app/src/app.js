@@ -90,7 +90,9 @@ angular.module('PlattarConfigurator', [])
 				$scope.$apply();
 			};
 
-			var intv = $interval(function(){
+			doit();
+			var intv = $interval(doit, 250);
+			function doit(){
 				$scope.plattar.init(config, function(){
 					$interval.cancel(intv);
 					if(config.sceneId){
@@ -99,7 +101,7 @@ angular.module('PlattarConfigurator', [])
 					$scope.loaded = true;
 					$scope.$apply();
 				});
-			}, 250);
+			}
 		});
 	}
 ]);
