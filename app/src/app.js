@@ -28,7 +28,8 @@ angular.module('PlattarConfigurator', [])
 .constant('config', {
 	apiUrl: location.origin,
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
-	sceneId: getParameterByName('sceneId') // getting sceneId from url
+	sceneId: getParameterByName('sceneId'), // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // getting sceneId from url
 })
 
 //staging
@@ -54,18 +55,6 @@ angular.module('PlattarConfigurator', [])
 		'https://**.cloudfront.net/**',
 		]);
 }])
-/*.config(['$uibTooltipProvider',
-	function ($uibTooltipProvider) {
-		$uibTooltipProvider.options({
-			container: 'body'
-		});
-	}]
-)*/
-.run(['config',
-	function (config) {
-		// Check for a sceneId in the url includes, and ovverride config's sceneId if so
-	}
-])
 .controller('mainController', ['$scope', '$element', '$interval', 'config',
 	function($scope, $element, $interval, config) {
 
