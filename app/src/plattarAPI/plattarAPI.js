@@ -27,6 +27,7 @@ function PlattarIntegration(params){
 		sendMessage('initpreview', {
 			origin: location.origin,
 			options: {
+				autorotate: params.autorotate,
 				helpslides: false,
 			}
 		});
