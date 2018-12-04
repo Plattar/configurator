@@ -1,7 +1,7 @@
 
 angular.module('PlattarConfigurator')
-.controller('configurator', ['$scope', 'config', '$uibModal',
-	function($scope, config, $uibModal) {
+.controller('configurator', ['$scope', 'config',
+	function($scope, config) {
 		// $scope.scene;
 		// $scope.products;
 		$scope.error = undefined;
