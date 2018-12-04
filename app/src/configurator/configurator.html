@@ -26,6 +26,19 @@
 		</div>
 	</div>
 
+	<div ng-if='error'>
+		<h1>Error</h1>
+		<h3>{{error}}</h3>
+	</div>
+
+	<div id="exampleModal" class='modal' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class='modal-inner'>
+			<h1>Error</h1>
+			<p>{{error}}</p>
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Understood</button>
+		</div>
+	</div>
+
 	<!-- Sample Content -->
 	<!-- <div>
 		<hr>
