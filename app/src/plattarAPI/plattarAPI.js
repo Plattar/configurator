@@ -1,4 +1,8 @@
 
+/*
+	Standalone API and 3d engine iframe integration
+*/
+
 function PlattarIntegration(params){
 	var params = params || {};
 	if(params.apiUrl === undefined){
@@ -33,6 +37,7 @@ function PlattarIntegration(params){
 		});
 	};
 
+	// Sennding messages to the 3d Engine
 	function sendMessage(action, data){
 		// make this timeout after 5 attempts
 		if(!iframe) { // used to repeat the call if the iframe isn't ready yet
@@ -49,6 +54,7 @@ function PlattarIntegration(params){
 		}
 	}
 
+	// Receiving messages from the 3d engine
 	window.addEventListener('message', function(e){
 		console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
 		var data = e.data.data;
@@ -85,19 +91,21 @@ function PlattarIntegration(params){
 		}
 	});
 
+	// Used for opening a new scene
 	this.openScene = function(sceneId) {
-		sendMessage('losescene', {
-			// sceneId: sceneId
-		});
+		//Lose the existing scene if there is one, and load the new scene
+		sendMessage('losescene', {});
 		sendMessage('loadscene', {
 			sceneId: sceneId
 		});
 
+		//Callback function to reload variation UI when the scene is changed
 		if(self.onSceneChange){
 			self.onSceneChange(sceneId);
 		}
 	};
 
+	// Used to set a variation for a product
 	this.loadVariation = function(productId, variationId) {
 		sendMessage('loadproduct', {
 			productId: productId,
@@ -105,18 +113,22 @@ function PlattarIntegration(params){
 		});
 	};
 
+	// Turns the camera view on/off as the background of the scene
 	this.toggleCamera = function(active) {
 		sendMessage('toggleCamera', {active: active});
 	};
 
+	// Enables the help prompts to appear
 	this.activateHelp = function() {
 		sendMessage('activateHelp', {});
 	};
 
+	// Returns the product back to its original position/rotation
 	this.resetTransforms = function() {
 		sendMessage('resetTransform', {} );
 	};
 
+	// Cross-browser compatible fullscreen enabling
 	var isFullscreen = false;
 	var storedCss = {};
 	function goFullscreen(elem){
@@ -152,6 +164,7 @@ function PlattarIntegration(params){
 		isFullscreen = true;
 	}
 
+	// Cross-browser compatible fullscreen exiting
 	function exitFullscreen(elem){
 		if(elem){
 			// Cross-browser compatible code
@@ -172,6 +185,7 @@ function PlattarIntegration(params){
 		isFullscreen = false;
 	}
 
+	// Toggles the fullscreen state
 	this.toggleFullscreen = function(elem){
 		var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 		if(isFullscreen || fullscreenElement){
@@ -182,6 +196,7 @@ function PlattarIntegration(params){
 		}
 	};
 
+	// Function calls to the Plattar API to get scene/product data
 	this.api = {
 		getScene: function(sceneId, successFunc, errorFunc) {
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){

@@ -4,6 +4,7 @@
 
 	<h1>{{scene.attributes.title}}</h1>
 
+	<!-- Loop for all products -->
 	<div ng-repeat='product in products' ng-if='product.variations.length > 1'>
 		<hr>
 
@@ -26,11 +27,13 @@
 		</div>
 	</div>
 
+	<!-- Displays an error message -->
 	<div ng-if='error'>
 		<h1>Error</h1>
 		<h3>{{error}}</h3>
 	</div>
 
+	<!-- Pop out modal to display an error -->
 	<div id="errorModal" class='modal' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class='modal-inner'>
 			<h1>Error</h1>

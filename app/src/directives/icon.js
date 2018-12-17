@@ -1,4 +1,7 @@
 'use strict';
+/*
+	Directive to use svgs embedded into the angular template cache.
+*/
 
 angular.module('PlattarConfigurator')
 .directive('icon', function() {

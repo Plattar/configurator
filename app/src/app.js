@@ -9,12 +9,13 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+// Used for development
 var isProd = function () {
-  return location.hostname == 'app.plattar.com' || location.hostname == 'd189usitq2l7i3.cloudfront.net';
+  return location.hostname == 'app.plattar.com';
 }
 
 var isStaging = function () {
-  return location.hostname == 'staging.plattar.space' || location.hostname == 'cdn-staging.plattar.space';
+  return location.hostname == 'staging.plattar.space';
 }
 
 var isDev = function () {
@@ -23,36 +24,25 @@ var isDev = function () {
 
 /* App Module */
 angular.module('PlattarConfigurator', [])
-
-//production
-.constant('config', {
-	apiUrl: location.origin,
+/*.constant('config', {
+	origin: location.origin,
+	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+})*/
+
+.constant('config', {
+	apiUrl: 'https://app.plattar.com',
+	cdnUrl: 'https://cdn.plattar.com/',
+	sceneId: getParameterByName('sceneId'), // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })
-
-//staging
-/*.constant('config', {
-	apiUrl: location.origin,
-	cdnUrl: 'https://cdn-staging.plattar.space/',
-	sceneId: 'f584ab37-c542-4536-9b63-dd41a167144a' // staging test scene
-})*/
-
-// local
-/*.constant('config', {
-	apiUrl: location.origin,
-	cdnUrl: 'https://cdn-dev.plattar.space/',
-	// sceneId: '6f5ef36c-4fe4-4633-bc69-1f481b4783d9' // local test scene
-	sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272' // local test scene
-})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
 	$sceDelegateProvider.resourceUrlWhitelist([
-		'self',
-		'https://dbtuhhzmxl35f.cloudfront.net/**',
-		'https://**.cloudfront.net/**',
+		'self'
 		]);
 }])
 .controller('mainController', ['$scope', '$element', '$interval', 'config',
@@ -61,13 +51,16 @@ angular.module('PlattarConfigurator', [])
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
 
-		$scope.requestFullscreen = function(){
+		$scope.requestFullscreen = function() {
 			$scope.plattar.toggleFullscreen($element[0])
 		};
 
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
+			// Creating the Plattar engine/api link
 			$scope.plattar = window.plattarIntegration;
+
+			// Setting up a callback for when the scene changes
 			$scope.plattar.onSceneChange = function(sceneId){
 				if(sceneId && config.sceneId != sceneId){
 					$scope.sceneId = undefined;
@@ -79,8 +72,8 @@ angular.module('PlattarConfigurator', [])
 				$scope.$apply();
 			};
 
-			doit();
-			var intv = $interval(doit, 250);
+			// Initialising the project. Set up in a loop for if loading is slow/fails
+			var intv = $interval(doit, 500);
 			function doit(){
 				$scope.plattar.init(config, function(){
 					$interval.cancel(intv);

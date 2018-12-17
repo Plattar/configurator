@@ -1,4 +1,8 @@
 
+/*
+	Directive to fade in images/thumbnails when they load, rather than load by chunks
+*/
+
 angular.module('PlattarConfigurator')
 .directive('img', function() {
 	return {

@@ -1,12 +1,11 @@
 {
-  "name": "plattar-embed-ui",
+  "name": "plattar-configurator",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "gulp dev",
-    "prod": "gulp prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "gulp prod"
   },
   "author": "",
   "license": "ISC",

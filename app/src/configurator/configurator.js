@@ -1,3 +1,6 @@
+/*
+	Controls the Panel that contains product details and variation selection
+*/
 
 angular.module('PlattarConfigurator')
 .controller('configurator', ['$scope', 'config',
@@ -18,7 +21,7 @@ angular.module('PlattarConfigurator')
 			else{
 				$scope.error = 'There was an error while loading this scene.';
 			}
-			$('#errorModal').modal({})
+			$('#errorModal').modal({});
 			$scope.$apply();
 		});
 

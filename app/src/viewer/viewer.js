@@ -1,3 +1,6 @@
+/*
+	Controls the Panel that contains the controls and 3d view
+*/
 
 angular.module('PlattarConfigurator')
 .controller('viewer', ['$scope', 'config', '$sce',

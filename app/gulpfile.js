@@ -210,10 +210,10 @@ gulp.task('watchTemp', gulp.parallel('compileScripts', 'compileStyles', () => {
 
 gulp.task('serve', () => {
   // uncomment to run a local server for the files
-  /*connect.server({
+  connect.server({
     root: './dist',
     port: 3000
-  });*/
+  });
 });
 
 
