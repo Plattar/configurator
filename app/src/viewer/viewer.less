@@ -37,7 +37,7 @@
 	}
 
 	.frame-padding{
-		padding: 15px;
+		padding: 15px 0;
 		height: calc(100% - 70px);
 
 		iframe{
@@ -49,20 +49,26 @@
 			border-radius: 5px;
 		}
 	}
+	@media (max-width: 768px) {
+		.frame-padding{
+			padding: 0;
+		}
+	}
+
 
 	&.fullscreen{
 		.frame-padding{
 			padding: 0;
-	    height: 100%;
-	    position: absolute;
-	    left: 0;
-	    right: 0;
-	    top: 0;
-	    bottom: 0;
+			height: 100%;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
 
 			iframe{
 				box-shadow: none;
-	    	border-radius: 0;
+				border-radius: 0;
 			}
 		}
 	}
