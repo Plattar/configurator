@@ -11,18 +11,22 @@
 	transition: top 0.75s @bounceOutSmall;
 	background: rgba(255, 255, 255, 0.8);
 }
-.configurator-container-visible{
-	top: 10%;
-	height: 90%;
-	transition: top 0.75s @bounceInSmall;
+@media (max-width: 768px) {
+	.configurator-container-visible{
+		top: 70px;
+		height: 90%;
+		transition: top 0.75s @bounceInSmall;
+		border-top-right-radius: 20px;
+		border-top-left-radius: 20px;
 
-	.configurator{
-		.configurator-toggle{
-			top: -30px;
-			left: 75%;
+		.configurator{
+			.configurator-toggle{
+				top: -30px;
+				left: 75%;
 
-			icon svg{
-				transform: rotate(45deg);
+				icon svg{
+					transform: rotate(45deg);
+				}
 			}
 		}
 	}
@@ -31,11 +35,11 @@
 	.configurator-container{
 		position: unset;
 		top: unset;
+		background: white;
 	}
 }
 
 .configurator{
-	// background: red;
 	height: 100%;
 	overflow-y: auto;
 
@@ -51,7 +55,6 @@
 		border-radius: 50%;
 		box-shadow: 1px 3px 7px rgba(200,200,200,1);
 		z-index: 10;
-
 		transition: top 0.75s, left 0.75s;
 
 		icon{
@@ -70,14 +73,15 @@
 
 	h1{
 		color: #282828;
-		font-size: 24px;
+		font-size: 22px;
 		font-weight: 600;
+		margin: 20px 0 10px 0;
 	}
 
 	h3{
 		color: #9B9B9B;
 		font-size: 14px;
-		font-weight: 600;
+		font-weight: 400;
 	}
 
 	hr{
@@ -88,34 +92,59 @@
 	.slider-container{
 		width: 100%;
 		overflow-x: auto;
+		white-space: nowrap;
 
 		.slider{
 			width: max-content;
 		}
 	}
 
-	.variation-container{
-		transition: border-color 0.3s;
-		height: 40px;
-		width: 40px;
-		margin: 10px;
+	.variation-selected{
+		height: 60px;
+		width: 35px;
 		display: inline-block;
-
-		border-radius: 50%;
-		border-style: solid;
-		border-color: #9B9B9B;
+		margin: 0 10px;
+		transition: border-color 0.3s;
 		border-width: 2px;
-		overflow: hidden;
+		border-color: transparent;
+		border-bottom-style: solid;
 
+		.variation-container{
+			margin: 10px 0;
+			height: 35px;
+			width: 35px;
+			border-radius: 50%;
+			overflow: hidden;
+			box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
 		&.selected{
-			box-shadow: 2px 2px 5px #c8c8c8;
-
-			border-color: black;
+			border-color: rgba(69, 178, 235, 1.0);
 		}
+	}
+}
 
-		img{
-			width: 100%;
-			height: 100%;
-		}
+.modal-inner{
+	width: 80%;
+	max-width: 600px;
+	background: white;
+	margin: 40px auto 0 auto;
+	padding: 20px;
+	text-align: center;
+
+	h1{
+    font-size: 36px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 300;
+    margin-top: 0;
+	}
+
+	p{
+		font-family: proxima-nova, sans-serif;
+    font-weight: 300;
 	}
 }

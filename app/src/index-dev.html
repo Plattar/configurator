@@ -6,6 +6,22 @@
 
 		<link rel="stylesheet" type="text/css" href="external-styles.css">
 		<link rel="stylesheet" type="text/css" href="local-styles.css">
+		<link rel="icon" type="image/png" href="https://app.plattar.com/cms/img/favicon.png">
+
+		<script src="https://use.typekit.net/uil5vlk.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+		<style type="text/css">
+			.plattar-container{
+				min-height: 500px;
+				height: 50vh;
+				position: relative;
+			}
+			body{
+				position: relative;
+				background: transparent;
+			}
+		</style>
 
 		<script type="text/javascript" src='./external-bundle.js'></script>
 		<script type="text/javascript" src='./local-bundle.js'></script>
@@ -13,23 +29,23 @@
 	</head>
 
 	<body>
-		<h1>Lorem ipsum dolor sit amet</h1>
+		<!-- <h1>Lorem ipsum dolor sit amet</h1>
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 
-		<div ng-app="PlattarEmbed">
-			<ng-include src='"/embed-frame.html"'></ng-include>
+		<div class='plattar-container' ng-app="PlattarConfigurator">
+			<ng-include class='top' src='"/embed-frame.html"'></ng-include>
 		</div>
 
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 	</body>
 </html>

@@ -1,5 +1,8 @@
+/*
+	Controls the Panel that contains the controls and 3d view
+*/
 
-angular.module('PlattarEmbed')
+angular.module('PlattarConfigurator')
 .controller('viewer', ['$scope', 'config', '$sce',
 	function($scope, config, $sce) {
 		$scope.embedUrl = $sce.trustAsResourceUrl(config.apiUrl + '/webgleditor/preview/index.html');

@@ -1,0 +1,10 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+    <line fill='none' stroke-miterlimit='10' x1="10.18" y1="15.04" x2="4.73" y2="20.4" />
+    <line fill='none' stroke-miterlimit='10' x1="4.69" y1="4.98" x2="9.83" y2="10.09" />
+    <line fill='none' stroke-miterlimit='10' x1="14.75" y1="10.48" x2="20.2" y2="5.12" />
+    <line fill='none' stroke-miterlimit='10' x1="20.06" y1="20.33" x2="14.92" y2="15.23" />
+    <polygon stroke='none' points="15.17 15.44 20.63 15.44 20.63 14.44 14.17 14.44 14.17 20.83 15.17 20.83 15.17 15.44" />
+    <polygon stroke='none' points="14.17 11.09 20.63 11.09 20.63 10.09 15.17 10.09 15.17 4.58 14.17 4.58 14.17 11.09" />
+    <polygon stroke='none' points="9.82 10.09 4.37 10.09 4.37 11.09 10.82 11.09 10.82 4.58 9.82 4.58 9.82 10.09" />
+    <polygon stroke='none' points="10.82 20.83 10.82 14.44 4.37 14.44 4.37 15.44 9.82 15.44 9.82 20.83 10.82 20.83" />
+</svg>

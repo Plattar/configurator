@@ -5,7 +5,8 @@
 		</div>
 
 		<div class='header-button' ng-click='goFullscreen()'>
-			<icon src='/icons/icon-fullscreen.svg'></icon>
+			<icon ng-if='!isFullscreen' src='/icons/icon-fullscreen.svg'></icon>
+			<icon ng-if='isFullscreen' src='/icons/icon-fullscreen-in.svg'></icon>
 		</div>
 
 		<div class='header-button' ng-click='activateHelp($event)'>

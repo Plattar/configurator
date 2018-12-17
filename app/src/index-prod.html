@@ -6,18 +6,27 @@
 
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<script type="text/javascript" src='./bundle.js'></script>
+		<link rel="icon" type="image/png" href="https://app.plattar.com/cms/img/favicon.png">
+
+		<script src="https://use.typekit.net/uil5vlk.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 
 		<style type="text/css">
-			.main-container{
-				height: 400px;
-				background: white;
+			.plattar-container{
+				min-height: 500px;
+				height: 100%;
+				position: relative;
+			}
+			body, html{
+				height: 100%;
+				background: transparent;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div ng-app="PlattarEmbed">
-			<ng-include src='"/embed-frame.html"'></ng-include>
+		<div class='plattar-container' ng-app="PlattarConfigurator">
+			<ng-include class='top' src='"/embed-frame.html"'></ng-include>
 		</div>
 	</body>
 </html>

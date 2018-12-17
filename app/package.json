@@ -1,12 +1,11 @@
 {
-  "name": "plattar-embed-ui",
+  "name": "plattar-configurator",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "gulp dev",
-    "prod": "gulp prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "gulp prod"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +16,7 @@
     "popper.js": "^1.14.4"
   },
   "devDependencies": {
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "gulpjs/gulp#v4.0.0-alpha.3",
     "gulp-angular-templatecache": "^2.2.1",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",

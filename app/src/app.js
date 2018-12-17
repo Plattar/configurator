@@ -1,75 +1,89 @@
 
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+// Used for development
+var isProd = function () {
+  return location.hostname == 'app.plattar.com';
+}
+
+var isStaging = function () {
+  return location.hostname == 'staging.plattar.space';
+}
+
+var isDev = function () {
+  return !isProd() && !isStaging();
+}
+
 /* App Module */
-angular.module('PlattarEmbed', [])
+angular.module('PlattarConfigurator', [])
+/*.constant('config', {
+	origin: location.origin,
+	apiUrl: 'https://localhost',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
+	sceneId: getParameterByName('sceneId'), // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+})*/
+
 .constant('config', {
-	apiUrl: 'https://10.2.47.120',
-	sceneId: '263577a8-fd44-4d8b-a0c6-e5d75ebc5272'
+	apiUrl: 'https://app.plattar.com',
+	cdnUrl: 'https://cdn.plattar.com/',
+	sceneId: getParameterByName('sceneId'), // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })
+
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
 	$sceDelegateProvider.resourceUrlWhitelist([
-		'self',
-		'https://dbtuhhzmxl35f.cloudfront.net/**',
-		'https://**.cloudfront.net/**',
+		'self'
 		]);
 }])
-/*.config([
-	'$locationProvider', '$routeProvider',
-	function ($locationProvider, $routeProvider) {
-	$routeProvider
-		.when('/verify/:token', {
-			templateUrl: 'verify/verify.html',
-			controller: 'verifyController',
-			reloadOnSearch: false,
-			title: 'Verifying Your Account'
-		})
-		.when('/dashboard', {
-			templateUrl: 'dashboard/dashboard.html',
-			controller: 'dashboardController',
-			reloadOnSearch: false,
-			tabName: 'dashboard',
-			title: 'Dashboard'
-		})
-		.otherwise({
-			redirectTo: '/dashboard'
-		});
-
-		$locationProvider.hashPrefix('');
-	}
-])*/
-/*.config(['$uibTooltipProvider',
-	function ($uibTooltipProvider) {
-		$uibTooltipProvider.options({
-			container: 'body'
-		});
-	}]
-)*/
-.run(['config',
-	function (config) {
-		// Check for a sceneId in the url includes, and ovverride config's sceneId if so
-	}
-])
 .controller('mainController', ['$scope', '$element', '$interval', 'config',
 	function($scope, $element, $interval, config) {
 
 		$scope.loaded = false;
+		$scope.sceneId = config.sceneId;
 
-		$scope.requestFullscreen = function(){
+		$scope.requestFullscreen = function() {
 			$scope.plattar.toggleFullscreen($element[0])
 		};
 
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
-			$scope.plattar = new PlattarIntegration(config);
+			// Creating the Plattar engine/api link
+			$scope.plattar = window.plattarIntegration;
 
-			var intv = $interval(function(){
-				$scope.plattar.init(function(){
+			// Setting up a callback for when the scene changes
+			$scope.plattar.onSceneChange = function(sceneId){
+				if(sceneId && config.sceneId != sceneId){
+					$scope.sceneId = undefined;
+					$scope.$apply();
+
+					config.sceneId = sceneId;
+					$scope.sceneId = sceneId;
+				}
+				$scope.$apply();
+			};
+
+			// Initialising the project. Set up in a loop for if loading is slow/fails
+			var intv = $interval(doit, 500);
+			function doit(){
+				$scope.plattar.init(config, function(){
 					$interval.cancel(intv);
-					$scope.plattar.openScene(config.sceneId);
+					if(config.sceneId){
+						$scope.plattar.openScene(config.sceneId);
+					}
 					$scope.loaded = true;
 					$scope.$apply();
 				});
-			}, 250);
+			}
 		});
 	}
 ]);

@@ -1,3 +1,7 @@
+body{
+	font-family: proxima-nova, sans-serif;
+}
+
 .smoothload{
 	transition: opacity 0.3s;
 	opacity: 1;
@@ -13,10 +17,41 @@
 	cursor: pointer;
 }
 
+.top{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
 .main-container{
 	overflow: hidden;
+	height: 100%;
 
 	.row{
 		position: relative;
 	}
+}
+
+
+// Webkit scollbar changes
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(240,240,240,0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(200,200,200,0.8);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(200,200,200,0.4);
 }

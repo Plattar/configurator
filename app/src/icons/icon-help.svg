@@ -1,13 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g stroke="none" stroke-width="1">
-        <g transform="translate(-140.000000, -4332.000000)">
-            <g transform="translate(138.000000, 4331.000000)">
-                <circle fill-rule="evenodd" opacity="0.8" cx="12" cy="11" r="10"></circle>
-                <text font-family="SFProDisplay-Light, SF Pro Display" font-size="20" font-weight="300" fill="#FFFFFF">
-                    <tspan x="7.75390625" y="18">?</tspan>
-                </text>
-            </g>
-        </g>
-    </g>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+    <circle id="Oval-5" fill="none" stroke-miterlimit='10' cx="12.8" cy="12.53" r="9.99" />
+    <path stroke='none' d="M13.21,5.33c2.35,0,4,1.5,4,3.49a3.79,3.79,0,0,1-2,3.32c-1.28.82-1.64,1.38-1.64,2.46v.73h-1.3v-.91c0-1.29.56-2.11,1.92-3s1.7-1.49,1.7-2.54a2.44,2.44,0,0,0-2.67-2.39A2.61,2.61,0,0,0,10.39,9H9.12A3.8,3.8,0,0,1,13.21,5.33ZM12,18.71a.91.91,0,1,1,.9.9A.9.9,0,0,1,12,18.71Z" />
 </svg>

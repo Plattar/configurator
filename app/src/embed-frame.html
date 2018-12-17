@@ -4,7 +4,7 @@
 			<ng-include src="'/viewer/viewer.html'"></ng-include>
 		</div>
 		<div class='col-12 col-md-4 configurator-container'>
-			<ng-include ng-if='loaded' src="'/configurator/configurator.html'"></ng-include>
+			<ng-include ng-if='loaded && sceneId' src="'/configurator/configurator.html'"></ng-include>
 		</div>
 	</div>
 	<div>
