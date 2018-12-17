@@ -2,8 +2,6 @@
 angular.module('PlattarConfigurator')
 .controller('configurator', ['$scope', 'config',
 	function($scope, config) {
-		// $scope.scene;
-		// $scope.products;
 		$scope.error = undefined;
 
 		$scope.plattar.api.getScene(config.sceneId, function(result){
@@ -20,7 +18,7 @@ angular.module('PlattarConfigurator')
 			else{
 				$scope.error = 'There was an error while loading this scene.';
 			}
-			$('#exampleModal').modal({})
+			$('#errorModal').modal({})
 			$scope.$apply();
 		});
 
@@ -38,9 +36,4 @@ angular.module('PlattarConfigurator')
 			$('.configurator-container').toggleClass('configurator-container-visible');
 		};
 	}
-])
-.controller('modalNotify', [
-	'$scope', '$uibModalInstance',
-	function ($scope, $uibModalInstance) {
-	}
-])
+]);
