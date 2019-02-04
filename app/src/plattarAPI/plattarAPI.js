@@ -82,10 +82,8 @@ function PlattarIntegration(params){
 				}
 				// Annotation is linking to a different scene
 				else if(data.scene_id){
-					// Set config.sceneId to new sceneId
-					config.sceneId = data.scene_id;
 					// Open the new scene
-					self.openScene(data.sceneId);
+					self.openScene(data.scene_id);
 				}
 				break;
 		}
