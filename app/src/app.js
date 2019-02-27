@@ -1,6 +1,8 @@
 
 function getParameterByName(name, url) {
   if (!url) url = window.location.href;
+  url = url.toLocaleLowerCase();
+  name = name.toLocaleLowerCase();
   name = name.replace(/[\[\]]/g, "\\$&");
   var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
     results = regex.exec(url);
