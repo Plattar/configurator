@@ -35,8 +35,8 @@ angular.module('PlattarConfigurator', [])
 })*/
 
 .constant('config', {
-	apiUrl: 'https://app.plattar.com',
-	cdnUrl: 'https://cdn.plattar.com/',
+	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })
