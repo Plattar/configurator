@@ -3,8 +3,8 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('configurator', ['$scope', 'config',
-	function($scope, config) {
+.controller('configurator', ['$scope', 'config', 'Tracker',
+	function($scope, config, Tracker) {
 		$scope.error = undefined;
 
 		$scope.plattar.api.getScene(config.sceneId,
@@ -47,6 +47,9 @@ angular.module('PlattarConfigurator')
 
 			resetPreview();
 			applyPreview();
+
+			//Tracking variation.attributes.title or variation.id
+			Tracker.track('Variation:Clicked:' + (variation.attributes.title || variation.id));
 		};
 
 		$scope.toggleVisibility = function () {

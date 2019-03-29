@@ -30,6 +30,7 @@ angular.module('PlattarConfigurator', [])
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
+  universalGA: "UA-86801112-10",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })*/
@@ -47,8 +48,8 @@ angular.module('PlattarConfigurator', [])
 		'self'
 		]);
 }])
-.controller('mainController', ['$scope', '$element', '$interval', 'config',
-	function($scope, $element, $interval, config) {
+.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker',
+	function($scope, $element, $interval, $http, config, Tracker) {
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
@@ -87,5 +88,21 @@ angular.module('PlattarConfigurator', [])
 				});
 			}
 		});
+
+    //calling tracker
+    $http.get('https://' + location.host +'/api/v2/'+'scene/'+config.sceneId).then(function(scene){
+      config.appId = scene.data.data.relationships.application.data.id;
+      $http.get('https://' + location.host +'/api/v2/'+'application/'+config.appId).then(function(app){
+        if(app.data.data.attributes.google_analytics_token){
+          Tracker.init({
+            ga_tracking_id: app.data.data.attributes.google_analytics_token
+          });
+        }
+        else {
+          Tracker.init({});
+        }
+        Tracker.track("Scene:Loaded:" + config.sceneId);
+      });
+    });
 	}
 ]);

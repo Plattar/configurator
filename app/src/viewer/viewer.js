@@ -3,8 +3,8 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('viewer', ['$scope', 'config', '$sce',
-	function($scope, config, $sce) {
+.controller('viewer', ['$scope', 'config', '$sce', 'Tracker',
+	function($scope, config, $sce, Tracker) {
 		$scope.embedUrl = $sce.trustAsResourceUrl(config.apiUrl + '/webgleditor/preview/index.html');
 		$scope.isFullscreen = false;
 
@@ -12,20 +12,24 @@ angular.module('PlattarConfigurator')
 		$scope.toggleCamera = function(){
 			cameraEnabled = !cameraEnabled;
 			$scope.plattar.toggleCamera(cameraEnabled);
+			Tracker.track("ConfigButton:Clicked:cameraEnabled");
 		};
 
 		$scope.goFullscreen = function(){
 			// Calling parent requestFullscreen function
 			$scope.requestFullscreen();
 			$scope.isFullscreen = !$scope.isFullscreen;
+			Tracker.track("ConfigButton:Clicked:goFullscreen");
 		};
 
 		$scope.activateHelp = function(event){
 			$scope.plattar.activateHelp();
+			Tracker.track("ConfigButton:Clicked:activateHelp");
 		};
 
 		$scope.resetTransforms = function(){
 			$scope.plattar.resetTransforms();
+			Tracker.track("ConfigButton:Clicked:resetTransforms");
 		};
 
 		function isFullscreen(){
