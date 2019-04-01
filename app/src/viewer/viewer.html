@@ -17,8 +17,30 @@
 			<icon src='/icons/icon-reset.svg'></icon>
 		</div>
 	</div>
-
 	<div class='frame-padding'>
 		<iframe id="plattar-frame" ng-src="{{embedUrl}}" frameBorder="0" allow="camera; vr; autoplay" allowfullscreen></iframe>
+
+		<div ng-attr-id="{{clickType ? 'walkthrough-mouse' : 'walkthrough-touch'}}" class='walkthrough'  ng-class='{"walkthrough-hidden": hideWalkthrough}'>
+
+			<div class='frame1 frame' ng-class='{"frame-hidden": hideframe1}'>
+				<p ng-if='clickType'>
+					Click & hold left mouse button to rotate
+				</p>
+				<p ng-if='!clickType'>
+					<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><icon src='/icons/one-finger.svg'></icon> Use one finger to rotate
+				</p>
+			</div>
+
+			<div class='frame2 frame' ng-class='{"frame-hidden": hideframe2}'>
+				<p ng-if='clickType'>
+					Use the scroll wheel to pull/push
+				</p>
+				<p ng-if='!clickType'>
+					<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><icon src='/icons/two-fingers.svg'></icon> Use two fingers to pull/push
+				</p>
+			</div>
+
+		</div>
+
 	</div>
 </div>
