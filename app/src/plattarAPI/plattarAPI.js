@@ -32,7 +32,7 @@ function PlattarIntegration(params){
 			origin: location.origin,
 			options: {
 				autorotate: params.autorotate,
-				helpslides: false,
+				isConfigurator: true
 			}
 		});
 	};
