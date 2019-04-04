@@ -49,7 +49,7 @@ angular.module('PlattarConfigurator')
 			applyPreview();
 
 			//Tracking variation.attributes.title or variation.id
-			Tracker.track('Variation:Clicked:' + (variation.attributes.title || variation.id));
+			Tracker.track('Variation:Clicked:' + variation.id + ' ' + variation.attributes.title);
 		};
 
 		$scope.toggleVisibility = function () {

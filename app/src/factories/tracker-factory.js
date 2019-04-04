@@ -1,85 +1,100 @@
 'use strict';
 
 angular.module('PlattarConfigurator')
-.factory('Tracker', ['config', function (config) {
-	var ga = window.ga;
-	var tracker = {
-		ready: false
-	};
+.factory('Tracker', ['config',
+	function (config) {
+		var tracker = {
+			ready: false
+		};
 
-  var singleGA = false;
-  var universalGA = false;
+		var singleGA = false;
+		var platformGA = false;
+		var universalGA = false;
 
-  var universal_ga_id = null;
-  var single_ga_id = null;
+		tracker.init = function(options){
+			/* Google analytics below */
+			var scriptEl = document.createElement('script');
+			scriptEl.setAttribute('async', 'true');
+			scriptEl.setAttribute('src', 'https://www.google-analytics.com/analytics.js');
+			// uncomment to enable developer mode
+			// scriptEl.setAttribute('src', 'https://www.google-analytics.com/analytics_debug.js');
+			document.head.appendChild(scriptEl);
 
-	tracker.init = function(options){
-    tracker.ready = true;
-    if(options.ga_tracking_id){
-      single_ga_id = options.ga_tracking_id;
-      singleGA = true;
-      ga('create', options.ga_tracking_id, 'auto');
-    }
-    if(config.universalGA){
-      universal_ga_id = config.universalGA;
-      universalGA = true;
-      ga('create', universal_ga_id, 'auto', 'universalClientTracker');
-      tracker.pageview('initialising');
-    }
-	};
+			if(options.client_tracking_id){
+				singleGA = true;
+				ga('create', options.client_tracking_id, 'auto', 'clientTracker');
+			}
+			if(config.platformGA){
+				platformGA = true;
+				ga('create', config.universalGA, 'auto', 'platformTracker');
 
-  tracker.pageview = function(pageId) {
-    if (tracker.ready) {
-      if (singleGA) {
-        ga('send', 'pageview', '/' + pageId);
-      }
-      if (universalGA) {
-        ga('universalClientTracker.send', 'pageview', '/' + pageId);
-      }
-    }
-  }
+				ga('platformTracker.set', 'dimension1', options.id);
+				ga('platformTracker.set', 'dimension2', options.title);
+			}
+			if(config.universalGA){
+				universalGA = true;
+				ga('create', config.universalGA, 'auto', 'universalTracker');
+				ga('universalTracker.set', 'dimension1', options.id);
+				ga('universalTracker.set', 'dimension2', options.title);
+				ga('universalTracker.set', 'dimension3', 'Configurator');
+			}
 
-	tracker.setUserData = function(data){
-		if(!tracker.ready){
-			return;
+			tracker.ready = true;
+		};
+
+		tracker.pageview = function(path, title) {
+			if (tracker.ready) {
+				if (singleGA) {
+					ga('clientTracker.set', 'page', path);
+					ga('clientTracker.set', 'title', title);
+					ga('clientTracker.send', 'pageview');
+				}
+				if (platformGA) {
+					ga('platformTracker.set', 'page', path);
+					ga('platformTracker.set', 'title', title);
+					ga('platformTracker.send', 'pageview');
+				}
+				if (universalGA) {
+					ga('universalTracker.set', 'page', path);
+					ga('universalTracker.set', 'title', title);
+					ga('universalClientTracker.send', 'pageview');
+				}
+			}
 		}
-	};
 
-  //Object Type:Action:Name of Specific scene/id of scene:
-	tracker.track = function(eventName, data){
-		if(!tracker.ready){
-			return;
-		}
+		//Object Type:Action:Name of Specific scene/id of scene:
+		tracker.track = function(eventName, data){
+			if(!tracker.ready){
+				return;
+			}
 
-		checkGALoaded(function(){
 			var eventArray = eventName.split(':');
-      if(singleGA){
-        ga('send', 'event', eventArray[0], eventArray[1], eventArray[2]);
-      }
-      if(universalGA){
-        ga('universalClientTracker.send', 'event', eventArray[0], eventArray[1], eventArray[2]);
-      }
-		});
+			if(singleGA){
+				ga('clientTracker.send', {
+					hitType: 'event',
+					eventCategory: eventArray[0],
+					eventAction: eventArray[1],
+					eventLabel: eventArray[2]
+				});
+			}
+			if(platformGA){
+				ga('platformTracker.send', {
+					hitType: 'event',
+					eventCategory: eventArray[0],
+					eventAction: eventArray[1],
+					eventLabel: eventArray[2]
+				});
+			}
+			if(universalGA){
+				ga('universalTracker.send', {
+					hitType: 'event',
+					eventCategory: eventArray[0],
+					eventAction: eventArray[1],
+					eventLabel: eventArray[2]
+				});
+			}
+		}
+
+		return tracker;
 	}
-
-	function checkGALoaded(cb, attempt){
-		// Preventing infinitely stacking setTimeouts for performance
-		if(!attempt){
-			attempt = 0;
-		}
-		else if(attempt > 10){
-			console.warn('Failed to find google analytics');
-			return;
-		}
-
-		ga = window.ga;
-		if(ga){
-			cb(ga);
-		}
-		else{
-			setTimeout(checkGALoaded, 500, cb, ++attempt);
-		}
-	}
-
-	return tracker;
-}]);
+]);

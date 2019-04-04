@@ -26,21 +26,23 @@ var isDev = function () {
 
 /* App Module */
 angular.module('PlattarConfigurator', [])
-/*.constant('config', {
+.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
-  universalGA: "UA-86801112-10",
-	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})*/
-
-.constant('config', {
-	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
-	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+  universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })
+
+/*.constant('config', {
+	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+  platformGA: "UA-86801112-10",
+  universalGA: "UA-86801112-12",
+	sceneId: getParameterByName('sceneId'), // getting sceneId from url
+	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
@@ -90,18 +92,26 @@ angular.module('PlattarConfigurator', [])
 		});
 
     //calling tracker
-    $http.get('https://' + location.host +'/api/v2/'+'scene/'+config.sceneId).then(function(scene){
-      config.appId = scene.data.data.relationships.application.data.id;
-      $http.get('https://' + location.host +'/api/v2/'+'application/'+config.appId).then(function(app){
+    $http.get(config.apiUrl + '/api/v2/scene/' + config.sceneId)
+    .then(function(scene){
+      config.appId = scene.data.data.attributes.application_id;
+      $http.get(config.apiUrl + '/api/v2/application/' + config.appId)
+      .then(function(app){
         if(app.data.data.attributes.google_analytics_token){
           Tracker.init({
-            ga_tracking_id: app.data.data.attributes.google_analytics_token
+          	app_id: app.data.data.id,
+          	app_title: app.data.data.attributes.title,
+            client_tracking_id: app.data.data.attributes.google_analytics_token
           });
         }
         else {
-          Tracker.init({});
+          Tracker.init({
+          	app_id: app.data.data.id,
+          	app_title: app.data.data.attributes.title
+          });
         }
         Tracker.track("Scene:Loaded:" + config.sceneId);
+        Tracker.pageview('scene/' + scene.data.data.id, scene.data.data.attributes.title);
       });
     });
 	}
