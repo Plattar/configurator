@@ -37,10 +37,6 @@ angular.module('PlattarConfigurator')
                 }
             });
             $scope.clearAnnotation = function() {
-              // if($scope.fileType == "video"){
-              //   var video = document.getElementById("annotation-video");
-              //   video.pause();
-              // }
                 $timeout(function() {
                     $scope.annotationactive = false;
                     $scope.annotation.title = undefined;
@@ -49,9 +45,6 @@ angular.module('PlattarConfigurator')
                     $scope.annotation.text = undefined;
                 }, 500);
                 $scope.plattar.closeAnnotation();
-                //What about this??
-                // bridge.sendMessage('tuiselectannotation', {});
-                // this.events.publish('closeAnnotation');
             }
         }
     ]);

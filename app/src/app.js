@@ -77,6 +77,11 @@ angular.module('PlattarConfigurator', [])
 				$scope.$apply();
 			};
 
+      //handling tracker events from window postMessage
+      $scope.plattar.onTrackData = function(trackingData) {
+          Tracker.track(trackingData);
+      };
+
 			// Initialising the project. Set up in a loop for if loading is slow/fails
 			var intv = $interval(doit, 500);
 			function doit(){
