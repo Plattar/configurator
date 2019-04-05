@@ -26,7 +26,7 @@ angular.module('PlattarConfigurator')
 			}
 			if(config.platformGA){
 				platformGA = true;
-				ga('create', config.universalGA, 'auto', 'platformTracker');
+				ga('create', config.platformGA, 'auto', 'platformTracker');
 
 				ga('platformTracker.set', 'dimension1', options.id);
 				ga('platformTracker.set', 'dimension2', options.title);
@@ -57,7 +57,7 @@ angular.module('PlattarConfigurator')
 				if (universalGA) {
 					ga('universalTracker.set', 'page', path);
 					ga('universalTracker.set', 'title', title);
-					ga('universalClientTracker.send', 'pageview');
+					ga('universalTracker.send', 'pageview');
 				}
 			}
 		}
