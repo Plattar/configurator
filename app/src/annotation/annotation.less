@@ -1,0 +1,73 @@
+.annotation{
+	position: absolute;
+	bottom: -100vh;
+	max-width: 600px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	transition: bottom 0.3s ease-out, top 0.3s ease-out;
+	color: #000;
+	z-index: 1;
+
+	.frame{
+		margin: 10px 5%;
+		padding: 10px;
+    border-radius: 10px;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.5);
+    color: white;
+
+		h1{
+			margin-top: 0;
+			font-weight: bold;
+			// text-align: left;
+			margin: auto;
+			margin-bottom: 10px;
+			max-width: 88%;
+		}
+		p{
+			white-space: pre-line;
+			// text-align: left;
+			margin-bottom: 0;
+			margin-top: 10px;
+		}
+
+		img{
+			max-height: 40vh;
+			max-width: 90vw;
+			height: auto;
+			width: 100%;
+		}
+
+		video{
+			max-height: 40vh;
+			max-width: 90vw;
+			height: auto;
+			width: 100%;
+		}
+
+		.button-close{
+			top: 0;
+			right: 0;
+			height: 5vh;
+			width: 5vh;
+			max-height: 100px;
+			max-width: 100px;
+			border-radius: 5vh;
+			position: absolute;
+			// opacity: 0.7;
+
+			background-position: center;
+			background-size: 70%;
+			background-repeat: no-repeat;
+			background-image: url('../src/icons/icon-cross.svg');
+		}
+	}
+}
+
+.annotation-visible{
+	bottom: 0;
+}

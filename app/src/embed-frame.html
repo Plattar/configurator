@@ -7,5 +7,5 @@
 			<ng-include ng-if='loaded && sceneId' src="'/configurator/configurator.html'"></ng-include>
 		</div>
 	</div>
-	<div>
+	<ng-include ng-if='loaded && sceneId' src="'/annotation/annotation.html'"></ng-include>
 </div>
