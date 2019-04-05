@@ -63,9 +63,11 @@ function PlattarIntegration(params){
 			case 'previewready':
 				self.onReady();
 				break;
+
 			case 'analyticstracker':
 				self.onTrackData(e.data.data.eventString);
 				break;
+
 			case 'openurl':
 				if(e.data.data.url){
 					window.open(data.url, '_blank');
