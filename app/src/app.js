@@ -26,23 +26,23 @@ var isDev = function () {
 
 /* App Module */
 angular.module('PlattarConfigurator', [])
-/*.constant('config', {
+.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})*/
+})
 
-.constant('config', {
+/*.constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	platformGA: "UA-86801112-10",
 	universalGA: "UA-86801112-12",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})
+})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
@@ -115,7 +115,7 @@ angular.module('PlattarConfigurator', [])
 						app_title: app.data.data.attributes.title
 					});
 				}
-				Tracker.track("Scene:Loaded:" + config.sceneId);
+				Tracker.track("Scene:Loaded:" + config.sceneId + ' - ' + scene.data.data.attributes.title);
 				Tracker.pageview('scene/' + scene.data.data.id, scene.data.data.attributes.title);
 			});
 		});
