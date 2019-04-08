@@ -104,15 +104,15 @@ angular.module('PlattarConfigurator', [])
 			.then(function(app){
 				if(app.data.data.attributes.google_analytics_token){
 					Tracker.init({
-						app_id: app.data.data.id,
-						app_title: app.data.data.attributes.title,
+						id: app.data.data.id,
+						title: app.data.data.attributes.title,
 						client_tracking_id: app.data.data.attributes.google_analytics_token
 					});
 				}
 				else {
 					Tracker.init({
-						app_id: app.data.data.id,
-						app_title: app.data.data.attributes.title
+						id: app.data.data.id,
+						title: app.data.data.attributes.title
 					});
 				}
 				Tracker.track("Scene:Loaded:" + config.sceneId + ' - ' + scene.data.data.attributes.title);
