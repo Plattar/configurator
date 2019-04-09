@@ -3,13 +3,13 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('annotation', ['$scope', 'config', '$timeout', 'Tracker',
-  function($scope, config, $timeout, Tracker) {
+.controller('annotation', ['$scope', 'config', '$timeout', 'Tracker', '$rootScope',
+  function($scope, config, $timeout, Tracker, $rootScope) {
 
     $scope.annotation = null;
     $scope.annotationactive = false;
 
-    $scope.plattar.onAnnotationChange = function(annotationData) {
+    $rootScope.plattar.onAnnotationChange = function(annotationData) {
       $scope.annotation = annotationData;
       $scope.$digest();
     };
@@ -18,6 +18,7 @@ angular.module('PlattarConfigurator')
       if (!annotationData) {
         return;
       }
+
       if (annotationData.file_id) {
         $scope.plattar.api.getFile(annotationData.file_id, function(result) {
           $timeout(function() {
@@ -28,7 +29,8 @@ angular.module('PlattarConfigurator')
         }, function(error) {
           console.log(error);
         });
-      } else if (annotationData.text || annotationData.title) {
+      }
+      else if (annotationData.text || annotationData.title) {
         $timeout(function() {
           $scope.annotation.title = annotationData.title;
           $scope.annotation.text = annotationData.text;
@@ -36,14 +38,15 @@ angular.module('PlattarConfigurator')
         }, 0);
       }
     });
+
     $scope.clearAnnotation = function() {
+      $scope.annotationactive = false;
       $timeout(function() {
-        $scope.annotationactive = false;
         $scope.annotation.title = undefined;
         $scope.annotation.fileType = undefined;
         $scope.annotation.file = undefined;
         $scope.annotation.text = undefined;
-      }, 500);
+      }, 300);
       $scope.plattar.closeAnnotation();
     }
   }

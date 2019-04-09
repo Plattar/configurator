@@ -50,8 +50,8 @@ angular.module('PlattarConfigurator', [])
 		'self'
 		]);
 }])
-.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker',
-	function($scope, $element, $interval, $http, config, Tracker) {
+.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope',
+	function($scope, $element, $interval, $http, config, Tracker, $rootScope) {
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
@@ -63,7 +63,7 @@ angular.module('PlattarConfigurator', [])
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
 			// Creating the Plattar engine/api link
-			$scope.plattar = window.plattarIntegration;
+			$rootScope.plattar = $scope.plattar = window.plattarIntegration;
 
 			// Setting up a callback for when the scene changes
 			$scope.plattar.onSceneChange = function(sceneId){

@@ -1,4 +1,6 @@
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
+	<ng-include ng-if='loaded && sceneId' src="'/annotation/annotation.html'"></ng-include>
+
 	<div class='header'>
 		<div class='header-button' ng-click='toggleCamera()'>
 			<icon src='/icons/icon-camera.svg'></icon>
