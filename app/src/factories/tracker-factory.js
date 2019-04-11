@@ -23,6 +23,7 @@ angular.module('PlattarConfigurator')
 			if(options.client_tracking_id){
 				singleGA = true;
 				ga('create', options.client_tracking_id, 'auto', 'clientTracker');
+				ga('universalTracker.set', 'dimension1', 'Configurator');
 			}
 			if(config.platformGA){
 				platformGA = true;
@@ -64,10 +65,6 @@ angular.module('PlattarConfigurator')
 
 		//Object Type:Action:Name of Specific scene/id of scene:
 		tracker.track = function(eventName, data){
-			if(!tracker.ready){
-				return;
-			}
-
 			var eventArray = eventName.split(':');
 			if(singleGA){
 				ga('clientTracker.send', {
