@@ -38,8 +38,8 @@ angular.module('PlattarConfigurator', [])
 .constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
-	platformGA: "UA-86801112-10",
-	universalGA: "UA-86801112-12",
+	platformGA: isProd() ? "UA-86801112-10" : '',
+	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
 })
@@ -116,7 +116,7 @@ angular.module('PlattarConfigurator', [])
 					});
 				}
 				Tracker.track("Scene:Loaded:" + config.sceneId + ' - ' + scene.data.data.attributes.title);
-				Tracker.pageview('scene/' + scene.data.data.id, scene.data.data.attributes.title);
+				Tracker.pageview('scene/' + scene.data.data.id + '- ' + scene.data.data.attributes.title, scene.data.data.attributes.title);
 			});
 		});
 	}
