@@ -116,7 +116,7 @@ angular.module('PlattarConfigurator', [])
 					});
 				}
 				Tracker.track("Scene:Loaded:" + config.sceneId + ' - ' + scene.data.data.attributes.title);
-				Tracker.pageview('scene/' + scene.data.data.id + '- ' + scene.data.data.attributes.title, scene.data.data.attributes.title);
+				Tracker.pageview('scene/' + scene.data.data.id, scene.data.data.attributes.title);
 			});
 		});
 	}
