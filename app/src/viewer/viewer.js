@@ -48,6 +48,28 @@ angular.module('PlattarConfigurator')
 			Tracker.track("ConfigButton:Clicked:resetTransforms");
 		};
 
+		$scope.helpListeners = function() {
+			//https://stackoverflow.com/questions/2381336/detect-click-into-iframe-using-javascript
+			var mouseListener = window.addEventListener('blur', function(e) {
+				if ($scope.helpActivated) {
+					window.removeEventListener('blur', mouseListener);
+					return;
+				}
+				if (document.activeElement === document.getElementById('plattar-frame')) {
+					$scope.activateHelp();
+				}
+		  });
+			var touchListener = window.addEventListener('touchstart', function(e) {
+				if ($scope.helpActivated) {
+					window.removeEventListener('touchstart', touchListener);
+					return;
+				}
+				if (document.activeElement === document.getElementById('plattar-frame')) {
+					$scope.activateHelp();
+				}
+		  });
+		}
+
 		$scope.activateHelp = function(event) {
 			$scope.helpActivated = true;
 			Tracker.track("ConfigButton:Clicked:activateHelp");
@@ -89,5 +111,6 @@ angular.module('PlattarConfigurator')
 				}, setting.time);
 			});
 		};
+		$scope.helpListeners();
 	}
 ]);
