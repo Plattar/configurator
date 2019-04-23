@@ -25,7 +25,10 @@ angular.module('PlattarConfigurator')
 			$scope.title = modalData.title;
 			$scope.message = modalData.message;
 			$scope.button = !modalData.hideButton ? (modalData.button || 'ok') : false;
-			$('#modal').modal({});
+			$('#modal').modal({
+				backdrop: modalData.backdrop || 'static',
+				keyboard: modalData.keyboard || false
+			});
 			Tracker.track(modalData.trackerError);
 		}
 	}
