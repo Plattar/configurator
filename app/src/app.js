@@ -20,9 +20,9 @@ function webglCompatible(cb) {
         }
     } catch (e) {
         cb({
-            title: 'Unsupported System.',
-            message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
-						trackerError: 'WebGL Failed'
+					title: 'Unsupported System.',
+					message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
+					trackerError: 'WebGL Failed'
         });
         return false;
     }
