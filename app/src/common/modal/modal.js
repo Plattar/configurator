@@ -1,58 +1,32 @@
 'use strict';
+/*
+	Controls the alert modal
+*/
+
 angular.module('PlattarConfigurator')
-.controller('modalAlert', [
-	'$scope', '$uibModalInstance',
-	function ($scope, $uibModalInstance) {
-
-		$scope.closeAlertModal = function () {
-			close();
+.controller('modalAlert', ['$scope', 'Tracker', '$rootScope','$timeout',
+	function ($scope, Tracker, $rootScope, $timeout) {
+		$scope.modal = null;
+		$scope.modalActive = false;
+		$rootScope.plattar.onModalChange = function(modalData) {
+			$scope.modal = modalData;
 		};
-
-		function close () {
-			$uibModalInstance.close();
-		};
-	}
-])
-.factory('alert', ['$uibModal', '$rootScope',
-	function($uibModal, $rootScope){
-
-	var modals = [];
-
-	return function(params) {
-		var scope = $rootScope.$new();
-
-		// Prevents duplicate modals
-		if(modals.find(function(modal){
-			return modal.title == params.title
-		})){
-			return;
+		$scope.$watch('modal', function(modalData) {
+			if(!modalData){
+				return;
+			}
+			$scope.modalOpen(modalData);
+		});
+		$scope.modalClose = function(){
+			$scope.modalActive = false;
 		}
-
-		scope.title = params.title;
-		scope.message = params.text || params.message;
-		scope.image = params.image;
-		scope.button = !params.hideButton ? (params.button || 'ok') : false;
-
-		scope.customFunction = params.customFunction || function(){};
-
-		var modal = $uibModal.open({
-			size: 'md',
-			animation: true,
-			templateUrl: '/common/modal/modal.html',
-			controller: 'modalAlert',
-			scope: scope,
-			backdrop: params.backdrop || true,
-			keyboard: params.keyboard || true
-		});
-		modal.title = scope.title;
-
-		modals.push(modal);
-		modal.result.then(function(){
-			modals.splice(modals.indexOf(modal));
-		},function(){
-			modals.splice(modals.indexOf(modal));
-		});
-
-		return modal;
-	};
-}]);
+		$scope.modalOpen = function(modalData){
+			$scope.modalActive = true;
+			$scope.title = modalData.title;
+			$scope.message = modalData.message;
+			$scope.button = !modalData.hideButton ? (modalData.button || 'ok') : false;
+			$('#modal').modal({});
+			Tracker.track(modalData.trackerError);
+		}
+	}
+]);

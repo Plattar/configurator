@@ -22,8 +22,7 @@ function webglCompatible(cb) {
         cb({
             title: 'Unsupported System.',
             message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
-            keyboard: false,
-            backdrop: 'static'
+						trackerError: 'WebGL Failed'
         });
         return false;
     }
@@ -44,24 +43,24 @@ var isDev = function () {
 }
 
 /* App Module */
-angular.module('PlattarConfigurator', ['ui.bootstrap'])
-/*.constant('config', {
+angular.module('PlattarConfigurator', [])
+.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})*/
+})
 
-.constant('config', {
+/*.constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	platformGA: isProd() ? "UA-86801112-10" : '',
 	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})
+})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
@@ -69,19 +68,14 @@ angular.module('PlattarConfigurator', ['ui.bootstrap'])
 		'self'
 		]);
 }])
-.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope', 'alert',
-	function($scope, $element, $interval, $http, config, Tracker, $rootScope, alert) {
-
-		if (!webglCompatible(alert)) {
-				Tracker.track('WebGL Failed');
-				return;
-		}
+.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope',
+	function($scope, $element, $interval, $http, config, Tracker, $rootScope) {
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
 
 		$scope.requestFullscreen = function() {
-			$scope.plattar.toggleFullscreen($element[0])
+			$scope.plattar.toggleFullscreen($element[0]);
 		};
 
 		// Creates the connection to the iframe renderer
@@ -116,6 +110,9 @@ angular.module('PlattarConfigurator', ['ui.bootstrap'])
 					}
 					$scope.loaded = true;
 					$scope.$apply();
+					if (!webglCompatible($scope.plattar.onModalChange)) {
+							return;
+					}
 				});
 			}
 		});

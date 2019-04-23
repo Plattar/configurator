@@ -3,8 +3,8 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('configurator', ['$scope', 'config', 'Tracker', 'alert',
-	function($scope, config, Tracker, alert) {
+.controller('configurator', ['$scope', 'config', 'Tracker',
+	function($scope, config, Tracker) {
 		$scope.error = undefined;
 
 		$scope.plattar.api.getScene(config.sceneId,
@@ -25,12 +25,11 @@ angular.module('PlattarConfigurator')
 				else{
 					$scope.error = 'There was an error while loading this scene.';
 				}
-				alert({
+				$scope.plattar.onModalChange({
 						title: 'Error',
 						message: $scope.error,
 						button: 'Understood',
-						keyboard: false,
-						backdrop: 'static'
+						trackerError: 'Scene loading error'
 				});
 				// $('#errorModal').modal({});
 				$scope.$apply();

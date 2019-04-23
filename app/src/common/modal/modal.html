@@ -1,12 +1,9 @@
-<div class="alert-modal text-white text-center">
-  <h3 class="title">{{title}}</h3>
-  <p>{{message}}</p>
-
-  <div class="dash-trigger-image">
-    <img ng-src='{{image}}'/>
-  </div>
-
-  <div ng-if="button">
-    <button class="btn btn-white btn-success animate-all btn-margin" type="button" ng-click="customFunction(); closeAlertModal()">{{button}}</button>
+<div  ng-controller="modalAlert" id="modal" class='modal' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class='modal-inner'>
+    <h3 class="title">{{title}}</h3>
+    <p>{{message}}</p>
+    <div ng-if="button">
+      <button id='modalClose' type="button" class="btn btn-primary" data-dismiss="modal" ng-click="modalClose();">{{button}}</button>
+    </div>
   </div>
 </div>
