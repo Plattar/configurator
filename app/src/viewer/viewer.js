@@ -2,8 +2,8 @@
 	Controls the Panel that contains the controls and 3d view
 */
 angular.module('PlattarConfigurator')
-.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout',
-	function($scope, config, $sce, Tracker, $timeout) {
+.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout', 'alert',
+	function($scope, config, $sce, Tracker, $timeout, alert) {
 
 		$scope.embedUrl = $sce.trustAsResourceUrl(config.apiUrl + '/webgleditor/preview/index.html');
 		$scope.hideWalkthrough = true;
@@ -15,8 +15,20 @@ angular.module('PlattarConfigurator')
 
 		$scope.toggleCamera = function() {
 			cameraEnabled = !cameraEnabled;
-			$scope.plattar.toggleCamera(cameraEnabled);
-			Tracker.track("ConfigButton:Clicked:cameraEnabled");
+			try{
+				$scope.plattar.toggleCamera(cameraEnabled);
+				Tracker.track("ConfigButton:Clicked:cameraEnabled");
+			}
+			catch(e){
+				alert({
+						title: 'Error',
+						message: "There was an error loading your camera.",
+						button: 'Understood',
+						keyboard: false,
+						backdrop: 'static'
+				});
+				Tracker.track("Camera Click Error");
+			}
 		};
 
 		$scope.goFullscreen = function() {

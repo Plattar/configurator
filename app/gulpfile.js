@@ -48,9 +48,12 @@ var externalScripts = [
   'angular/angular.js',
   'popper.js/dist/umd/popper.js',
   'bootstrap/dist/js/bootstrap.js',
+  'angular-ui-bootstrap/dist/ui-bootstrap.js',
+	'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'
 ];
 
 var externalStyles = [
+  'angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
   'bootstrap/dist/css/bootstrap.css'
 ];
 

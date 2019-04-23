@@ -1,0 +1,12 @@
+<div class="alert-modal text-white text-center">
+  <h3 class="title">{{title}}</h3>
+  <p>{{message}}</p>
+
+  <div class="dash-trigger-image">
+    <img ng-src='{{image}}'/>
+  </div>
+
+  <div ng-if="button">
+    <button class="btn btn-white btn-success animate-all btn-margin" type="button" ng-click="customFunction(); closeAlertModal()">{{button}}</button>
+  </div>
+</div>

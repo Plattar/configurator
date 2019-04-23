@@ -11,6 +11,25 @@ function getParameterByName(name, url) {
 	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function webglCompatible(cb) {
+    try {
+        var canvas = document.createElement('canvas');
+        var gl = (window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+        if (gl == null) {
+            throw new Error('WebGL not supported.');
+        }
+    } catch (e) {
+        cb({
+            title: 'Unsupported System.',
+            message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
+            keyboard: false,
+            backdrop: 'static'
+        });
+        return false;
+    }
+    return true;
+}
+
 // Used for development
 var isProd = function () {
 	return location.hostname == 'app.plattar.com';
@@ -25,24 +44,24 @@ var isDev = function () {
 }
 
 /* App Module */
-angular.module('PlattarConfigurator', [])
-/*.constant('config', {
+angular.module('PlattarConfigurator', ['ui.bootstrap'])
+.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})*/
+})
 
-.constant('config', {
+/*.constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	platformGA: isProd() ? "UA-86801112-10" : '',
 	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
-})
+})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
@@ -50,8 +69,13 @@ angular.module('PlattarConfigurator', [])
 		'self'
 		]);
 }])
-.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope',
-	function($scope, $element, $interval, $http, config, Tracker, $rootScope) {
+.controller('mainController', ['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope', 'alert',
+	function($scope, $element, $interval, $http, config, Tracker, $rootScope, alert) {
+
+		if (!webglCompatible(alert)) {
+				Tracker.track('WebGL Failed');
+				return;
+		}
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
