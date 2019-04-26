@@ -7,21 +7,17 @@ angular.module('PlattarConfigurator')
 .controller('modalAlert', ['$scope', 'Tracker', '$rootScope','$timeout',
 	function ($scope, Tracker, $rootScope, $timeout) {
 		$scope.modal = null;
-		$scope.modalActive = false;
+
 		$rootScope.plattar.onModalChange = function(modalData) {
 			$scope.modal = modalData;
-		};
-		$scope.$watch('modal', function(modalData) {
-			if(!modalData){
-				return;
-			}
 			$scope.modalOpen(modalData);
-		});
+		};
+
 		$scope.modalClose = function(){
-			$scope.modalActive = false;
-		}
+			$scope.modal = undefined;
+		};
+
 		$scope.modalOpen = function(modalData){
-			$scope.modalActive = true;
 			$scope.title = modalData.title;
 			$scope.message = modalData.message;
 			$scope.button = !modalData.hideButton ? (modalData.button || 'ok') : false;
@@ -30,6 +26,6 @@ angular.module('PlattarConfigurator')
 				keyboard: modalData.keyboard || false
 			});
 			Tracker.track(modalData.trackerError);
-		}
+		};
 	}
 ]);

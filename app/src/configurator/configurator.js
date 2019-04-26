@@ -31,7 +31,6 @@ angular.module('PlattarConfigurator')
 						button: 'Understood',
 						trackerError: 'Scene loading error'
 				});
-				// $('#errorModal').modal({});
 				$scope.$apply();
 			}
 		);
