@@ -11,13 +11,6 @@ angular.module('PlattarConfigurator')
 
     $rootScope.plattar.onAnnotationChange = function(annotationData) {
       $scope.annotation = annotationData;
-      $scope.$digest();
-    };
-
-    $scope.$watch('annotation', function(annotationData) {
-      if (!annotationData) {
-        return;
-      }
 
       if (annotationData.file_id) {
         $scope.plattar.api.getFile(annotationData.file_id, function(result) {
@@ -37,7 +30,7 @@ angular.module('PlattarConfigurator')
           $scope.annotationactive = true;
         }, 0);
       }
-    });
+    };
 
     $scope.clearAnnotation = function() {
       $scope.annotationactive = false;
