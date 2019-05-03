@@ -48,13 +48,15 @@ angular.module('PlattarConfigurator')
 			}
 
 			product.selectedVariation = variation;
-			$scope.plattar.loadVariation(product.instanceid, variation.id);
 
 			resetPreview();
 			applyPreview();
 
 			//Tracking variation.attributes.title or variation.id
 			Tracker.track('Variation:Clicked:' + variation.id + ' ' + variation.attributes.title);
+
+			//load the variations
+			loadVariations();
 		};
 
 		$scope.toggleVisibility = function () {
@@ -62,7 +64,13 @@ angular.module('PlattarConfigurator')
 		};
 
 
-
+		function loadVariations(){
+			$scope.products.forEach(function(product){
+				if(product.selectedVariation){
+					$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
+				}
+			});
+		}
 
 
 		function resetPreview(){
@@ -111,7 +119,48 @@ angular.module('PlattarConfigurator')
 						});
 					});
 				}
+				//here set the product variation
+	     		var isVisible = product.variations.filter(function(v){
+	        		return v.visiblePreview;
+	      		}).length > 0;
+	      		if(!product.selectedVariation && isVisible){
+	        		product.selectedVariation = product.variations.filter(function(variation){
+	          			return variation.visiblePreview;
+	        		})[0];
+	      		}
 			});
+
+			var oldSelectedVariations = {};
+		    for(var prodId in self.selectedVariations){
+		    	oldSelectedVariations[prodId] = self.selectedVariations[prodId];
+		    }
+	    	//hide variation if it is in relationship of other product's selected variations.
+	    	$scope.products.forEach(function(product){
+				var oldSelectedVariation = product.selectedVariation;
+				$scope.products.forEach(function(prod){
+					var pid = prod.instanceid;
+		    	    var svar = prod.selectedVariation;
+		        	if(!svar){
+		          		return;
+		        	}
+		        	if($scope.relationship[pid].level >= $scope.relationship[product.instanceid].level){
+		          		return;
+		        	}
+		        	var hideVarIds = $scope.relationship[pid][svar.id];
+		        	if(hideVarIds[product.instanceid]){
+		          		hideVarIds[product.instanceid].forEach(function(vid){
+		            		var variation = product.variations.find(function(v){
+		            	  		return v.id == vid;
+		            		});
+		            		variation.visiblePreview = false;
+		            		if(oldSelectedVariation == variation){
+		              			// hide variation
+								$scope.plattar.loadVariation(product.instanceid, null);
+		            		}
+		          		});
+		        	}
+	      		});
+	    	});
 
 			$scope.products.forEach(function(product){
 				product.visiblePreview = false;
