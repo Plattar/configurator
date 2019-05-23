@@ -56,7 +56,8 @@ angular.module('PlattarConfigurator')
 			Tracker.track('Variation:Clicked:' + variation.id + ' ' + variation.attributes.title);
 
 			//load the variations
-			loadVariations();
+			// loadVariations();
+			$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
 		};
 
 		$scope.toggleVisibility = function () {
@@ -64,14 +65,13 @@ angular.module('PlattarConfigurator')
 		};
 
 
-		function loadVariations(){
+		/*function loadVariations(){
 			$scope.products.forEach(function(product){
 				if(product.selectedVariation){
 					$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
 				}
 			});
-		}
-
+		}*/
 
 		function resetPreview(){
 			$scope.products.forEach(function(product){
@@ -86,6 +86,7 @@ angular.module('PlattarConfigurator')
 			if(!$scope.relationship){
 				return;
 			}
+			var iterate = false;
 			$scope.products.forEach(function(product){
 				// Go through all the products and update the preview visibility
 				if(product.selectedVariation){
@@ -119,48 +120,54 @@ angular.module('PlattarConfigurator')
 						});
 					});
 				}
+
 				//here set the product variation
-	     		var isVisible = product.variations.filter(function(v){
-	        		return v.visiblePreview;
-	      		}).length > 0;
-	      		if(!product.selectedVariation && isVisible){
-	        		product.selectedVariation = product.variations.filter(function(variation){
-	          			return variation.visiblePreview;
-	        		})[0];
-	      		}
+				var isVisible = product.variations.filter(function(v){
+					return v.visiblePreview;
+				}).length > 0;
+				if(!product.selectedVariation && isVisible){
+					product.selectedVariation = product.variations.find(function(variation){
+						return variation.visiblePreview;
+					});
+					if(product.selectedVariation){
+						$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
+					}
+					else{
+						$scope.plattar.loadVariation(product.instanceid, null);
+					}
+				}
 			});
 
-			var oldSelectedVariations = {};
-		    for(var prodId in self.selectedVariations){
-		    	oldSelectedVariations[prodId] = self.selectedVariations[prodId];
-		    }
-	    	//hide variation if it is in relationship of other product's selected variations.
-	    	$scope.products.forEach(function(product){
+			//hide variation if it is in relationship of other product's selected variations.
+			$scope.products.forEach(function(product){
 				var oldSelectedVariation = product.selectedVariation;
 				$scope.products.forEach(function(prod){
 					var pid = prod.instanceid;
-		    	    var svar = prod.selectedVariation;
-		        	if(!svar){
-		          		return;
-		        	}
-		        	if($scope.relationship[pid].level >= $scope.relationship[product.instanceid].level){
-		          		return;
-		        	}
-		        	var hideVarIds = $scope.relationship[pid][svar.id];
-		        	if(hideVarIds[product.instanceid]){
-		          		hideVarIds[product.instanceid].forEach(function(vid){
-		            		var variation = product.variations.find(function(v){
-		            	  		return v.id == vid;
-		            		});
-		            		variation.visiblePreview = false;
-		            		if(oldSelectedVariation == variation){
-		              			// hide variation
+					var selectedVariation = prod.selectedVariation;
+
+					if(!selectedVariation){
+						return;
+					}
+					if($scope.relationship[pid].level >= $scope.relationship[product.instanceid].level){
+						return;
+					}
+
+					var hideVarIds = $scope.relationship[pid][selectedVariation.id];
+					if(hideVarIds[product.instanceid]){
+						hideVarIds[product.instanceid].forEach(function(vid){
+							var variation = product.variations.find(function(v){
+								return v.id == vid;
+							});
+							variation.visiblePreview = false;
+							if(oldSelectedVariation == variation){
+								// hide variation
 								$scope.plattar.loadVariation(product.instanceid, null);
-		            		}
-		          		});
-		        	}
-	      		});
-	    	});
+								iterate = true;
+							}
+						});
+					}
+				});
+			});
 
 			$scope.products.forEach(function(product){
 				product.visiblePreview = false;
@@ -171,6 +178,10 @@ angular.module('PlattarConfigurator')
 					}
 				});
 			});
+
+			if(iterate){
+				applyPreview();
+			}
 		}
 	}
 ]);
