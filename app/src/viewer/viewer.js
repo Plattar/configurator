@@ -5,7 +5,13 @@ angular.module('PlattarConfigurator')
 .controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout',
 	function($scope, config, $sce, Tracker, $timeout) {
 
-		$scope.embedUrl = $sce.trustAsResourceUrl(config.apiUrl + '/webgleditor/preview/index.html');
+		var url = config.apiUrl + '/webgleditor/preview/index.html';
+		if(getParameterByName('x') !== null){
+			url += '?x=' + getParameterByName('x');
+			url += '&y=' + getParameterByName('y');
+			url += '&z=' + getParameterByName('z');
+		}
+		$scope.embedUrl = $sce.trustAsResourceUrl(url);
 		$scope.hideWalkthrough = true;
 		$scope.hideframe1 = true;
 		$scope.hideframe2 = true;
