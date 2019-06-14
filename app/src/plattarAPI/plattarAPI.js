@@ -13,7 +13,7 @@ function PlattarIntegration(params){
 	var cdnUrl = params.cdnUrl;
 	var iframe = document.querySelector('#plattar-frame');
 	var self = this;
-
+	this.showAnnotation = false;
 	this.onReady = function(){console.log('Not initialised properly')};
 	this.onSceneChange = function(){console.log('No scene change listener set')};
 
@@ -32,7 +32,7 @@ function PlattarIntegration(params){
 			origin: location.origin,
 			options: {
 				autorotate: params.autorotate,
-				helpslides: false,
+				isConfigurator: true
 			}
 		});
 	};
@@ -64,6 +64,10 @@ function PlattarIntegration(params){
 				self.onReady();
 				break;
 
+			case 'analyticstracker':
+				self.onTrackData(e.data.data.eventString);
+				break;
+
 			case 'openurl':
 				if(e.data.data.url){
 					window.open(data.url, '_blank');
@@ -72,8 +76,9 @@ function PlattarIntegration(params){
 
 			case 'selectannotation':
 				// Annotation has content to display
-				if(data.title){
+				if(data.title || data.text || data.file_id){
 					// create annotation popup within the theme
+					self.onAnnotationChange(data);
 				}
 				// Annotation is linking to a website
 				else if(data.url){
@@ -82,10 +87,8 @@ function PlattarIntegration(params){
 				}
 				// Annotation is linking to a different scene
 				else if(data.scene_id){
-					// Set config.sceneId to new sceneId
-					config.sceneId = data.scene_id;
 					// Open the new scene
-					self.openScene(data.sceneId);
+					self.openScene(data.scene_id);
 				}
 				break;
 		}
@@ -126,6 +129,11 @@ function PlattarIntegration(params){
 	// Returns the product back to its original position/rotation
 	this.resetTransforms = function() {
 		sendMessage('resetTransform', {} );
+	};
+
+	this.closeAnnotation = function() {
+		// sendMessage('tuiselectannotation', {});
+		sendMessage('clearannotation', {});
 	};
 
 	// Cross-browser compatible fullscreen enabling
@@ -198,6 +206,16 @@ function PlattarIntegration(params){
 
 	// Function calls to the Plattar API to get scene/product data
 	this.api = {
+		getFile: function(fileId, successFunc, errorFunc) {
+			$.get(apiUrl + '/api/v2/file/'+fileId, function(result){
+				successFunc(result.data);
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
 		getScene: function(sceneId, successFunc, errorFunc) {
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
 				successFunc(result.data);
