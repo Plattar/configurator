@@ -287,6 +287,7 @@ function PlattarIntegration(params){
 							if(thumb){
 								variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
 							}
+							variation.file = thumb;
 							return variation;
 						});
 
@@ -294,6 +295,8 @@ function PlattarIntegration(params){
 							return variation.id == product.attributes.product_variation_id;
 						});
 					});
+
+
 
 					successFunc(products);
 				}
