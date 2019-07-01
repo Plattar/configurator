@@ -1,17 +1,18 @@
 <div class='annotation-container'>
-	<div ng-controller="annotation" class='annotation' ng-class='{"annotation-visible": annotationactive}'>
-	  <div class='frame'>
-	    <h1 ng-if='annotation.title'>{{annotation.title}}</h1>
+  <div ng-controller="annotation" class='annotation' ng-class='{"annotation-visible": annotationactive}'>
+    <div class='frame'>
+      <h1 ng-if='annotation.title'>{{annotation.title}}</h1>
 
-	    <div class='img' ng-if='annotation.fileType == "image"' ng-style="{'background-image':'url({{annotation.file}})'}"></div>
+      <div class='img' ng-if='annotation.fileType == "image"' ng-style="{'background-image':'url({{annotation.file}})'}"></div>
 
-	    <div ng-if='annotation.fileType == "video"' class='video'>
-	    	<video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay></video>
-	    </div>
+      <div ng-if='annotation.fileType == "video"' class='video'>
+        <video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay></video>
+      </div>
 
-	    <p ng-if='annotation.text'>{{annotation.text}}</p>
-	    <div class='button-close' ng-click='clearAnnotation()'>
-	    </div>
-	  </div>
-	</div>
+      <p ng-if='annotation.text'>{{annotation.text}}</p>
+      <div class='button-close' ng-click='clearAnnotation()'>
+        <icon src='/icons/icon-cross.svg'></icon>
+      </div>
+    </div>
+  </div>
 </div>
