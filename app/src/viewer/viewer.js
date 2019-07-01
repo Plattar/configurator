@@ -2,8 +2,10 @@
 	Controls the Panel that contains the controls and 3d view
 */
 angular.module('PlattarConfigurator')
-.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout',
-	function($scope, config, $sce, Tracker, $timeout) {
+.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout', 'communicator',
+	function($scope, config, $sce, Tracker, $timeout, communicator) {
+
+		communicator.injectObject("viewer", $scope);
 
 		var url = config.apiUrl + '/webgleditor/preview/index.html';
 		if(getParameterByName('x') !== null){
@@ -19,19 +21,65 @@ angular.module('PlattarConfigurator')
 		$scope.isFullscreen = false;
 		var cameraEnabled = false;
 
+		$scope.showAR = false;
+		if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+			$scope.showAR = true;
+		}
+		else if(/android/i.test(navigator.userAgent)){
+			$scope.showAR = true;
+		}
 		$scope.toggleCamera = function() {
-			cameraEnabled = !cameraEnabled;
-			try{
-				$scope.plattar.toggleCamera(cameraEnabled);
-				Tracker.track("ConfigButton:Clicked:cameraEnabled");
+			//detect ios
+			var anchor = document.createElement('a');
+
+			if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+				$scope.showAR = true;
+				anchor.setAttribute('rel', 'ar');
+				anchor.appendChild(document.createElement('img'));
+				//this one
+				anchor.setAttribute('href', communicator.usdzUrl);
+				// anchor.setAttribute('target', '_blank');
+				anchor.click();
 			}
-			catch(e){
-				$scope.plattar.onModalChange({
-						title: 'Error',
-						message: "There was an error loading your camera.",
-						button: 'Understood',
-						trackerError: "Camera Click Error"
-				});
+			//detect android
+			else if(/android/i.test(navigator.userAgent)){
+				$scope.showAR = true;
+				//this one
+				var gltf = new URL(communicator.gltfUrl);
+				//this one
+				var link = encodeURIComponent(communicator.product_url);
+				//this one
+				var title = encodeURIComponent(communicator.title);
+				var scheme = 'https';
+
+				gltf.protocol = 'intent://';
+
+				intent = gltf;
+				intent += '?link=' + link;
+				intent += '&title=' + title;
+				intent += '#Intent;scheme=' + scheme;
+				intent += ';package=com.google.ar.core;action=android.intent.action.VIEW;';
+				intent += 'S.browser_fallback_url='+link+';end;';
+
+				// anchor.setAttribute('href', intent);
+				// anchor.click();
+				window.open(intent);
+			}
+			//desktop fallback
+			else{
+				cameraEnabled = !cameraEnabled;
+				try{
+					$scope.plattar.toggleCamera(cameraEnabled);
+					Tracker.track("ConfigButton:Clicked:cameraEnabled");
+				}
+				catch(e){
+					$scope.plattar.onModalChange({
+							title: 'Error',
+							message: "There was an error loading your camera.",
+							button: 'Understood',
+							trackerError: "Camera Click Error"
+					});
+				}
 			}
 		};
 
@@ -64,7 +112,7 @@ angular.module('PlattarConfigurator')
 				if (document.activeElement === document.getElementById('plattar-frame')) {
 					$scope.activateHelp();
 				}
-		  });
+			});
 			var touchListener = window.addEventListener('touchstart', function(e) {
 				if ($scope.helpActivated) {
 					window.removeEventListener('touchstart', touchListener);
@@ -73,7 +121,7 @@ angular.module('PlattarConfigurator')
 				if (document.activeElement === document.getElementById('plattar-frame')) {
 					$scope.activateHelp();
 				}
-		  });
+			});
 		}
 
 		$scope.activateHelp = function(event) {

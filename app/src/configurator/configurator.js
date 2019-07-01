@@ -3,8 +3,8 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('configurator', ['$scope', 'config', 'Tracker',
-	function($scope, config, Tracker) {
+.controller('configurator', ['$scope', 'config', 'Tracker', 'communicator',
+	function($scope, config, Tracker, communicator) {
 		$scope.error = undefined;
 
 		$scope.plattar.api.getScene(config.sceneId,
@@ -36,6 +36,7 @@ angular.module('PlattarConfigurator')
 		);
 
 		$scope.plattar.api.listProducts(config.sceneId, function (result) {
+			communicator.setData(result);
 			$scope.products = result;
 			resetPreview();
 			applyPreview();
@@ -48,7 +49,7 @@ angular.module('PlattarConfigurator')
 			}
 
 			product.selectedVariation = variation;
-
+			communicator.selectVariation(variation);
 			resetPreview();
 			applyPreview();
 
