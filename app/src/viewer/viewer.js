@@ -13,42 +13,37 @@ angular.module('PlattarConfigurator')
 			url += '&y=' + getParameterByName('y');
 			url += '&z=' + getParameterByName('z');
 		}
+
 		$scope.embedUrl = $sce.trustAsResourceUrl(url);
 		$scope.hideWalkthrough = true;
 		$scope.hideframe1 = true;
 		$scope.hideframe2 = true;
 		$scope.clickType = !mobilecheck();
 		$scope.isFullscreen = false;
+		$scope.showAR = false;
 		var cameraEnabled = false;
 
-		$scope.showAR = false;
 		if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
 			$scope.showAR = true;
 		}
 		else if(/android/i.test(navigator.userAgent)){
 			$scope.showAR = true;
 		}
+
 		$scope.toggleCamera = function() {
 			//detect ios
 			var anchor = document.createElement('a');
 
 			if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
-				$scope.showAR = true;
 				anchor.setAttribute('rel', 'ar');
 				anchor.appendChild(document.createElement('img'));
-				//this one
 				anchor.setAttribute('href', communicator.usdzUrl);
-				// anchor.setAttribute('target', '_blank');
 				anchor.click();
 			}
 			//detect android
 			else if(/android/i.test(navigator.userAgent)){
-				$scope.showAR = true;
-				//this one
 				var gltf = new URL(communicator.gltfUrl);
-				//this one
 				var link = encodeURIComponent(communicator.product_url);
-				//this one
 				var title = encodeURIComponent(communicator.title);
 				var scheme = 'https';
 
@@ -89,10 +84,12 @@ angular.module('PlattarConfigurator')
 			$scope.isFullscreen = !$scope.isFullscreen;
 			Tracker.track("ConfigButton:Clicked:goFullscreen");
 		};
+
 		document.onfullscreenchange = document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.MSFullscreenChange = function(event) {
 			$scope.isFullscreen = isFullscreen();
 			$scope.$apply();
 		};
+
 		function isFullscreen() {
 			return Document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 		}
