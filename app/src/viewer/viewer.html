@@ -2,7 +2,7 @@
 	<ng-include ng-if='loaded && sceneId' src="'/annotation/annotation.html'"></ng-include>
 
 	<div class='header'>
-		<div ng-if='isProduct' class='header-button' ng-click='toggleCamera()'>
+		<div ng-if='isProduct && showAR' class='header-button' ng-click='toggleCamera()'>
 			<icon src='/icons/icon-camera.svg'></icon>
 		</div>
 
