@@ -296,8 +296,6 @@ function PlattarIntegration(params){
 						});
 					});
 
-
-
 					successFunc(products);
 				}
 			})

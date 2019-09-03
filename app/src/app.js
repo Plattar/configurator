@@ -12,21 +12,22 @@ function getParameterByName(name, url) {
 }
 
 function webglCompatible(cb) {
-    try {
-        var canvas = document.createElement('canvas');
-        var gl = (window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-        if (gl == null) {
-            throw new Error('WebGL not supported.');
-        }
-    } catch (e) {
-        cb({
-					title: 'Unsupported System.',
-					message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
-					trackerError: 'WebGL Failed'
-        });
-        return false;
-    }
-    return true;
+	try {
+		var canvas = document.createElement('canvas');
+		var gl = (window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+		if (gl == null) {
+			throw new Error('WebGL not supported.');
+		}
+	}
+	catch (e) {
+		cb({
+			title: 'Unsupported System.',
+			message: 'It appears your web browser does not support the features required to run our editor. Please visit http://get.webgl.org/ for more information.',
+			trackerError: 'WebGL Failed'
+		});
+		return false;
+	}
+	return true;
 }
 
 // Used for development

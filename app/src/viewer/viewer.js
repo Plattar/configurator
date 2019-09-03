@@ -5,6 +5,13 @@ angular.module('PlattarConfigurator')
 .controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout', 'communicator',
 	function($scope, config, $sce, Tracker, $timeout, communicator) {
 
+		var canQuicklook = (function() {
+			var tempAnchor = document.createElement('a');
+
+			return tempAnchor.relList && tempAnchor.relList.supports &&
+					tempAnchor.relList.supports('ar');
+		})();
+
 		communicator.injectObject("viewer", $scope);
 
 		var url = config.apiUrl + '/webgleditor/preview/index.html';
@@ -21,6 +28,7 @@ angular.module('PlattarConfigurator')
 		$scope.clickType = !mobilecheck();
 		$scope.isFullscreen = false;
 		$scope.showAR = false;
+		$scope.product = undefined;
 		var cameraEnabled = false;
 
 		if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
@@ -32,19 +40,29 @@ angular.module('PlattarConfigurator')
 
 		$scope.toggleCamera = function() {
 			//detect ios
-			var anchor = document.createElement('a');
 
-			if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
-				anchor.setAttribute('rel', 'ar');
-				anchor.appendChild(document.createElement('img'));
-				anchor.setAttribute('href', communicator.usdzUrl);
-				anchor.click();
+			if(cameraEnabled || !$scope.product){
+				cameraFallback();
+			}
+			else if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+				// If it can load quicklook and has a usdz file, open quicklook
+				if(canQuicklook){
+					var anchor = document.createElement('a');
+					anchor.setAttribute('rel', 'ar');
+					anchor.appendChild(document.createElement('img'));
+					anchor.setAttribute('href', $scope.product.usdzUrl);
+					anchor.click();
+				}
+				// else fall back to showing the camera view
+				else{
+					cameraFallback();
+				}
 			}
 			//detect android
 			else if(/android/i.test(navigator.userAgent)){
-				var gltf = new URL(communicator.gltfUrl);
-				var link = encodeURIComponent(communicator.product_url);
-				var title = encodeURIComponent(communicator.title);
+				var gltf = new URL($scope.product.gltfUrl);
+				var link = encodeURIComponent($scope.product.product_url);
+				var title = encodeURIComponent($scope.product.title);
 				var scheme = 'https';
 
 				gltf.protocol = 'intent://';
@@ -54,29 +72,36 @@ angular.module('PlattarConfigurator')
 				intent += '&title=' + title;
 				intent += '#Intent;scheme=' + scheme;
 				intent += ';package=com.google.ar.core;action=android.intent.action.VIEW;';
-				intent += 'S.browser_fallback_url='+link+';end;';
+				intent += ';end;';//'S.browser_fallback_url='+link+
 
 				// anchor.setAttribute('href', intent);
 				// anchor.click();
 				window.open(intent);
-			}
-			//desktop fallback
-			else{
-				cameraEnabled = !cameraEnabled;
-				try{
-					$scope.plattar.toggleCamera(cameraEnabled);
-					Tracker.track("ConfigButton:Clicked:cameraEnabled");
-				}
-				catch(e){
-					$scope.plattar.onModalChange({
-							title: 'Error',
-							message: "There was an error loading your camera.",
-							button: 'Understood',
-							trackerError: "Camera Click Error"
-					});
-				}
+				var timeout = setTimeout(function(){
+					cameraFallback();
+				}, 250);
+
+				document.addEventListener("visibilitychange", function() {
+					clearTimeout(timeout);
+				});
 			}
 		};
+
+		function cameraFallback(){
+			cameraEnabled = !cameraEnabled;
+			try{
+				$scope.plattar.toggleCamera(cameraEnabled);
+				Tracker.track("ConfigButton:Clicked:cameraEnabled");
+			}
+			catch(e){
+				$scope.plattar.onModalChange({
+					title: 'Error',
+					message: "There was an error loading your camera.",
+					button: 'Understood',
+					trackerError: "Camera Click Error"
+				});
+			}
+		}
 
 		$scope.goFullscreen = function() {
 			// Calling parent requestFullscreen function
@@ -110,6 +135,7 @@ angular.module('PlattarConfigurator')
 					$scope.activateHelp();
 				}
 			});
+
 			var touchListener = window.addEventListener('touchstart', function(e) {
 				if ($scope.helpActivated) {
 					window.removeEventListener('touchstart', touchListener);
@@ -124,36 +150,37 @@ angular.module('PlattarConfigurator')
 		$scope.activateHelp = function(event) {
 			$scope.helpActivated = true;
 			Tracker.track("ConfigButton:Clicked:activateHelp");
+
 			var hintSettings = [{
-					blocks: ['hideframe1', 'hideframe2', 'hideWalkthrough'],
-					val: true,
-					time: 0
-				},{
-					blocks: ['hideWalkthrough'],
-					val: false,
-					time: 0
-				},{
-					blocks: ['hideframe1'],
-					val: false,
-					time: 500
-				},{
-					blocks: ['hideframe1'],
-					val: true,
-					time: 3000
-				},{
-					blocks: ['hideframe2'],
-					val: false,
-					time: 3500
-				},{
-					blocks: ['hideframe2'],
-					val: true,
-					time: 6000
-				},{
-					blocks: ['hideWalkthrough'],
-					val: true,
-					time: 6500
-				}
-			]
+				blocks: ['hideframe1', 'hideframe2', 'hideWalkthrough'],
+				val: true,
+				time: 0
+			},{
+				blocks: ['hideWalkthrough'],
+				val: false,
+				time: 0
+			},{
+				blocks: ['hideframe1'],
+				val: false,
+				time: 500
+			},{
+				blocks: ['hideframe1'],
+				val: true,
+				time: 3000
+			},{
+				blocks: ['hideframe2'],
+				val: false,
+				time: 3500
+			},{
+				blocks: ['hideframe2'],
+				val: true,
+				time: 6000
+			},{
+				blocks: ['hideWalkthrough'],
+				val: true,
+				time: 6500
+			}];
+
 			hintSettings.forEach(function(setting) {
 				$timeout(function() {
 					setting.blocks.forEach(function(block) {
@@ -162,6 +189,18 @@ angular.module('PlattarConfigurator')
 				}, setting.time);
 			});
 		};
+
+		$scope.setProduct = function(product) {
+			$scope.product = product;
+		};
+
+		$scope.setVariation = function(variation) {
+			if($scope.product){
+				$scope.product.gltfUrl = variation.gltfUrl;
+				$scope.product.usdzUrl = variation.usdzUrl;
+			}
+		};
+
 		$scope.helpListeners();
 	}
 ]);
