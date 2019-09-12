@@ -88,12 +88,12 @@ angular.module('PlattarConfigurator', [])
 			$scope.plattar.onSceneChange = function(sceneId){
 				if(sceneId && config.sceneId != sceneId){
 					$scope.sceneId = undefined;
-					$scope.$apply();
+					// $scope.$apply();
 
 					config.sceneId = sceneId;
 					$scope.sceneId = sceneId;
 				}
-				$scope.$apply();
+				// $scope.$apply();
 			};
 
 			//handling tracker events from window postMessage
