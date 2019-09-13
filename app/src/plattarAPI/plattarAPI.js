@@ -206,8 +206,9 @@ function PlattarIntegration(params){
 
 	// Function calls to the Plattar API to get scene/product data
 	this.api = {
-		getFile: function(fileId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/file/'+fileId, function(result){
+		getFile: function(fileId, fileType, successFunc, errorFunc) {
+			$.get(apiUrl + '/api/v2/'+fileType+'/'+fileId, function(result){
+				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -228,7 +229,7 @@ function PlattarIntegration(params){
 		},
 
 		listProducts: function(sceneId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.file,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.file', function(result){
+			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.filemodel,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.filemodel', function(result){
 				if(result.included && result.included.length){
 					var products = result.included.filter(function(include){
 						return (include.type == 'product' && include.attributes.scene_id == sceneId);
@@ -281,7 +282,7 @@ function PlattarIntegration(params){
 							}
 							else{
 								thumb = result.included.find(function(include){
-									return include.id == variation.attributes.file_id;
+									return include.id == variation.attributes.file_model_id;
 								});
 							}
 							if(thumb){

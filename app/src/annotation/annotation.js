@@ -12,12 +12,24 @@ angular.module('PlattarConfigurator')
     $rootScope.plattar.onAnnotationChange = function(annotationData) {
       $scope.annotation = annotationData;
 
-      if (annotationData.file_id) {
-        $scope.plattar.api.getFile(annotationData.file_id, function(result) {
+      if (annotationData.file_video_id) {
+        $scope.plattar.api.getFile(annotationData.file_video_id, 'filevideo', function(result) {
           $timeout(function() {
             $scope.annotation.file = result.attributes.effective_uri;
-            $scope.annotation.fileType = result.attributes.asset_type;
+            $scope.annotation.fileType = result.type;
             $scope.annotationactive = true;
+          }, 0);
+        }, function(error) {
+          console.log(error);
+        });
+      }
+      else if (annotationData.file_image_id) {
+        $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
+          $timeout(function() {
+            $scope.annotation.file = result.attributes.effective_uri;
+            $scope.annotation.fileType = result.type;
+            $scope.annotationactive = true;
+            console.log($scope.annotation)
           }, 0);
         }, function(error) {
           console.log(error);
