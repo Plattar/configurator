@@ -229,7 +229,7 @@ function PlattarIntegration(params){
 		},
 
 		listProducts: function(sceneId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.filemodel,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.filemodel', function(result){
+			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.filemodel,product.productvariation.fileimage,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.filemodel,sceneproduct.product.productvariation.fileimage', function(result){
 				if(result.included && result.included.length){
 					var products = result.included.filter(function(include){
 						return (include.type == 'product' && include.attributes.scene_id == sceneId);
@@ -279,6 +279,9 @@ function PlattarIntegration(params){
 								thumb = result.included.find(function(include){
 									return include.id == variation.attributes.swatch_id;
 								});
+								if(!thumb.attributes.thumbnail){
+									thumb.attributes.thumbnail = thumb.attributes.original_filename;
+								}
 							}
 							else{
 								thumb = result.included.find(function(include){
