@@ -12,7 +12,7 @@ angular.module('PlattarConfigurator')
 					tempAnchor.relList.supports('ar');
 		})();
 
-		communicator.injectObject("viewer", $scope);
+		communicator.injectObject('viewer', $scope);
 
 		var url = config.apiUrl + '/webgleditor/preview/index.html';
 		if(getParameterByName('x') !== null){

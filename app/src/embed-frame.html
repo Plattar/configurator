@@ -1,10 +1,11 @@
 <div ng-controller="mainController" class='container-fluid main-container'>
 	<ng-include ng-if='loaded' src="'/common/modal/modal.html'"></ng-include>
 	<div class='row' style='height:100%;'>
-		<div class='col-12 col-md-8'>
+		<div class='col-12'  ng-class='{"col-md-8": hasVariations}'>
 			<ng-include src="'/viewer/viewer.html'"></ng-include>
 		</div>
-		<div class='col-12 col-md-4 configurator-container'>
+		<!-- ng-if='hasVariations' -->
+		<div class='col-12 configurator-container' ng-class='{"col-md-4": hasVariations, "hidden": !hasVariations}'>
 			<ng-include ng-if='loaded && sceneId' src="'/configurator/configurator.html'"></ng-include>
 		</div>
 	</div>
