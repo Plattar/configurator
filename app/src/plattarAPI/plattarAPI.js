@@ -76,7 +76,7 @@ function PlattarIntegration(params){
 
 			case 'selectannotation':
 				// Annotation has content to display
-				if(data.title || data.text || data.file_id){
+				if(data.title || data.text || data.file_image_id || data.file_video_id){
 					// create annotation popup within the theme
 					self.onAnnotationChange(data);
 				}
@@ -206,8 +206,9 @@ function PlattarIntegration(params){
 
 	// Function calls to the Plattar API to get scene/product data
 	this.api = {
-		getFile: function(fileId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/file/'+fileId, function(result){
+		getFile: function(fileId, fileType, successFunc, errorFunc) {
+			$.get(apiUrl + '/api/v2/'+fileType+'/'+fileId, function(result){
+				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -228,7 +229,7 @@ function PlattarIntegration(params){
 		},
 
 		listProducts: function(sceneId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.file,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.file', function(result){
+			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.filemodel,product.productvariation.fileimage,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.filemodel,sceneproduct.product.productvariation.fileimage', function(result){
 				if(result.included && result.included.length){
 					var products = result.included.filter(function(include){
 						return (include.type == 'product' && include.attributes.scene_id == sceneId);
@@ -278,10 +279,13 @@ function PlattarIntegration(params){
 								thumb = result.included.find(function(include){
 									return include.id == variation.attributes.swatch_id;
 								});
+								if(!thumb.attributes.thumbnail){
+									thumb.attributes.thumbnail = thumb.attributes.original_filename;
+								}
 							}
 							else{
 								thumb = result.included.find(function(include){
-									return include.id == variation.attributes.file_id;
+									return include.id == variation.attributes.file_model_id;
 								});
 							}
 							if(thumb){

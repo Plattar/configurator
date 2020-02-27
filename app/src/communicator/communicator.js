@@ -20,7 +20,7 @@ angular.module('PlattarConfigurator')
 
         if(isProduct){
           var path = products[0].selectedVariation.file.attributes.path;
-          var filename = products[0].selectedVariation.file.attributes.filename;
+          var filename = products[0].selectedVariation.file.attributes.original_filename;
 
           this.injectedObjects["viewer"].setProduct({
             title: products[0].attributes.title,
@@ -38,7 +38,7 @@ angular.module('PlattarConfigurator')
 
       selectVariation: function(variation){
         var path = variation.file.attributes.path;
-        var filename = variation.file.attributes.filename;
+        var filename = variation.file.attributes.original_filename;
 
         this.injectedObjects["viewer"].setVariation({
           gltfUrl: config.cdnUrl + path + filename,
