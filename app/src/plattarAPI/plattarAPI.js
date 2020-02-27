@@ -76,7 +76,7 @@ function PlattarIntegration(params){
 
 			case 'selectannotation':
 				// Annotation has content to display
-				if(data.title || data.text || data.file_id){
+				if(data.title || data.text || data.file_image_id || data.file_video_id){
 					// create annotation popup within the theme
 					self.onAnnotationChange(data);
 				}
