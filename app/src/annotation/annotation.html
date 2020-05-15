@@ -9,6 +9,10 @@
         <video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay></video>
       </div>
 
+      <div ng-if='annotation.url' class='iframe'>
+        <iframe ng-src="{{annotation.url}}" id="annotation-iframe" allow="camera; vr; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
+      </div>
+
       <p ng-if='annotation.text'>{{annotation.text}}</p>
       <div class='button-close' ng-click='clearAnnotation()'>
         <icon src='/icons/icon-cross.svg'></icon>

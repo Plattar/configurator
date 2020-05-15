@@ -3,8 +3,8 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('annotation', ['$scope', 'config', '$timeout', 'Tracker', '$rootScope',
-  function($scope, config, $timeout, Tracker, $rootScope) {
+.controller('annotation', ['$scope', 'config', '$timeout', 'Tracker', '$rootScope', '$sce',
+  function($scope, config, $timeout, Tracker, $rootScope, $sce) {
 
     $scope.annotation = null;
     $scope.annotationactive = false;
@@ -39,6 +39,12 @@ angular.module('PlattarConfigurator')
         $timeout(function() {
           $scope.annotation.title = annotationData.title;
           $scope.annotation.text = annotationData.text;
+          $scope.annotationactive = true;
+        }, 0);
+      }
+      else if(annotationData.url){
+        $timeout(function() {
+          $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
           $scope.annotationactive = true;
         }, 0);
       }
