@@ -1,9 +1,9 @@
 <div class='annotation-container'>
   <div ng-controller="annotation" class='annotation' ng-class='{"annotation-visible": annotationactive}'>
-    <div class='frame'>
+    <div class='frame' ng-class='{"background": annotation.title || annotation.text}'>
       <h1 ng-if='annotation.title'>{{annotation.title}}</h1>
 
-      <div class='img' ng-if='annotation.fileType == "fileimage"' ng-style="{'background-image':'url({{annotation.file}})'}"></div>
+      <div class='img' ng-if='annotation.fileType == "fileimage"' style="background-image:url({{annotation.file}})"></div>
 
       <div ng-if='annotation.fileType == "filevideo"' class='video'>
         <video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay></video>
