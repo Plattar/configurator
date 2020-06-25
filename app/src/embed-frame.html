@@ -1,12 +1,21 @@
 <div ng-controller="mainController" class='container-fluid main-container'>
-	<ng-include ng-if='loaded' src="'/common/modal/modal.html'"></ng-include>
-	<div class='row' style='height:100%;'>
-		<div class='col-12'  ng-class='{"col-md-8": hasVariations}'>
+	<ng-include ng-if='loaded' src="'/common/modal/alert/modal.html'"></ng-include>
+	<ng-include ng-if='loaded' src="'/common/modal/qrcode/qrcode.html'"></ng-include>
+	<ng-include ng-if='loaded' src="'/annotation/annotation.html'"></ng-include>
+
+	<div class='special-row' style='height:100%;'>
+		<div class='asd'>
 			<ng-include src="'/viewer/viewer.html'"></ng-include>
 		</div>
 		<!-- ng-if='hasVariations' -->
-		<div class='col-12 configurator-container' ng-class='{"col-md-4": hasVariations, "hidden": !hasVariations}'>
+		<!--  ng-class='{"col-md-4": hasVariations, "hidden": !hasVariations}' -->
+		<div class='configurator-container' ng-class='{"variations": hasVariations}'>
 			<ng-include ng-if='loaded && sceneId' src="'/configurator/configurator.html'"></ng-include>
 		</div>
+
+		<ng-include ng-if='loaded && sceneId' src="'/page/page.html'"></ng-include>
+
+		<ng-include src="'/modelviewer/modelviewer.html'"></ng-include>
+
 	</div>
 </div>

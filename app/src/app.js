@@ -32,11 +32,7 @@ function webglCompatible(cb) {
 
 // Used for development
 var isProd = function () {
-	return location.hostname == 'app.plattar.com';
-}
-
-var isProd2 = function () {
-	return location.hostname == 'app2.plattar.com';
+	return true;//location.hostname == 'app.plattar.com';
 }
 
 var isStaging = function () {
@@ -93,7 +89,7 @@ angular.module('PlattarConfigurator', [])
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
 			// Creating the Plattar engine/api link
-			$rootScope.plattar = $scope.plattar = window.plattarIntegration;
+			$rootScope.plattar = $scope.plattar = window.PlattarApiIntegration;
 
 			// Setting up a callback for when the scene changes
 			$scope.plattar.onSceneChange = function(sceneId){

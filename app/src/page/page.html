@@ -1,0 +1,167 @@
+<div ng-controller="pageController">
+	<div class='page-opener'>
+		<div class='page-toggle' ng-click='openPage()'><icon src='/icons/icon-left-arrow.svg'></icon></div>
+	</div>
+	<div class='page-container' ng-class='{"visible": visible}'>
+
+		<div class='page'>
+			<div class='page-toggle' ng-click='closePage()'><icon src='/icons/icon-x.svg'></icon></div>
+
+			<div id='directory' ng-if="page == 'directory'">
+				<div class='tile' ng-click='selectPanorama("84439e40-a52e-11ea-a721-1fef848e6ee6")' style='background-image:url("./img/room1.jpg")'>
+					<div class='rollover'></div>
+					<h1>Bedroom</h1>
+				</div>
+
+				<div class='tile' ng-click='selectPanorama("84483ef0-a52e-11ea-bc46-b53ac0eabeb5")' style='background-image:url("./img/room2.jpg")'>
+					<div class='rollover'></div>
+					<h1>Media Room</h1>
+				</div>
+
+				<div class='tile' ng-click='selectPanorama("84418b70-a52e-11ea-a8a3-23b111d90919")' style='background-image:url("./img/room3.jpg")'>
+					<div class='rollover'></div>
+					<h1>Dining</h1>
+				</div>
+
+				<div class='tile' ng-click='selectPanorama("84492f60-a52e-11ea-ac88-fddeea80b64b")' style='background-image:url("./img/room4.jpg")'>
+					<div class='rollover'></div>
+					<h1>Kitchen</h1>
+				</div>
+			</div>
+
+			<div id='cooktop' ng-if="page == 'cooktop'">
+				<div class='image-box'>
+					<img src="./img/gastop.jpg">
+				</div>
+
+				<h1>Vario gas cooktop 400 series</h1>
+				<h2>
+					Stainless steel<br/>
+					Width 90 cm<br/>
+					VG491111F
+				</h2>
+				<p>&nbsp;</p>
+
+				<p>The Westinghouse 900mm 5 Burner Black Tempered Glass Gas Cooktop with Dual Valve Control has multiple burners and a flat, easy-to-clean surface, making it a welcome choice for your busy kitchen.</p>
+
+				<p><a href="https://www.harveynorman.com.au/westinghouse-900mm-5-burner-black-tempered-glass-gas-cooktop-with-dual-valve-control.html" target="_blank">More Info...</a></p>
+				<p>&nbsp;</p>
+
+				<button ng-click='openAR()'>
+					<icon src='/icons/icon-AR.svg'></icon>
+					View in AR
+				</button>
+
+				<button ng-click='open3D()'>
+					<icon src='/icons/icon-3D.svg'></icon>
+					View in 3D
+				</button>
+			</div>
+
+			<div id='pillow' ng-if="page == 'pillow'">
+				<div class='image-box' style='margin: 20px 0;'>
+					<img ng-src="{{pillowImage}}" style='width:60%;'>
+				</div>
+
+				<div class='thirds'>
+					<div class='third' style='background-image: url("./img/pillow1.png")' ng-click='pillowImage = "./img/pillow1.png"'>
+						<!-- <div class='swatch' style='background-color: #E4749C'></div> -->
+					</div>
+					<div class='third' style='background-image: url("./img/pillow2.png")' ng-click='pillowImage = "./img/pillow2.png"'>
+						<!-- <div class='swatch' style='background-color: #FAB6BE'></div> -->
+					</div>
+					<div class='third' style='background-image: url("./img/pillow3.png")' ng-click='pillowImage = "./img/pillow3.png"'>
+						<!-- <div class='swatch' style='background-color: #E36F81'></div> -->
+					</div>
+				</div>
+
+				<h1>
+					$29.99 &nbsp;&nbsp;
+					<icon class='yellow' src='/icons/icon-star.svg'></icon>
+					<icon class='yellow' src='/icons/icon-star.svg'></icon>
+					<icon class='yellow' src='/icons/icon-star.svg'></icon>
+					<icon class='yellow' src='/icons/icon-star.svg'></icon>
+					<icon class='white' src='/icons/icon-star.svg'></icon>
+				</h1>
+
+				<h2>Square Solid Pillow with Fringe White - Opalhouse.</h2>
+
+				<p><a href="https://www.escapetoparadise.com.au/collections/classical-style" target="_blank">More...</a></p>
+				<p>&nbsp;</p>
+
+				<button ng-click='' class='red'>
+					<icon src='/icons/icon-cart.svg'></icon>
+					Add to Cart
+				</button>
+
+				<button ng-click='openYoutube()'>
+					<icon src='/icons/icon-play.svg'></icon>
+					Watch Video
+				</button>
+
+				<button ng-click='openAR()'>
+					<icon src='/icons/icon-AR.svg'></icon>
+					View in AR
+				</button>
+			</div>
+
+			<div id='shelf' ng-if="page == 'shelf'">
+				<h1>Collection</h1>
+
+				<div class='shelf-item'>
+					<div class='rollover'></div>
+					<div>
+						<img src="./img/shelf1.png">
+					</div>
+					<div>
+						<h2>You are Awesome</h2>
+						<p>Stainless Steel Width 90cm</p>
+						<p class='bold'>$24.95</p>
+					</div>
+					<icon src='/icons/icon-cart.svg'></icon>
+				</div>
+
+				<div class='shelf-item'>
+					<div class='rollover'></div>
+					<div>
+						<img src="./img/shelf2.png">
+					</div>
+					<div>
+						<h2>Ecoya Candle</h2>
+						<p>Stainless Steel Width 90cm</p>
+						<p class='bold'>$34.50</p>
+					</div>
+					<icon src='/icons/icon-cart.svg'></icon>
+				</div>
+
+				<div class='shelf-item'>
+					<div class='rollover'></div>
+					<div>
+						<img src="./img/shelf3.png">
+					</div>
+					<div>
+						<h2>Vastix Speaker</h2>
+						<p>Stainless Steel Width 90cm</p>
+						<p class='bold'>$499.00</p>
+					</div>
+					<icon src='/icons/icon-cart.svg'></icon>
+				</div>
+
+				<div class='shelf-item'>
+					<div class='rollover'></div>
+					<div>
+						<img src="./img/shelf4.png">
+					</div>
+					<div>
+						<h2>Glased Vase</h2>
+						<p>Stainless Steel Width 90cm</p>
+						<p class='bold'>$24.95</p>
+					</div>
+					<icon src='/icons/icon-cart.svg'></icon>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class='bottom-fade'></div> -->
+	</div>
+</div>

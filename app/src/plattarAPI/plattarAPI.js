@@ -3,7 +3,7 @@
 	Standalone API and 3d engine iframe integration
 */
 
-function PlattarIntegration(params){
+function PlattarApiIntegration(params){
 	var params = params || {};
 	if(params.apiUrl === undefined){
 		params.apiUrl = 'https://app.plattar.com';
@@ -79,6 +79,8 @@ function PlattarIntegration(params){
 
 			case 'selectannotation':
 				// Annotation has content to display
+				self.onAnnotationChange(data);
+
 				if(data.title || data.text || data.file_image_id || data.file_video_id){
 					// create annotation popup within the theme
 					self.onAnnotationChange(data);
@@ -137,6 +139,19 @@ function PlattarIntegration(params){
 	this.closeAnnotation = function() {
 		// sendMessage('tuiselectannotation', {});
 		sendMessage('clearannotation', {});
+	};
+
+	this.selectPanorama = function(panoramaId) {
+		// sendMessage('panToCamera', {id: cameraId});
+
+
+		sendMessage('runscript', {
+			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",
+			params: {
+				id: panoramaId
+			}
+		});
+		// sendMessage('selectpanorama', {id: panoramaId});
 	};
 
 	// Cross-browser compatible fullscreen enabling
@@ -315,4 +330,4 @@ function PlattarIntegration(params){
 	};
 }
 
-window.plattarIntegration = new PlattarIntegration();
+window.PlattarApiIntegration = new PlattarApiIntegration();

@@ -126,7 +126,7 @@ angular.module('PlattarConfigurator')
 
 		$scope.helpListeners = function() {
 			//https://stackoverflow.com/questions/2381336/detect-click-into-iframe-using-javascript
-			var mouseListener = window.addEventListener('blur', function(e) {
+			/*var mouseListener = window.addEventListener('blur', function(e) {
 				if ($scope.helpActivated) {
 					window.removeEventListener('blur', mouseListener);
 					return;
@@ -144,7 +144,7 @@ angular.module('PlattarConfigurator')
 				if (document.activeElement === document.getElementById('plattar-frame')) {
 					$scope.activateHelp();
 				}
-			});
+			});*/
 		}
 
 		$scope.activateHelp = function(event) {

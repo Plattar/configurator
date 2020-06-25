@@ -1,0 +1,5 @@
+<div class='model-viewer' ng-controller="modelviewer" ng-class='{"model-viewer-visible": visible}'>
+	<div class='close' ng-click='closeModel()'><icon src='/icons/icon-x.svg'></icon></div>
+
+	<iframe ng-src="{{modelUrl}}" ng-if='modelUrl' frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
+</div>

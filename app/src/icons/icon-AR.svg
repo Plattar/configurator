@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   viewBox="0 0 30 30">
+  <g
+     transform="translate(0.98305085)"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round">
+    <g
+       style="stroke:#ffffff;stroke-width:2"
+       transform="translate(-1496,-881)">
+      <g
+         transform="translate(1497,882)">
+        <polyline
+           points="18 10 13 12 8 10" />
+        <g>
+          <line
+             y2="6.269062"
+             x2="0.076490223"
+             y1="8.5950747"
+             x1="4.9250593" />
+          <polyline
+             points="17.8545768 25.6524966 13.0060077 27.9785088 8.15743865 25.6524966" />
+          <line
+             y2="19.449797"
+             x2="21.086956"
+             y1="21.77581"
+             x1="25.935526" />
+          <line
+             y2="8.5950747"
+             x2="21.086956"
+             y1="6.269062"
+             x1="25.935526" />
+          <line
+             y2="21.77581"
+             x2="0.076490223"
+             y1="19.449797"
+             x1="4.9250593" />
+          <polyline
+             points="8.15743865 2.39237517 13.0060077 0.0663630229 17.8545768 2.39237517" />
+        </g>
+        <line
+           y2="12"
+           x2="13"
+           y1="17"
+           x1="13" />
+        <g>
+          <line
+             y2="22.551147"
+             x2="13.006008"
+             y1="27.978508"
+             x1="13.006008" />
+          <line
+             y2="0.066363022"
+             x2="13.006008"
+             y1="5.4937248"
+             x1="13.006008" />
+          <polyline
+             points="0.0764902212 11.6964238 0.0764902212 6.26906208 4.92505928 3.94304993" />
+          <polyline
+             points="0.0764902212 16.348448 0.0764902212 21.7758097 4.92505928 24.1018219" />
+          <polyline
+             points="25.9355252 16.348448 25.9355252 21.7758097 21.0869561 24.1018219" />
+          <polyline
+             points="25.9355252 11.6964238 25.9355252 6.26906208 21.0869561 3.94304993" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

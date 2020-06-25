@@ -38,6 +38,13 @@ var views = [
   '!./src/index.html'
 ];
 
+var images = [
+  './src/img/*.png',
+  './src/img/**/*.png',
+  './src/img/*.jpg',
+  './src/img/**/*.jpg',
+];
+
 var svgs = [
   './src/*.svg',
   './src/**/*.svg'
@@ -99,6 +106,13 @@ gulp.task('views', function (cb) {
       module: 'PlattarConfigurator'
     }))
     .pipe(gulp.dest(buildFolder))
+});
+
+gulp.task('images', (cb) => {
+  gulp.src(images)
+    .pipe(gulp.dest('./dist/img/'));
+
+  cb();
 });
 
 gulp.task('externalScripts', function () {
@@ -195,6 +209,7 @@ gulp.task('watch', () => {
   gulp.watch(views, gulp.series('views'));
   gulp.watch(svgs , gulp.series('views'));
   gulp.watch(styles, gulp.series('less'));
+  gulp.watch(images, gulp.series('images'));
 
   // gulp.watch('./src/embed-frame.html', gulp.series('index'));
 });
@@ -229,7 +244,7 @@ gulp.task('dev', gulp.series(
   //sets environment to dev
   'setdev',
   // builds all working files and copies them to temp location
-  gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'),
+  gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index', 'images'),
   // watches the working files and triggers rebuilds if they change. runs a local server if needed
   gulp.parallel('watchTemp', 'watch', 'serve')
 ));
@@ -241,7 +256,7 @@ gulp.task('prod',
     // sets the environment to production
     'setprod',
     // builds all working files
-    gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'),
+    gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index', 'images'),
     // builds all temporary files
     gulp.parallel('compileScripts', 'compileStyles')
   )

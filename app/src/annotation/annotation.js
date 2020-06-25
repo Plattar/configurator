@@ -3,51 +3,51 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('annotation', ['$scope', 'config', '$timeout', 'Tracker', '$rootScope', '$sce',
-  function($scope, config, $timeout, Tracker, $rootScope, $sce) {
+.controller('annotation', [
+  '$scope', 'config', '$timeout', 'Tracker', '$rootScope', '$sce', 'communicator',
+  function($scope, config, $timeout, Tracker, $rootScope, $sce, communicator) {
+
+    communicator.injectObject('annotation', $scope);
 
     $scope.annotation = null;
     $scope.annotationactive = false;
 
-    $rootScope.plattar.onAnnotationChange = function(annotationData) {
+    $scope.openAnnotation = function(annotationData) {
       $scope.annotation = annotationData;
 
-      if (annotationData.file_video_id) {
-        $scope.plattar.api.getFile(annotationData.file_video_id, 'filevideo', function(result) {
-          $timeout(function() {
+      if($scope.annotation.url){
+        $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
+      }
+
+      $timeout(function() {
+        if (annotationData.file_video_id) {
+          $scope.plattar.api.getFile(annotationData.file_video_id, 'filevideo', function(result) {
             $scope.annotation.file = result.attributes.effective_uri;
             $scope.annotation.fileType = result.type;
             $scope.annotationactive = true;
-          }, 0);
-        }, function(error) {
-          console.log(error);
-        });
-      }
-      else if (annotationData.file_image_id) {
-        $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
-          $timeout(function() {
+          }, function(error) {
+            console.log(error);
+          });
+        }
+        else if (annotationData.file_image_id) {
+          $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
             $scope.annotation.file = result.attributes.effective_uri;
             $scope.annotation.fileType = result.type;
             $scope.annotationactive = true;
-            console.log($scope.annotation)
-          }, 0);
-        }, function(error) {
-          console.log(error);
-        });
-      }
-      else if (annotationData.text || annotationData.title) {
-        $timeout(function() {
+          }, function(error) {
+            console.log(error);
+          });
+        }
+        else if (annotationData.text || annotationData.title) {
           $scope.annotation.title = annotationData.title;
           $scope.annotation.text = annotationData.text;
           $scope.annotationactive = true;
-        }, 0);
-      }
-      else if(annotationData.url){
-        $timeout(function() {
-          $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
+        }
+        else if(annotationData.url){
+          // $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
           $scope.annotationactive = true;
-        }, 0);
-      }
+        }
+      }, 0);
     };
 
     $scope.clearAnnotation = function() {

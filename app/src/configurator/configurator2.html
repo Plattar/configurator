@@ -1,0 +1,46 @@
+<div ng-controller="configurator" class='configurator'>
+
+	<div class='configurator-toggle' ng-click='toggleVisibility()'><icon src='/icons/icon-plus.svg'></icon></div>
+
+	<h1>{{scene.attributes.title}}</h1>
+
+	<!-- Loop for all products -->
+	<div
+		ng-repeat='product in products'
+		ng-if='product.variations.length > 1'
+		ng-style='{"margin-left" : (relationship[product.instanceid].level * 10) + "px"}'
+		ng-class='{
+			"squashed": !product.visiblePreview
+		}'
+		class='product-view'
+	>
+		<hr>
+
+		<h3>{{product.attributes.title}} - {{product.selectedVariation.attributes.title}}</h3>
+
+		<div class='slider-container'>
+			<div class='slider'>
+				<!-- slider of variations -->
+				<div class='variation-selected'
+					ng-class='{
+						"selected": variation == product.selectedVariation,
+						"squashed": !variation.visiblePreview
+					}'
+					ng-repeat='variation in product.variations'
+				>
+					<div class='variation-container'
+						ng-click='selectVariation(product, variation)'
+					>
+						<img ng-src="{{variation.thumbnail}}" smoothload>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Displays an error message -->
+	<div ng-if='error'>
+		<h1>Error</h1>
+		<h3>{{error}}</h3>
+	</div>
+</div>

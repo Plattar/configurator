@@ -48,6 +48,10 @@ angular.module('PlattarConfigurator')
 
       injectObject: function(type, obj){
         this.injectedObjects[type] = obj;
+      },
+
+      sendMessage: function(destination, func, data){
+        this.injectedObjects[destination][func](data);
       }
     }
   }
