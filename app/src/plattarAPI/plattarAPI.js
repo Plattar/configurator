@@ -53,6 +53,7 @@ function PlattarIntegration(params){
 			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
+	this.sendMessage = sendMessage;
 
 	// Receiving messages from the 3d engine
 	window.addEventListener('message', function(e){

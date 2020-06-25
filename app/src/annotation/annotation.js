@@ -59,6 +59,8 @@ angular.module('PlattarConfigurator')
         $scope.annotation.text = undefined;
       }, 300);
       $scope.plattar.closeAnnotation();
+
+      $scope.plattar.sendMessage('pantocamera', {title:'start camera'})
     }
   }
 ]);
