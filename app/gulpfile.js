@@ -231,7 +231,7 @@ gulp.task('dev', gulp.series(
   // builds all working files and copies them to temp location
   gulp.parallel('less', 'externalStyles', 'localScripts', 'externalScripts', 'views', 'index'),
   // watches the working files and triggers rebuilds if they change. runs a local server if needed
-  gulp.parallel('watchTemp', 'watch', 'serve')
+  gulp.parallel('watchTemp', 'watch')
 ));
 
 gulp.task('prod',
