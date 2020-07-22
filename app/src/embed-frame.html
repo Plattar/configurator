@@ -10,10 +10,10 @@
 		<!-- ng-if='hasVariations' -->
 		<!--  ng-class='{"col-md-4": hasVariations, "hidden": !hasVariations}' -->
 		<div class='configurator-container' ng-class='{"variations": hasVariations}'>
-			<ng-include ng-if='loaded && sceneId' src="'/configurator/configurator.html'"></ng-include>
+			<ng-include ng-if='loaded' src="'/configurator/configurator.html'"></ng-include>
 		</div>
 
-		<ng-include ng-if='loaded && sceneId' src="'/page/page.html'"></ng-include>
+		<ng-include ng-if='loaded' src="'/page/page.html'"></ng-include>
 
 		<ng-include src="'/modelviewer/modelviewer.html'"></ng-include>
 

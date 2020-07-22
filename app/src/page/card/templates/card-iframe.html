@@ -1,0 +1,6 @@
+<div class='card-iframe'>
+	<div class='card-iframe-inner'>
+	</div>
+
+	<iframe ng-src="{{getAsTrusted(card.data.attributes.url)}}" sandbox="allow-same-origin allow-forms allow-scripts" ng-if='card.data.attributes.url'></iframe>
+</div>

@@ -1,0 +1,13 @@
+<div class='card-row card-row-{{card.rowCards.length}}'>
+	<div class='card-row-inner'>
+	</div>
+
+	<div ng-repeat='card in card.rowCards' class='card' ng-class="!card.data.attributes.color && card.image ? 'button-row-image' : ''">
+		<!-- <card-line ng-click='showPropertyInspector(card)'></card-line> -->
+		<div ng-click='showPropertyInspector(card, $event)'
+			 ng-class='{selected : selected == card}'
+		>
+			<ng-include src="'pages/card/templates/card-button.html'"></ng-include>
+		</div>
+	</div>
+</div>

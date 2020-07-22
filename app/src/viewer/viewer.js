@@ -15,11 +15,6 @@ angular.module('PlattarConfigurator')
 		communicator.injectObject('viewer', $scope);
 
 		var url = config.apiUrl + '/webgleditor/preview/index.html';
-		if(getParameterByName('x') !== null){
-			url += '?x=' + getParameterByName('x');
-			url += '&y=' + getParameterByName('y');
-			url += '&z=' + getParameterByName('z');
-		}
 
 		$scope.embedUrl = $sce.trustAsResourceUrl(url);
 		$scope.hideWalkthrough = true;

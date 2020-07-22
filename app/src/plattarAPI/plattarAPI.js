@@ -81,12 +81,7 @@ function PlattarApiIntegration(params){
 				// Annotation has content to display
 				self.onAnnotationChange(data);
 
-				if(data.title || data.text || data.file_image_id || data.file_video_id){
-					// create annotation popup within the theme
-					self.onAnnotationChange(data);
-				}
-				// Annotation is linking to a website
-				else if(data.url){
+				/*if(data.url){
 					// Open the website in a new tab
 					window.open(data.url, '_blank');
 				}
@@ -94,7 +89,7 @@ function PlattarApiIntegration(params){
 				else if(data.scene_id){
 					// Open the new scene
 					self.openScene(data.scene_id);
-				}
+				}*/
 				break;
 		}
 	});
@@ -238,6 +233,26 @@ function PlattarApiIntegration(params){
 		getScene: function(sceneId, successFunc, errorFunc) {
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
 				successFunc(result.data);
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
+
+		getPage: function(pageId, successFunc, errorFunc) {
+    	var cardTypes = ["cardtitle", "cardparagraph", "cardimage", "cardbutton", "cardiframe", "cardrow", "cardyoutube", "cardvideo", "cardhtml", "cardslider", "cardmap"];
+
+			$.get(apiUrl + '/api/v2/page/'+pageId+'?include='+cardTypes.toString(), function(result){
+				result.cards = result.included.filter(function(include) {
+          return cardTypes.indexOf(include.type) != -1;
+        })
+        .sort(function(a, b) {
+          return a.attributes.sort_order - b.attributes.sort_order;
+        });
+
+				successFunc(result);
 			})
 			.fail(function(error){
 				if(errorFunc){

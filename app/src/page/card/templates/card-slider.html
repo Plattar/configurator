@@ -1,0 +1,10 @@
+<div class='card-slider'>
+	<div class='horizontalSlider'>
+
+		<div ng-repeat="slide in card.slides track by $index">
+			<img ng-src="{{slide.file.attributes.thumb_effective_uri}}"
+				ng-style='{height: (5.06*card.data.attributes.height)+"px"}'/>
+		</div>
+
+	</div>
+</div>

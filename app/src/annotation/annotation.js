@@ -9,8 +9,31 @@ angular.module('PlattarConfigurator')
 
     communicator.injectObject('annotation', $scope);
 
+    $rootScope.plattar.onAnnotationChange = function(annotationData) {
+      $scope.handleAnnotation(annotationData);
+    };
+
     $scope.annotation = null;
     $scope.annotationactive = false;
+
+    $scope.handleAnnotation = function(data) {
+      if(data.file_video_id || data.file_image_id ||
+        data.title || data.text){
+        $scope.openAnnotation(data);
+      }
+      else if(data.page_link_id){
+        communicator.sendMessage('pages', 'openPage', data.page_link_id);
+      }
+      else if(data.url){
+        // Open the website in a new tab
+        // window.open(data.url, '_blank');
+      }
+      // Annotation is linking to a different scene
+      else if(data.scene_link_id){
+        // Open the new scene
+        // communicator.sendMessage('modelviewer', 'openScene', data.scene_link_id);
+      }
+    };
 
     $scope.openAnnotation = function(annotationData) {
       $scope.annotation = annotationData;

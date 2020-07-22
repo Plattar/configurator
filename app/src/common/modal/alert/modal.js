@@ -7,7 +7,6 @@ angular.module('PlattarConfigurator')
 .controller('modalAlert', ['$scope', 'Tracker', '$rootScope','$timeout',
 	function ($scope, Tracker, $rootScope, $timeout) {
 		$scope.modal = null;
-		console.log(';qweqwe')
 
 		$rootScope.plattar.onModalChange = function(modalData) {
 			$scope.modal = modalData;
