@@ -32,7 +32,7 @@ function webglCompatible(cb) {
 
 // Used for development
 var isProd = function () {
-	return true;//location.hostname == 'app.plattar.com';
+	location.hostname == 'app.plattar.com';
 }
 
 var isStaging = function () {
@@ -55,8 +55,8 @@ angular.module('PlattarConfigurator', [])
 })*/
 
 .constant('config', {
-	apiUrl: isProd() ? 'https://app.plattar.com' : isProd2() ? 'https://app2.plattar.com' : 'https://staging.plattar.space',
-	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isProd2() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	platformGA: isProd() ? "UA-86801112-10" : '',
 	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
