@@ -9,6 +9,8 @@ angular.module('PlattarConfigurator')
 		$scope.error = undefined;
 		communicator.injectObject('configurator', $scope);
 
+		$scope.hasVariations = false;
+
 		$scope.canAugment = PlattarIntegration.canAugment;
 
 		$scope.plattar.api.getScene(config.sceneId,
@@ -44,6 +46,16 @@ angular.module('PlattarConfigurator')
 			$scope.products = result;
 			resetPreview();
 			applyPreview();
+
+			$scope.hasVariations = false;
+      $scope.products.some(function(product){
+        if(product.variations.length > 1){
+					$scope.hasVariations = true;
+          return true;
+        }
+      });
+
+			console.log('asdasd', $scope.hasVariations)
 			$scope.$apply();
 		});
 
