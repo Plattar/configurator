@@ -2,8 +2,16 @@
 	<div class='horizontalSlider'>
 
 		<div ng-repeat="slide in card.slides track by $index">
-			<img ng-src="{{slide.file.attributes.thumb_effective_uri}}"
-				ng-style='{height: (5.06*card.data.attributes.height)+"px"}'/>
+			<img ng-if='card.data.attributes.slider_type == "page"'
+			  ng-src="{{slide.file.attributes.effective_uri}}"
+				ng-style='{height: (card.data.attributes.height)+"vh"}'
+				ng-click='openPage(slide.id)'
+				/>
+			<img ng-if='card.data.attributes.slider_type == "scene"'
+				ng-src="{{slide.file.attributes.effective_uri}}"
+				ng-style='{height: (card.data.attributes.height)+"vh"}'
+				ng-click='openScene(slide.id)'
+				/>
 		</div>
 
 	</div>
