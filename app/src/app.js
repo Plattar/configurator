@@ -32,7 +32,7 @@ function webglCompatible(cb) {
 
 // Used for development
 var isProd = function () {
-	location.hostname == 'app.plattar.com';
+	return location.hostname == 'app.plattar.com' || !isStaging();
 }
 
 var isStaging = function () {
