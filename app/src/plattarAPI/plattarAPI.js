@@ -102,6 +102,9 @@ function PlattarApiIntegration(params){
 				break;
 
 			case 'pressbutton':
+				if(data.type == 'scenemodel' || data.type == 'scenebutton'){
+					data.attributes.type = 'button';
+				}
 				self.onAnnotationChange(data.attributes);
 				break;
 

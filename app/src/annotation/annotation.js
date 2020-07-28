@@ -17,7 +17,6 @@ angular.module('PlattarConfigurator')
     $scope.annotationactive = false;
 
     $scope.handleAnnotation = function(data) {
-      console.log(data)
       if(data.page_link_id){
         communicator.sendMessage('pages', 'openPage', data.page_link_id);
       }
@@ -49,6 +48,7 @@ angular.module('PlattarConfigurator')
             $scope.annotation.file = result.attributes.effective_uri;
             $scope.annotation.fileType = result.type;
             $scope.annotationactive = true;
+            $scope.$apply();
           }, function(error) {
             console.log(error);
           });
@@ -58,11 +58,12 @@ angular.module('PlattarConfigurator')
             $scope.annotation.file = result.attributes.effective_uri;
             $scope.annotation.fileType = result.type;
             $scope.annotationactive = true;
+            $scope.$apply();
           }, function(error) {
             console.log(error);
           });
         }
-        else if (annotationData.text || annotationData.title) {
+        else if ((annotationData.text || annotationData.title) && annotationData.type != 'button') {
           $scope.annotation.title = annotationData.title;
           $scope.annotation.text = annotationData.text;
           $scope.annotationactive = true;
