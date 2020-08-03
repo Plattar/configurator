@@ -5,10 +5,12 @@
 	<div class='page-container' ng-class='{"visible": visible}'>
 
 		<div class='page'
-			ng-repeat='page in pages'
+			ng-repeat='page in pages track by $index'
 			ng-class='{"visible": page.visible}'
-			ng-style='{color: page.data.attributes.text_color,
-								 "background-color": page.data.attributes.background_color
+			ng-style='{
+									color: page.data.attributes.text_color,
+								  "background-color": page.data.attributes.background_color,
+      						"background-image": "url("+page.background.attributes.effective_uri+")"
 								}'
 		>
 			<div class='page-toggle' ng-click='closePage(page)'>

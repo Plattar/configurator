@@ -2,15 +2,15 @@
 
 angular.module('PlattarConfigurator')
 .directive('card', function() {
-	return {
-		scope: {
+  return {
+    scope: {
       data: '=',
     },
-		templateUrl: '/page/card/card.html',
-		controller: ['$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config',
+    templateUrl: '/page/card/card.html',
+    controller: ['$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config',
       function($parse, $element, $sce, $scope, Colour, communicator, $rootScope, config) {
         $scope.card = {
-        	data: $scope.data
+          data: $scope.data
         };
 
         if($scope.card.data.attributes.color){
@@ -30,94 +30,104 @@ angular.module('PlattarConfigurator')
         ['file_image', 'file_video', 'file_audio', 'file_model'].forEach(function(filetype){
           if($scope.card.data.attributes[filetype+'_id']){
             $rootScope.plattar.api.getFile(
-            	$scope.card.data.attributes[filetype+'_id'],
+              $scope.card.data.attributes[filetype+'_id'],
               filetype.replace('_', ''),
-	            function(result){
-	            	$scope.card[filetype] = result;
-	              $scope.$apply();
+              function(result){
+                $scope.card[filetype] = result;
+                $scope.$apply();
 
-	              console.log('File:', result);
-	            }
-	          )
+                console.log('File:', result);
+              }
+            )
           }
-      	});
+        });
 
         if($scope.card.data.type == 'cardslider'){
-        	$scope.card.slides = [];
+          $scope.card.slides = [];
 
-        	$rootScope.plattar.api.getCardSlider($scope.card.data.id, function(result){
-        		if($scope.card.data.attributes.slider_type == 'page'){
-							$scope.card.data.attributes.page_ids.forEach(function(id, index){
-								var page = result.included.find(function(include){
-									return include.id == id;
-								});
-								var file = result.included.find(function(include){
-									return include.id == page.attributes.file_image_id;
-								});
+          $rootScope.plattar.api.getCardSlider($scope.card.data.id, function(result){
+            if($scope.card.data.attributes.slider_type == 'page'){
+              $scope.card.data.attributes.page_ids.forEach(function(id, index){
+                var page = result.included.find(function(include){
+                  return include.id == id;
+                });
+                var file = result.included.find(function(include){
+                  return include.id == page.attributes.file_image_id;
+                });
 
-								page.file = file;
-								page.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;
+                page.file = file;
+                page.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;
 
-								$scope.card.slides[index] = page;
-							});
-        		}
-        		else if($scope.card.data.attributes.slider_type == 'scene'){
-							$scope.card.data.attributes.scene_ids.forEach(function(id, index){
-								var scene = result.included.find(function(include){
-									return include.id == id;
-								});
-								var file = result.included.find(function(include){
-									return include.id == scene.attributes.file_image_id;
-								});
+                $scope.card.slides[index] = page;
+              });
+            }
+            else if($scope.card.data.attributes.slider_type == 'scene'){
+              $scope.card.data.attributes.scene_ids.forEach(function(id, index){
+                var scene = result.included.find(function(include){
+                  return include.id == id;
+                });
+                var file = result.included.find(function(include){
+                  return include.id == scene.attributes.file_image_id;
+                });
 
-								scene.file = file;
-								scene.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;
+                scene.file = file;
+                scene.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;
 
-								$scope.card.slides[index] = scene;
-							});
-        		}
+                $scope.card.slides[index] = scene;
+              });
+            }
 
-        		$scope.$apply();
-        	});
+            $scope.$apply();
+          });
         }
 
         $scope.getAsTrusted = function(url){
-					if(url){
-						return $sce.trustAsResourceUrl(url.valueOf());
-					}
+          if(url){
+            return $sce.trustAsResourceUrl(url.valueOf());
+          }
         };
 
         $scope.getAsHtml = function(html){
-					if(html){
-						return $sce.trustAsHtml(html);
-					}
+          if(html){
+            return $sce.trustAsHtml(html);
+          }
         };
 
         $scope.openPage = function(id){
-			    communicator.sendMessage('pages', 'openPage', id);
+          communicator.sendMessage('pages', 'openPage', id);
         };
 
         $scope.openScene = function(id){
-			    communicator.sendMessage('modelviewer', 'openScene', id);
+          communicator.sendMessage('modelviewer', 'openScene', id);
         };
 
         $scope.click = function(){
-        	if($scope.card.data.attributes.scene_link_id){
-			    	$scope.openScene($scope.card.data.attributes.scene_link_id);
-			    }
+          if($scope.card.data.attributes.scene_link_id){
+            $scope.openScene($scope.card.data.attributes.scene_link_id);
+          }
 
-			    if($scope.card.data.attributes.page_link_id){
-			    	$scope.openPage($scope.card.data.attributes.page_link_id);
-			    }
+          if($scope.card.data.attributes.page_link_id){
+            $scope.openPage($scope.card.data.attributes.page_link_id);
+          }
 
-			    // if its pointing to an external site
-			    if($scope.card.data.attributes.url){
-        		window.open($scope.card.data.attributes.url, '_blank');
-			    }
+          // if its pointing to an external site
+          if($scope.card.data.attributes.url){
+            if(/^(http|tel|mailto|sms)/.test($scope.card.data.attributes.url)){
+              window.open($scope.card.data.attributes.url, '_blank');
+            }
+            else if(/^plattar/.test($scope.card.data.attributes.url)){
+              var url = new URL($scope.card.data.attributes.url)
+              var data = {};
 
-			    $rootScope.plattar.sendMessageUpwards()
+              url.searchParams.forEach(function (val, key) {
+                data[key] = val;
+              });
+
+              $rootScope.plattar.sendMessageUpwards(url.pathname, data);
+            }
+          }
         };
-    	}
+      }
     ]
-	};
+  };
 });

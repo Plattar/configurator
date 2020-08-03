@@ -63,7 +63,7 @@ angular.module('PlattarConfigurator')
             console.log(error);
           });
         }
-        else if ((annotationData.text || annotationData.title) && annotationData.type != 'button') {
+        else if (annotationData.text && annotationData.type != 'button') {
           $scope.annotation.title = annotationData.title;
           $scope.annotation.text = annotationData.text;
           $scope.annotationactive = true;

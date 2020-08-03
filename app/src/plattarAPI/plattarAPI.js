@@ -18,6 +18,7 @@ function PlattarApiIntegration(params){
 	var cdnUrl = params.cdnUrl;
 	var iframe = document.querySelector('#plattar-frame');
 	var self = this;
+	this.debug = false;
 	this.showAnnotation = false;
 	this.onReady = function(){console.log('Not initialised properly')};
 	this.onSceneChange = function(){console.log('No scene change listener set')};
@@ -54,7 +55,9 @@ function PlattarApiIntegration(params){
 
 		action = action.toLowerCase();
 		if(iframe !== window){
-			console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
+			if(self.debug){
+				console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
+			}
 			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
@@ -81,7 +84,9 @@ function PlattarApiIntegration(params){
 
 	// Receiving messages from the 3d engine
 	window.addEventListener('message', function(e){
-		console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
+		if(self.debug){
+			console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
+		}
 		var data = e.data.data;
 
 		switch(e.data.eventName){
@@ -257,11 +262,25 @@ function PlattarApiIntegration(params){
 		}
 	};
 
+	function clone(object){
+		var obj = JSON.parse(JSON.stringify(object));
+		obj.index = Math.random();
+		return obj;
+	}
+
 	// Function calls to the Plattar API to get scene/product data
+	this.apiCache = {};
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/'+fileType+'/'+fileId, function(result){
+			var cacheKey = '/api/v2/'+fileType+'/'+fileId;
+			if(self.apiCache[cacheKey]){
+				successFunc(self.apiCache[cacheKey]);
+				return;
+			}
+
+			$.get(apiUrl + cacheKey, function(result){
 				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
+				self.apiCache[cacheKey] = result.data;
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -272,6 +291,7 @@ function PlattarApiIntegration(params){
 		},
 
 		getScene: function(sceneId, successFunc, errorFunc) {
+
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
 				successFunc(result.data);
 			})
@@ -284,8 +304,13 @@ function PlattarApiIntegration(params){
 
 		getPage: function(pageId, successFunc, errorFunc) {
 			var cardTypes = ["cardtitle", "cardparagraph", "cardimage", "cardbutton", "cardiframe", "cardrow", "cardyoutube", "cardvideo", "cardhtml", "cardslider", "cardmap"];
+			var cacheKey = '/api/v2/page/'+pageId;
+			if(self.apiCache[cacheKey]){
+				successFunc(clone(self.apiCache[cacheKey]));
+				return;
+			}
 
-			$.get(apiUrl + '/api/v2/page/'+pageId+'?include='+cardTypes.toString(), function(result){
+			$.get(apiUrl + cacheKey+'?include='+cardTypes.toString(), function(result){
 				result.cards = result.included.filter(function(include) {
 					return cardTypes.indexOf(include.type) != -1;
 				})
@@ -293,7 +318,8 @@ function PlattarApiIntegration(params){
 					return a.attributes.sort_order - b.attributes.sort_order;
 				});
 
-				successFunc(result);
+				self.apiCache[cacheKey] = result;
+				successFunc(clone(result));
 			})
 			.fail(function(error){
 				if(errorFunc){
@@ -303,7 +329,14 @@ function PlattarApiIntegration(params){
 		},
 
 		getCardSlider: function(id, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/cardslider/'+id+'?include=page.fileimage,scene.fileimage', function(result){
+			var cacheKey = '/api/v2/cardslider/'+id;
+			if(self.apiCache[cacheKey]){
+				successFunc(clone(self.apiCache[cacheKey]));
+				return;
+			}
+
+			$.get(apiUrl + cacheKey+'?include=page.fileimage,scene.fileimage', function(result){
+				self.apiCache[cacheKey] = result;
 				successFunc(result);
 			})
 			.fail(function(error){

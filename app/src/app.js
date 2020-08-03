@@ -85,6 +85,7 @@ angular.module('PlattarConfigurator', [])
 		angular.element(function () {
 			// Creating the Plattar engine/api link
 			$rootScope.plattar = $scope.plattar = window.PlattarApiIntegration;
+			$scope.plattar.debug = config.debug || getParameterByName('debug');
 
 			// Setting up a callback for when the scene changes
 			$scope.plattar.onSceneChange = function(sceneId){

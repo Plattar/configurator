@@ -39,24 +39,32 @@ angular.module('PlattarConfigurator')
 
 			$rootScope.plattar.api.getPage(pageid, function(page){
 				$scope.pages.push(page);
+				page.index = Math.random();
 
 				if(page.data.attributes.background_color){
-          var colour = new Colour(page.data.attributes.background_color);
-          if(colour.isDark(200)){
-            page.data.attributes.text_color = 'rgb(255, 255, 255)';
-          }
-          else{
-            page.data.attributes.text_color = 'rgb(0, 0, 0)';
-          }
-        }
-        else{
-          page.data.attributes.background_color = 'rgb(255, 255, 255)';
-          page.data.attributes.text_color = 'rgb(0, 0, 0)';
-        }
+					var colour = new Colour(page.data.attributes.background_color);
+					if(colour.isDark(200)){
+						page.data.attributes.text_color = 'rgb(255, 255, 255)';
+					}
+					else{
+						page.data.attributes.text_color = 'rgb(0, 0, 0)';
+					}
+				}
+				else{
+					page.data.attributes.background_color = 'rgb(255, 255, 255)';
+					page.data.attributes.text_color = 'rgb(0, 0, 0)';
+				}
+
+				page.background = {};
+				if(page.data.attributes.background_image_id){
+					$rootScope.plattar.api.getFile(page.data.attributes.background_image_id, 'fileimage', function(image){
+						page.background = image;
+						$scope.$apply();
+					});
+				}
 
 				$scope.$apply();
 				$timeout(function(){
-					console.log(page)
 					page.visible = true;
 				},10);
 			});
