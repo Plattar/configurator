@@ -7,8 +7,9 @@ angular.module('PlattarConfigurator')
       data: '=',
     },
     templateUrl: '/page/card/card.html',
-    controller: ['$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config',
-      function($parse, $element, $sce, $scope, Colour, communicator, $rootScope, config) {
+    controller: [
+    '$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config', '$timeout',
+      function($parse, $element, $sce, $scope, Colour, communicator, $rootScope, config, $timeout) {
         $scope.card = {
           data: $scope.data
         };
@@ -33,8 +34,9 @@ angular.module('PlattarConfigurator')
               $scope.card.data.attributes[filetype+'_id'],
               filetype.replace('_', ''),
               function(result){
-                $scope.card[filetype] = result;
-                $scope.$apply();
+                $timeout(function(){
+                  $scope.card[filetype] = result;
+                });
 
                 console.log('File:', result);
               }

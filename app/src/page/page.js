@@ -58,8 +58,9 @@ angular.module('PlattarConfigurator')
 				page.background = {};
 				if(page.data.attributes.background_image_id){
 					$rootScope.plattar.api.getFile(page.data.attributes.background_image_id, 'fileimage', function(image){
-						page.background = image;
-						$scope.$apply();
+						$timeout(function(){
+							page.background = image;
+						});
 					});
 				}
 
