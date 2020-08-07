@@ -18,19 +18,19 @@ angular.module('PlattarConfigurator')
 
     $scope.handleAnnotation = function(data) {
       if(data.page_link_id){
+        communicator.sendMessage('pages', 'closeAllPages', {});
         communicator.sendMessage('pages', 'openPage', data.page_link_id);
       }
-      else if(data.url){
+      if(data.url){
         // Open the website in a new tab
         window.open(data.url, '_blank');
       }
       // Annotation is linking to a different scene
-      else if(data.scene_link_id){
+      if(data.scene_link_id){
         // Open the new scene
-        // communicator.sendMessage('modelviewer', 'openScene', data.scene_link_id);
+        communicator.sendMessage('modelviewer', 'openScene', data.scene_link_id);
       }
-      else if(data.file_video_id || data.file_image_id ||
-        data.title || data.text){
+      if(data.file_video_id || data.file_image_id || data.text){
         $scope.openAnnotation(data);
       }
     };

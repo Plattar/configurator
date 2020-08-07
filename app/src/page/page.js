@@ -28,12 +28,6 @@ angular.module('PlattarConfigurator')
 			}
 		};
 
-		/*$scope.closePage = function(){
-			$scope.visible = false;
-			communicator.sendMessage('modelviewer', 'closeModel', {});
-			$scope.plattar.closeAnnotation();
-		};*/
-
 		$scope.openPage = function(pageid){
 			$scope.visible = true;
 
@@ -68,6 +62,12 @@ angular.module('PlattarConfigurator')
 				$timeout(function(){
 					page.visible = true;
 				},10);
+			});
+		};
+
+		$scope.closeAllPages = function(){
+			$scope.pages.forEach(function(page){
+				$scope.closePage(page);
 			});
 		};
 
