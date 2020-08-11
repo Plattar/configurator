@@ -10,21 +10,18 @@
   position: absolute;
   z-index: 9;
   top: 0;
+  right: 0px;
   height: 100%;
   background: transparent;
   width: @panel-width;
   // transition: top 0.5s @bounceOutSmall, right 0.5s;
   padding: 0 20px;
-  right: -@panel-width;
+  // right: -@panel-width;
   overflow-y: auto;
+  pointer-events: none;
 
-
-  &.visible{
-    right: 0px;
-
-    @media (max-width: 768px) {
-      width: 100%;
-    }
+  @media (max-width: 768px) {
+    width: 100%;
   }
 
   .bottom-fade{
@@ -37,6 +34,7 @@
 }
 
 .page{
+  pointer-events: all;
   color: white;
   // background: gray;
   background-size: cover;

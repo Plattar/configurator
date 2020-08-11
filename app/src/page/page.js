@@ -76,11 +76,18 @@ angular.module('PlattarConfigurator')
 
 			// remove page from stack
 			$timeout(function(){
-				$scope.pages.splice($scope.pages.indexOf(page), 1);
-				if(!$scope.pages.length){
+				$scope.pages[$scope.pages.indexOf(page)] = {};
+				var visible = false;
+				$scope.pages.forEach(function(page){
+					if(page.visible){
+						visible = true;
+					}
+				});
+				if(!visible){
 					$scope.visible = false;
+					$scope.pages = [];
 				}
-			}, 500)
+			}, 500);
 		};
 
 		$scope.openAR = function(){

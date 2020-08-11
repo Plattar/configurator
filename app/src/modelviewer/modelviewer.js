@@ -11,12 +11,18 @@ angular.module('PlattarConfigurator')
 		$scope.modelUrl = '';
 		$scope.visible = false;
 		var url = config.apiUrl + '/webgleditor/preview/index.html';
+		var timeout;
 
 		$scope.openScene = function(sceneId){
+			if(timeout){
+				$timeout.cancel(timeout);
+			}
+
 			$scope.visible = true;
 
-			$scope.modelUrl = $sce.trustAsResourceUrl(url + '?sceneid='+sceneId);
-			$scope.$apply();
+			$timeout(function(){
+				$scope.modelUrl = $sce.trustAsResourceUrl(url + '?sceneid='+sceneId);
+			});
 
 			/*PlattarIntegration.init(sceneId,
 				function(){
@@ -25,13 +31,12 @@ angular.module('PlattarConfigurator')
 					}, 100);
 				}
 			);*/
-
 		};
 
 		$scope.closeModel = function(){
 			$scope.visible = false;
 
-			$timeout(function(){
+			timeout = $timeout(function(){
 				$scope.modelUrl = $sce.trustAsResourceUrl('');
 			}, 1000);
 		};

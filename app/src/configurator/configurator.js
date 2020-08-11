@@ -55,7 +55,6 @@ angular.module('PlattarConfigurator')
         }
       });
 
-			console.log('asdasd', $scope.hasVariations)
 			$scope.$apply();
 		});
 
