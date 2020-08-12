@@ -38,6 +38,7 @@ function PlattarApiIntegration(params){
 			origin: location.origin,
 			options: {
 				autorotate: params.autorotate,
+				reverseRotation: params.reverseRotation,
 				isConfigurator: true
 			}
 		});

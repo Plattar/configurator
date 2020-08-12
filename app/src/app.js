@@ -49,18 +49,22 @@ angular.module('PlattarConfigurator', [])
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: 'https://cdn-dev.plattar.space/',
+	debug: true,
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
+	reverseRotation: getParameterByName('reverseRotation') || false // setting if the scene should automatically rotate on load
 })*/
 
 .constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+	debug: false,
 	platformGA: isProd() ? "UA-86801112-10" : '',
 	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
+	reverseRotation: getParameterByName('reverseRotation') || false // setting if the scene should automatically rotate on load
 })
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
