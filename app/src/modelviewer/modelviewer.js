@@ -22,6 +22,9 @@ angular.module('PlattarConfigurator')
 
 			$timeout(function(){
 				$scope.modelUrl = $sce.trustAsResourceUrl(url + '?sceneid='+sceneId);
+				if(config.reverseRotation){
+					$scope.modelUrl += '&reverseRotation=true';
+				}
 			});
 
 			/*PlattarIntegration.init(sceneId,
