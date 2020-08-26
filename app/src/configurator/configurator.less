@@ -5,6 +5,7 @@
 @bounceOutSmall: cubic-bezier(1, -0.2, 0.8, 1.1);
 
 @panel-width: 360px;
+@swatch-size: 35px;
 
 .configurator-container{
   position: absolute;
@@ -113,7 +114,7 @@
   }
 
   .product-view{
-    max-height: 150px;
+    // max-height: 150px;
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
     // border-left: 1px #9B9B9B solid;
@@ -125,8 +126,8 @@
   }
 
   .variation-selected{
-    height: 60px;
-    width: 35px;
+    height: calc(@swatch-size + 25px);
+    width: @swatch-size;
     display: inline-block;
     margin: 0 10px;
     transition: border-color 0.5s, width 0.5s, margin 0.5s, opacity 0.5s;
@@ -137,8 +138,8 @@
 
     .variation-container{
       margin: 10px 0;
-      height: 35px;
-      width: 35px;
+      height: @swatch-size;
+      width: @swatch-size;
       border-radius: 50%;
       overflow: hidden;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.15);

@@ -8,11 +8,16 @@ angular.module('PlattarConfigurator')
     },
     templateUrl: '/page/card/card.html',
     controller: [
-    '$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config', '$timeout',
-      function($parse, $element, $sce, $scope, Colour, communicator, $rootScope, config, $timeout) {
+    '$parse', '$element', '$sce', '$scope', 'Colour', 'communicator', '$rootScope', 'config', '$timeout', 'safeEval',
+      function($parse, $element, $sce, $scope, Colour, communicator, $rootScope, config, $timeout, safeEval) {
         $scope.card = {
           data: $scope.data
         };
+        safeEval($scope.card.data.attributes.script_event_ids, 'load', {entity: $scope.card});
+
+        $scope.$on('$destroy', function(){
+          safeEval($scope.card.data.attributes.script_event_ids, 'destroy', {entity: $scope.card});
+        });
 
         if($scope.card.data.attributes.color){
           var colour = new Colour($scope.card.data.attributes.color);
@@ -104,6 +109,8 @@ angular.module('PlattarConfigurator')
         };
 
         $scope.click = function(){
+          safeEval($scope.card.data.attributes.script_event_ids, 'tap', {entity: $scope.card});
+
           if($scope.card.data.attributes.scene_link_id){
             $scope.openScene($scope.card.data.attributes.scene_link_id);
           }

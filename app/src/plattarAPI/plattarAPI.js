@@ -292,8 +292,18 @@ function PlattarApiIntegration(params){
 		},
 
 		getScene: function(sceneId, successFunc, errorFunc) {
-
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
+				successFunc(result.data);
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
+
+		getScriptEvent: function(scriptEventId, successFunc, errorFunc) {
+			$.get(apiUrl + '/api/v2/scriptevent/'+scriptEventId, function(result){
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -318,6 +328,7 @@ function PlattarApiIntegration(params){
 				.sort(function(a, b) {
 					return a.attributes.sort_order - b.attributes.sort_order;
 				});
+				delete result.included;
 
 				self.apiCache[cacheKey] = result;
 				successFunc(clone(result));

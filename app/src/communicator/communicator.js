@@ -29,6 +29,9 @@ angular.module('PlattarConfigurator')
       },
 
       selectVariation: function(variation){
+        if(!variation.file){
+          return;
+        }
         var path = variation.file.attributes.path;
         var filename = variation.file.attributes.original_filename;
 

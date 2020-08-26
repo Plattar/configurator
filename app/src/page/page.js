@@ -5,9 +5,9 @@
 angular.module('PlattarConfigurator')
 .controller('pageController', [
 	'$scope', 'config', 'Tracker', 'communicator', 'PlattarIntegration', '$rootScope', '$sce',
-	'$timeout', 'Colour',
+	'$timeout', 'Colour', 'safeEval',
 	function($scope, config, Tracker, communicator, PlattarIntegration, $rootScope, $sce,
-		$timeout, Colour) {
+		$timeout, Colour, safeEval) {
 		$scope.error = undefined;
 		$scope.visible = false;
 
@@ -32,6 +32,8 @@ angular.module('PlattarConfigurator')
 			$scope.visible = true;
 
 			$rootScope.plattar.api.getPage(pageid, function(page){
+				safeEval(page.data.attributes.script_event_ids, 'load', {entity: page});
+
 				$scope.pages.push(page);
 				page.index = Math.random();
 
@@ -73,6 +75,7 @@ angular.module('PlattarConfigurator')
 
 		$scope.closePage = function(page){
 			page.visible = false;
+			safeEval(page.data.attributes.script_event_ids, 'destroy', {entity: page});
 
 			// remove page from stack
 			$timeout(function(){
