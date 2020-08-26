@@ -62,6 +62,7 @@ function PlattarApiIntegration(params){
 			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
+	this.sendMessage = sendMessage;
 
 	function sendMessageUpwards(action, data, count) {
 		var count = count || 0;
@@ -184,7 +185,6 @@ function PlattarApiIntegration(params){
 
 	this.selectPanorama = function(panoramaId) {
 		// sendMessage('panToCamera', {id: cameraId});
-
 
 		sendMessage('runscript', {
 			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",

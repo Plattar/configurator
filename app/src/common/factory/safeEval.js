@@ -7,9 +7,13 @@ angular.module('PlattarConfigurator')
 
     function safeEval(script, params) {
       var entity = params.entity;
+      var bridge = {
+        sendMessage: $rootScope.plattar.sendMessage
+      };
+
       try{
-        var F = new Function ('entity', 'memory', 'communicator', script.attributes.script);
-        F(entity, memory, communicator);
+        var F = new Function ('entity', 'memory', 'communicator', 'bridge', script.attributes.script);
+        F(entity, memory, communicator, bridge);
       }
       catch(e){
         //If theres an error, log:
