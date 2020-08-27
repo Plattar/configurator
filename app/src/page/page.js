@@ -74,6 +74,9 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.closePage = function(page){
+			if(!page.data){
+				return;
+			}
 			page.visible = false;
 			safeEval(page.data.attributes.script_event_ids, 'destroy', {entity: page});
 
