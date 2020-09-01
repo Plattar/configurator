@@ -53,7 +53,7 @@ angular.module('PlattarConfigurator')
             console.log(error);
           });
         }
-        else if (annotationData.file_image_id) {
+        else if (annotationData.file_image_id && annotationData.type != 'button') {
           $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
             $scope.annotation.file = result.attributes.effective_uri;
             $scope.annotation.fileType = result.type;
