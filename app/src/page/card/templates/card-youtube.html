@@ -1,0 +1,7 @@
+<div class='card-youtube'>
+	<div class='card-youtube-inner'>
+	</div>
+
+	<iframe ng-src="{{getAsTrusted('https://www.youtube.com/embed/' + card.data.attributes.youtube_id)}}" sandbox="allow-same-origin allow-forms allow-scripts" ng-if='card.data.attributes.youtube_id'></iframe>
+</div>
+

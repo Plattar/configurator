@@ -1,0 +1,14 @@
+<div ng-controller="qrmodal" id="qrmodal" class='modal qr-modal' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class='modal-inner'>
+		<div class='close' ng-click='closeModal()'><icon src='/icons/icon-x.svg'></icon></div>
+
+    <h3 class="title">View in AR</h3>
+
+    <img ng-src="{{img}}"/>
+
+    <p>Open Camera, <br/>Scan the QR Code, <br/>tap link.</p>
+    <!-- <div ng-if="button">
+      <button id='modalClose' type="button" class="btn btn-primary" data-dismiss="modal" ng-click="modalClose();">{{button}}</button>
+    </div> -->
+  </div>
+</div>

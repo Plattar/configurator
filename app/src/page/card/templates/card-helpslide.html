@@ -1,0 +1,15 @@
+<div class='card-helpslide' ng-style="{'background-color':selected.data.attributes.background_color}">
+    <h1>
+        {{selected.data.attributes.title}}
+    </h1>
+    <img ng-if='selected.file_image' ng-src="{{selected.file_image.attributes.effective_uri}}" />
+    <p>{{selected.data.attributes.text}}</p>
+
+    <div class='pager'>
+    	<div class='pager-dot'></div>
+    	<div class='pager-dot'></div>
+    	<div class='pager-dot'></div>
+    	<div class='pager-dot'></div>
+    	<div class='pager-dot'></div>
+    </div>
+</div>

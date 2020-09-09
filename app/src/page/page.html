@@ -1,0 +1,29 @@
+<div ng-controller="pageController">
+	<!-- <div class='page-opener'>
+		<div class='page-toggle' ng-click='toggleVisibility()'><icon src='/icons/icon-left-arrow.svg'></icon></div>
+	</div> -->
+	<div class='page-container' >
+
+		<div class='page'
+			ng-repeat='page in pages track by $index'
+			ng-class='{"visible": page.visible}'
+			ng-style='{
+									color: page.data.attributes.text_color,
+								  "background-color": page.data.attributes.background_color,
+      						"background-image": "url("+page.background.attributes.effective_uri+")"
+								}'
+		>
+			<div class='page-toggle' ng-click='closePage(page)'>
+				<icon src='/icons/icon-x.svg'
+					ng-style='{fill: page.data.attributes.text_color}'
+				></icon>
+			</div>
+
+			<div ng-if='page.cards' class='cards reset'>
+	      <card ng-repeat="card in page.cards" data="card"></card>
+	    </div>
+		</div>
+
+		<!-- <div class='bottom-fade'></div> -->
+	</div>
+</div>

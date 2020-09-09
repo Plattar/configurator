@@ -44,7 +44,16 @@
 			height: 100%;
 			overflow: hidden;
 			// box-shadow: 1px 3px 7px rgba(200,200,200,1);
-			border-radius: 5px;
+			// border-radius: 5px;
+
+			&.full{
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
 		}
 	}
 	@media (max-width: 768px) {
@@ -69,6 +78,7 @@
 			}
 		}
 	}
+
 	.walkthrough {
 		bottom: 25%;
 		display: flex;

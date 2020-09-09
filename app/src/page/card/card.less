@@ -1,0 +1,304 @@
+.cards.reset{
+	*{
+		-webkit-margin-before: 0.0em;
+		-webkit-margin-after: 0.0em;
+		-webkit-margin-before: 0em;
+		-webkit-margin-after: 0em;
+
+		padding: 0;
+		margin: 0;
+		border: none;
+		box-shadow: none;
+		letter-spacing: 0px;
+		border-radius: 0px;
+		background-color: transparent;
+		vertical-align: top;
+	}
+
+	h1{
+		font-family: sans-serif;
+		text-transform: initial;
+		font-weight: 500;
+		font-size: 1.6rem;
+	}
+
+	p{
+		font-family: sans-serif;
+		font-size: 16px;
+	}
+
+	a{
+		text-decoration: none;
+	}
+
+	input, textarea{
+		margin-top: 0;
+		padding: 0;
+		font-family: sans-serif;
+	}
+}
+
+
+.cards{
+	.stencil-inner-ionic1{
+		.card-helpslide{
+			margin: 0 30px;
+			padding: 15px;
+			border-radius: 10px;
+
+			h1{
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+
+			img{
+				border: 5px solid #fff;
+				box-shadow: 1px 1px 9px #c5c5c5;
+			}
+			.pager{
+				position: static;
+				margin-top: 20px;
+			}
+		}
+	}
+
+	.loader{
+		margin: auto;
+		margin-top: 20px;
+		border-radius: 50%;
+	}
+	.card{
+		width: 100%;
+		position: relative;
+
+		h1, h2, h3, h4, h5, h6, p{
+			margin-bottom: 0;
+		}
+	}
+
+	/*.card-helpslide{
+		text-align:center;
+		display: flex;
+		flex-direction: column;
+
+		h1{
+			margin-top: 2.8rem;
+			margin-bottom: 1rem;
+			display: inline-block;
+		}
+
+		p{
+			padding: 0 40px;
+			font-size: 14px;
+			line-height: 1.5;
+			display: inline-block;
+		}
+		img{
+			display:block;
+			margin: 18px auto;
+			max-height: 70%;
+			max-width: 75%;
+			display: inline-block;
+		}
+
+		.pager{
+			position: absolute;
+			bottom: 10px;
+			margin: auto;
+			width: 100%;
+
+			.pager-dot{
+				height: 10px;
+				width: 10px;
+				background-color: rgba(0,0,0,0.5);
+				border-radius: 5px;
+				margin: 3px;
+				display: inline-block;
+			}
+		}
+	}*/
+
+	.card-title{
+		padding: 10px 10px 10px 20px;
+	}
+
+	.card-paragraph{
+		padding: 10px 10px 10px 20px;
+
+		p{
+			white-space: pre-wrap;
+		}
+	}
+
+	.card-html{
+		min-height: 50px;
+
+		.padding{
+			min-height: 50px;
+		}
+	}
+
+	.card-image{
+		img{
+			width: 100%;
+		}
+	}
+
+	.card-video{
+		img{
+			width: 100%;
+		}
+		video{
+			width: 100%;
+		}
+	}
+
+	.card-button{
+		text-align: center;
+		color: black;
+
+		img{
+			width: 100%;
+		}
+
+		.card-button-color{
+			padding: 5px 0;
+
+			.card-button-inner{
+				border-radius: 5px;
+				padding: 10px 0;
+				margin: 0 5px;
+			}
+		}
+
+		.card-button-image{
+			.text{
+				position: absolute;
+				width: 100%;
+				top: 0;
+				bottom: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
+
+	.card-iframe{
+		height: calc(100vh - 44px);
+
+		.card-iframe-inner{
+			display: none;
+		}
+
+		iframe{
+			border: 0;
+			height: 100%;
+			width: 100%;
+
+			body{
+				overflow-x:hidden;
+			}
+		}
+	}
+
+	.card-youtube{
+		min-height: calc(10vh - 44px);
+
+		.card-youtube-inner{
+			display: none;
+		}
+
+		iframe{
+			border: 0;
+			height: 100%;
+			width: 100%;
+
+			body{
+				overflow-x:hidden;
+			}
+		}
+	}
+
+	.card-row{
+		display: flex;
+		align-items: center;
+		min-height:50px;
+		flex-wrap: nowrap;
+
+		.card-row-inner{
+			display: none;
+		}
+
+		.card{
+			width: auto;
+			flex-grow: 1;
+		}
+
+		&.card-row-1 .card{
+			min-width: 100%;
+			&.button-row-image{
+				width: 100%;
+			}
+		}
+		&.card-row-2 .card{
+			min-width: 50%;
+			&.button-row-image{
+				width: 50%;
+			}
+		}
+		&.card-row-3 .card{
+			min-width: 33%;
+			&.button-row-image{
+				width: 33%;
+			}
+		}
+		&.card-row-4 .card{
+			min-width: 25%;
+			&.button-row-image{
+				width: 25%;
+			}
+		}
+	}
+
+	.card-slider{
+		min-height: 20px;
+
+		.horizontalSlider{
+			display: flex;
+			overflow-x: auto;
+			overflow-x: overlay;
+		}
+	}
+
+	.card-map{
+		background-size: cover;
+		background-position: center;
+
+		.card-map-inner{
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: linear-gradient(45deg, rgba(69,178,235,0.05) 25%, rgba(69,178,235,0.15) 25%, rgba(69,178,235,0.15) 50%, rgba(69,178,235,0.05) 50%, rgba(69,178,235,0.05) 75%, rgba(69,178,235,0.15) 75%, rgba(69,178,235,0.15));
+			background-size: 30px 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 30px;
+
+			.outline{
+				border-radius: 5px;
+				padding: 8px;
+				margin: 0;
+				background: rgba(255,255,255,0.85);
+			}
+		}
+	}
+
+	.card-placeholder{
+		padding: 10px;
+		text-align: center;
+	}
+}

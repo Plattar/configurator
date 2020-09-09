@@ -32,11 +32,7 @@ function webglCompatible(cb) {
 
 // Used for development
 var isProd = function () {
-	return location.hostname == 'app.plattar.com';
-}
-
-var isProd2 = function () {
-	return location.hostname == 'app2.plattar.com';
+	return location.hostname == 'app.plattar.com' || !isStaging();
 }
 
 var isStaging = function () {
@@ -52,19 +48,23 @@ angular.module('PlattarConfigurator', [])
 /*.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
-	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isStaging() ? 'https://cdn-staging.plattar.space/' : 'https://cdn-dev.plattar.space/',
+	cdnUrl: 'https://cdn-dev.plattar.space/',
+	debug: true,
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
+	reverseRotation: getParameterByName('reverseRotation') || false // setting if the scene should automatically rotate on load
 })*/
 
 .constant('config', {
-	apiUrl: isProd() ? 'https://app.plattar.com' : isProd2() ? 'https://app2.plattar.com' : 'https://staging.plattar.space',
-	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : isProd2() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
+	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
+	debug: false,
 	platformGA: isProd() ? "UA-86801112-10" : '',
 	universalGA: isProd() ? "UA-86801112-12" : '',
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true // setting if the scene should automatically rotate on load
+	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
+	reverseRotation: getParameterByName('reverseRotation') || false // setting if the scene should automatically rotate on load
 })
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
@@ -79,12 +79,7 @@ angular.module('PlattarConfigurator', [])
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
-		$scope.setHasVariations = false;
 		communicator.injectObject('main', $scope);
-
-		$scope.setHasVariations = function(hasVariations) {
-			$scope.hasVariations = hasVariations;
-		};
 
 		$scope.requestFullscreen = function() {
 			$scope.plattar.toggleFullscreen($element[0]);
@@ -93,7 +88,8 @@ angular.module('PlattarConfigurator', [])
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
 			// Creating the Plattar engine/api link
-			$rootScope.plattar = $scope.plattar = window.plattarIntegration;
+			$rootScope.plattar = $scope.plattar = window.PlattarApiIntegration;
+			$scope.plattar.debug = config.debug || getParameterByName('debug');
 
 			// Setting up a callback for when the scene changes
 			$scope.plattar.onSceneChange = function(sceneId){

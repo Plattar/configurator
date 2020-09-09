@@ -3,16 +3,22 @@
 	Standalone API and 3d engine iframe integration
 */
 
-function PlattarIntegration(params){
+function PlattarApiIntegration(params){
 	var params = params || {};
 	if(params.apiUrl === undefined){
 		params.apiUrl = 'https://app.plattar.com';
 	}
 
+	var parentWindow = {
+		source: undefined,
+		origin: undefined
+	};
+
 	var apiUrl = params.apiUrl;
 	var cdnUrl = params.cdnUrl;
 	var iframe = document.querySelector('#plattar-frame');
 	var self = this;
+	this.debug = false;
 	this.showAnnotation = false;
 	this.onReady = function(){console.log('Not initialised properly')};
 	this.onSceneChange = function(){console.log('No scene change listener set')};
@@ -32,6 +38,7 @@ function PlattarIntegration(params){
 			origin: location.origin,
 			options: {
 				autorotate: params.autorotate,
+				reverseRotation: params.reverseRotation,
 				isConfigurator: true
 			}
 		});
@@ -49,24 +56,63 @@ function PlattarIntegration(params){
 
 		action = action.toLowerCase();
 		if(iframe !== window){
-			console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
+			if(self.debug){
+				console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
+			}
 			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
 		}
 	}
 	this.sendMessage = sendMessage;
 
+	function sendMessageUpwards(action, data, count) {
+		var count = count || 0;
+		var data = data || {};
+		if (!parentWindow || !parentWindow.source) {
+			if (count < 5) {
+				setTimeout(function () {
+					count++;
+					sendMessage(action, data, count);
+				}, 500);
+			}
+			return;
+		}
+
+		action = action.toLowerCase();
+		if (parentWindow !== window && parentWindow.source) {
+			parentWindow.source.postMessage({ eventName: action, data: data }, parentWindow.origin);
+		}
+	}
+	this.sendMessageUpwards = sendMessageUpwards;
+
 	// Receiving messages from the 3d engine
 	window.addEventListener('message', function(e){
-		console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
+		if(self.debug){
+			console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
+		}
 		var data = e.data.data;
 
 		switch(e.data.eventName){
+			case 'setup':
+				parentWindow = {
+					source: event.source,
+					origin: event.origin
+				};
+				sendMessageUpwards('setupconfirm', {});
+				break;
+
 			case 'previewready':
 				self.onReady();
 				break;
 
 			case 'analyticstracker':
 				self.onTrackData(e.data.data.eventString);
+				break;
+
+			case 'pressbutton':
+				if(data.type == 'scenemodel' || data.type == 'scenebutton'){
+					data.attributes.type = 'button';
+				}
+				self.onAnnotationChange(data.attributes);
 				break;
 
 			case 'openurl':
@@ -80,12 +126,9 @@ function PlattarIntegration(params){
 
 			case 'selectannotation':
 				// Annotation has content to display
-				if(data.title || data.text || data.file_image_id || data.file_video_id){
-					// create annotation popup within the theme
-					self.onAnnotationChange(data);
-				}
-				// Annotation is linking to a website
-				else if(data.url){
+				self.onAnnotationChange(data);
+
+				/*if(data.url){
 					// Open the website in a new tab
 					window.open(data.url, '_blank');
 				}
@@ -93,7 +136,7 @@ function PlattarIntegration(params){
 				else if(data.scene_id){
 					// Open the new scene
 					self.openScene(data.scene_id);
-				}
+				}*/
 				break;
 		}
 	});
@@ -138,6 +181,18 @@ function PlattarIntegration(params){
 	this.closeAnnotation = function() {
 		// sendMessage('tuiselectannotation', {});
 		sendMessage('clearannotation', {});
+	};
+
+	this.selectPanorama = function(panoramaId) {
+		// sendMessage('panToCamera', {id: cameraId});
+
+		sendMessage('runscript', {
+			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",
+			params: {
+				id: panoramaId
+			}
+		});
+		// sendMessage('selectpanorama', {id: panoramaId});
 	};
 
 	// Cross-browser compatible fullscreen enabling
@@ -208,11 +263,25 @@ function PlattarIntegration(params){
 		}
 	};
 
+	function clone(object){
+		var obj = JSON.parse(JSON.stringify(object));
+		obj.index = Math.random();
+		return obj;
+	}
+
 	// Function calls to the Plattar API to get scene/product data
+	this.apiCache = {};
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/'+fileType+'/'+fileId, function(result){
+			var cacheKey = '/api/v2/'+fileType+'/'+fileId;
+			if(self.apiCache[cacheKey]){
+				successFunc(self.apiCache[cacheKey]);
+				return;
+			}
+
+			$.get(apiUrl + cacheKey, function(result){
 				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
+				self.apiCache[cacheKey] = result.data;
 				successFunc(result.data);
 			})
 			.fail(function(error){
@@ -221,9 +290,66 @@ function PlattarIntegration(params){
 				}
 			});
 		},
+
 		getScene: function(sceneId, successFunc, errorFunc) {
 			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
 				successFunc(result.data);
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
+
+		getScriptEvent: function(scriptEventId, successFunc, errorFunc) {
+			$.get(apiUrl + '/api/v2/scriptevent/'+scriptEventId, function(result){
+				successFunc(result.data);
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
+
+		getPage: function(pageId, successFunc, errorFunc) {
+			var cardTypes = ["cardtitle", "cardparagraph", "cardimage", "cardbutton", "cardiframe", "cardrow", "cardyoutube", "cardvideo", "cardhtml", "cardslider", "cardmap"];
+			var cacheKey = '/api/v2/page/'+pageId;
+			if(self.apiCache[cacheKey]){
+				successFunc(clone(self.apiCache[cacheKey]));
+				return;
+			}
+
+			$.get(apiUrl + cacheKey+'?include='+cardTypes.toString(), function(result){
+				result.cards = result.included.filter(function(include) {
+					return cardTypes.indexOf(include.type) != -1;
+				})
+				.sort(function(a, b) {
+					return a.attributes.sort_order - b.attributes.sort_order;
+				});
+				delete result.included;
+
+				self.apiCache[cacheKey] = result;
+				successFunc(clone(result));
+			})
+			.fail(function(error){
+				if(errorFunc){
+					errorFunc(error);
+				}
+			});
+		},
+
+		getCardSlider: function(id, successFunc, errorFunc) {
+			var cacheKey = '/api/v2/cardslider/'+id;
+			if(self.apiCache[cacheKey]){
+				successFunc(clone(self.apiCache[cacheKey]));
+				return;
+			}
+
+			$.get(apiUrl + cacheKey+'?include=page.fileimage,scene.fileimage', function(result){
+				self.apiCache[cacheKey] = result;
+				successFunc(result);
 			})
 			.fail(function(error){
 				if(errorFunc){
@@ -316,4 +442,4 @@ function PlattarIntegration(params){
 	};
 }
 
-window.plattarIntegration = new PlattarIntegration();
+window.PlattarApiIntegration = new PlattarApiIntegration();

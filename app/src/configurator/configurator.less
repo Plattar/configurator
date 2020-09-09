@@ -4,74 +4,88 @@
 @bounceInSmall: cubic-bezier(0.2, -0.4, 0, 1.1);
 @bounceOutSmall: cubic-bezier(1, -0.2, 0.8, 1.1);
 
+@panel-width: 360px;
+@swatch-size: 35px;
+
 .configurator-container{
-	position: absolute;
-	top: 100%;
-	height: 100%;
-	transition: top 0.75s @bounceOutSmall;
-	background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 100%;
+  height: 100%;
+  transition: top 0.75s @bounceOutSmall;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 8;
+
+  &.hidden{
+    width: 0;
+  }
 }
 @media (max-width: 768px) {
-	.configurator-container-visible{
-		top: 70px;
-		height: 90%;
-		transition: top 0.75s @bounceInSmall;
-		border-top-right-radius: 20px;
-		border-top-left-radius: 20px;
+  .configurator-container{
+    width: 100%;
+    left: 0;
+  }
+  .configurator-container-visible{
+    top: 70px;
+    height: 90%;
+    transition: top 0.75s @bounceInSmall;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
 
-		.configurator{
-			.configurator-toggle{
-				top: -30px;
-				left: 75%;
+    .configurator{
+      .configurator-toggle{
+        top: -30px;
+        left: 75%;
 
-				icon svg{
-					transform: rotate(45deg);
-				}
-			}
-		}
-	}
+        icon svg{
+          transform: rotate(45deg);
+        }
+      }
+    }
+  }
 }
 @media (min-width: 768px) {
-	.configurator-container{
-		position: unset;
-		top: unset;
-		background: white;
-	}
+  .configurator-container{
+    position: unset;
+    top: unset;
+    background: white;
+    width: @panel-width;
+  }
 }
 
 .configurator{
-	height: 100%;
-	overflow-y: auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 20px;
 
-	.configurator-toggle{
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: -55px;
-		margin: auto;
-		height: 50px;
-		width: 50px;
-		background: radial-gradient(black, white);
-		border-radius: 50%;
-		box-shadow: 1px 3px 7px rgba(200,200,200,1);
-		z-index: 10;
-		transition: top 0.75s, left 0.75s;
+  .configurator-toggle{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -55px;
+    margin: auto;
+    height: 50px;
+    width: 50px;
+    background: radial-gradient(black, white);
+    border-radius: 50%;
+    box-shadow: 1px 3px 7px rgba(200,200,200,1);
+    z-index: 10;
+    transition: top 0.75s, left 0.75s;
 
-		icon{
-			svg{
-				width: 100%;
-				height: 100%;
-				transition: transform 0.75s;
-			}
-		}
-	}
-	@media (min-width: 768px) {
-		.configurator-toggle{
-			display: none;
-		}
-	}
+    icon{
+      svg{
+        width: 100%;
+        height: 100%;
+        transition: transform 0.75s;
+      }
+    }
+  }
+  @media (min-width: 768px) {
+    .configurator-toggle{
+      display: none;
+    }
+  }
 
-	h1{
+  h1{
     color: #282828;
     font-size: 22px;
     font-weight: 600;
@@ -100,7 +114,7 @@
   }
 
   .product-view{
-    max-height: 150px;
+    // max-height: 150px;
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
     // border-left: 1px #9B9B9B solid;
@@ -112,8 +126,8 @@
   }
 
   .variation-selected{
-    height: 60px;
-    width: 35px;
+    height: calc(@swatch-size + 25px);
+    width: @swatch-size;
     display: inline-block;
     margin: 0 10px;
     transition: border-color 0.5s, width 0.5s, margin 0.5s, opacity 0.5s;
@@ -124,8 +138,8 @@
 
     .variation-container{
       margin: 10px 0;
-      height: 35px;
-      width: 35px;
+      height: @swatch-size;
+      width: @swatch-size;
       border-radius: 50%;
       overflow: hidden;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
@@ -154,22 +168,22 @@
 }
 
 .modal-inner{
-	width: 80%;
-	max-width: 600px;
-	background: white;
-	margin: 40px auto 0 auto;
-	padding: 20px;
-	text-align: center;
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  margin: 40px auto 0 auto;
+  padding: 20px;
+  text-align: center;
 
-	h1{
+  h1{
     font-size: 36px;
     font-family: proxima-nova, sans-serif;
     font-weight: 300;
     margin-top: 0;
-	}
+  }
 
-	p{
-		font-family: proxima-nova, sans-serif;
+  p{
+    font-family: proxima-nova, sans-serif;
     font-weight: 300;
-	}
+  }
 }

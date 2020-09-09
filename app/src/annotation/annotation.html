@@ -1,6 +1,6 @@
 <div class='annotation-container'>
   <div ng-controller="annotation" class='annotation' ng-class='{"annotation-visible": annotationactive}'>
-    <div class='frame' ng-class='{"background": annotation.title || annotation.text}'>
+    <div class='frame' ng-class='{"border": annotation.title || annotation.text}'>
       <h1 ng-if='annotation.title'>{{annotation.title}}</h1>
 
       <div class='img' ng-if='annotation.fileType == "fileimage"' style="background-image:url({{annotation.file}})"></div>
@@ -10,7 +10,7 @@
       </div>
 
       <div ng-if='annotation.url' class='iframe'>
-        <iframe ng-src="{{annotation.url}}" id="annotation-iframe" allow="camera; vr; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
+        <iframe ng-src="{{annotation.url}}" id="annotation-iframe" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
       </div>
 
       <p ng-if='annotation.text'>{{annotation.text}}</p>

@@ -1,0 +1,25 @@
+<div class='card-button' ng-click='click()'>
+	<div
+    ng-class='{"card-button-color": card.data.attributes.color, "card-button-image": card.file_image.attributes.effective_uri && !card.data.attributes.color}'
+  >
+    <div class='card-button-inner' ng-style="
+      (card.data.attributes.color && {
+      'background-color': card.data.attributes.color,
+      'color': card.data.attributes.text_color
+      })"
+    >
+      <img ng-if='!card.data.attributes.color && card.file_image.attributes.effective_uri' draggable="false" ng-src="{{card.file_image.attributes.effective_uri}}"/>
+
+      <div class='text' ng-if='card.data.attributes.text_content'>
+        <h1>
+          {{card.data.attributes.text_content}}
+        </h1>
+      </div>
+      <div class='text' ng-if='!card.data.attributes.text_content'>
+        <h1>
+          &nbsp;
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>

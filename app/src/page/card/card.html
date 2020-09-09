@@ -1,0 +1,52 @@
+<div class='card'
+	 ng-switch on="data.type"
+>
+	<div ng-switch-when="cardtitle">
+		<ng-include src="'/page/card/templates/card-title.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardparagraph">
+		<ng-include src="'/page/card/templates/card-paragraph.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardimage">
+		<ng-include src="'/page/card/templates/card-image.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardbutton">
+		<ng-include src="'/page/card/templates/card-button.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardiframe">
+		<ng-include src="'/page/card/templates/card-iframe.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardyoutube">
+		<ng-include src="'/page/card/templates/card-youtube.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardvideo">
+		<ng-include src="'/page/card/templates/card-video.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardhtml">
+		<ng-include src="'/page/card/templates/card-html.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardmap">
+		<ng-include src="'/page/card/templates/card-map.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardrow">
+		<ng-include src="'/page/card/templates/card-row.html'"></ng-include>
+	</div>
+
+	<div ng-switch-when="cardslider">
+		<ng-include src="'/page/card/templates/card-slider.html'"></ng-include>
+	</div>
+
+	<div ng-switch-default class="">
+		<h1>Unknown card</h1>
+		<p>{{card.data.type}}</p>
+	</div>
+</div>

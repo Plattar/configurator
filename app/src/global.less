@@ -1,5 +1,6 @@
 body{
-	font-family: proxima-nova, sans-serif;
+	font-family: 'Nunito Sans', sans-serif;
+  line-height: 1.2;
 }
 
 .smoothload{
@@ -33,10 +34,31 @@ body{
 .main-container{
 	overflow: hidden;
 	height: 100%;
+	padding: 0;
 
 	.row{
 		position: relative;
 	}
+	.special-row{
+		display: flex;
+		// transition: grid-template-columns 0.5s;
+
+		/*&.variations{
+			grid-template-columns: 1fr 40px;
+		}
+		&.showing-variations{
+			grid-template-columns: 1fr 300px;
+		}*/
+
+		.asd{
+			position: relative;
+			width: 100%;
+		}
+	}
+}
+
+button:focus, .btn:focus{
+	outline: none;
 }
 
 

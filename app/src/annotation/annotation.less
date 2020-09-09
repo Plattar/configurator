@@ -5,12 +5,13 @@
 	left: 15px;
 	right: 15px;
 	pointer-events: none;
+	z-index: 15;
 
 	.annotation{
 		// display: none;
 		position: absolute;
 		bottom: -100%;
-		max-width: 600px;
+		// max-width: 600px;
 		height: 90%;
 		left: 0;
 		right: 0;
@@ -22,25 +23,20 @@
 		.frame{
 			pointer-events: none;
 			margin: 0 5%;
-			padding: 10px;
 			border-radius: 10px;
 			text-align: center;
 			position: relative;
-			overflow: hidden;
 			color: #282828;
 
 			display: flex;
 			flex-flow: column;
 			max-height: 100%;
 
-			&.background{
+			&.border{
+				padding: 10px;
 				background: rgba(255, 255, 255, 0.75);
 				box-shadow: 0px 2px 8px rgba(0,0,0,0.5);
-
-				.button-close{
-					top: 0;
-					right: 0;
-				}
+			// overflow: hidden;
 			}
 
 			h1{
@@ -83,7 +79,8 @@
 					right: 0;
 					margin: auto;
 					width: auto;
-					height: 100%;
+					max-width: 100%;
+					max-height: 100%;
 				}
 			}
 
@@ -91,6 +88,7 @@
 				height: 100vh;
 				position: relative;
 				flex: 1 1 auto;
+				background: rgba(255, 255, 255, 0.75);
 
 				iframe{
 					border:0;
@@ -106,8 +104,8 @@
 			}
 
 			.button-close{
-				top: 10px;
-				right: 5px;
+				top: -15px;
+				right: -15px;
 				height: 40px;
 				width: 40px;
 				max-height: 100px;
@@ -117,8 +115,8 @@
 				pointer-events: auto;
 
 				svg{
-					width: 30px;
-					height: 30px;
+					width: 40px;
+					height: 40px;
 					padding: 5px;
 				}
 			}

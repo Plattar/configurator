@@ -3,9 +3,15 @@
 */
 
 angular.module('PlattarConfigurator')
-.controller('configurator', ['$scope', 'config', 'Tracker', 'communicator',
-	function($scope, config, Tracker, communicator) {
+.controller('configurator', [
+	'$scope', 'config', 'Tracker', 'communicator', 'PlattarIntegration', '$rootScope', '$sce',
+	function($scope, config, Tracker, communicator, PlattarIntegration, $rootScope, $sce) {
 		$scope.error = undefined;
+		communicator.injectObject('configurator', $scope);
+
+		$scope.hasVariations = false;
+
+		$scope.canAugment = PlattarIntegration.canAugment;
 
 		$scope.plattar.api.getScene(config.sceneId,
 			function (result) {
@@ -40,6 +46,15 @@ angular.module('PlattarConfigurator')
 			$scope.products = result;
 			resetPreview();
 			applyPreview();
+
+			$scope.hasVariations = false;
+      $scope.products.some(function(product){
+        if(product.variations.length > 1){
+					$scope.hasVariations = true;
+          return true;
+        }
+      });
+
 			$scope.$apply();
 		});
 
@@ -65,14 +80,19 @@ angular.module('PlattarConfigurator')
 			$('.configurator-container').toggleClass('configurator-container-visible');
 		};
 
+		$scope.openAR = function(){
+			if(PlattarIntegration.canAugment){
 
-		/*function loadVariations(){
-			$scope.products.forEach(function(product){
-				if(product.selectedVariation){
-					$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
-				}
-			});
-		}*/
+			}
+			else{
+				// show qr code
+				communicator.sendMessage('qrmodel', 'openModal', {img: PlattarIntegration.qrUrl});
+			}
+		};
+
+		$scope.open3D = function(){
+			communicator.sendMessage('modelviewer', 'openModel', {url: PlattarIntegration.embedUrl});
+		};
 
 		function resetPreview(){
 			$scope.products.forEach(function(product){

@@ -1,0 +1,4 @@
+<div class='card-video'>
+	<video controls ng-if='card.file_video.attributes.effective_uri' draggable="false" ng-src="{{card.file_video.attributes.effective_uri}}"></video>
+	<img ng-if='!card.file_video.attributes.effective_uri' draggable="false" src="https://cdn.plattar.com/seeds/placeholder-video.jpg" ng-click='changeVideo(card)'/>
+</div>

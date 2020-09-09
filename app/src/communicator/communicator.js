@@ -10,14 +10,6 @@ angular.module('PlattarConfigurator')
         var isProduct = (products.length == 1) ? true : false;
         // this.injectedObjects["viewer"].isProduct = this.isProduct;
 
-        var hasVariations = false;
-        products.some(function(product){
-          if(product.variations.length > 1){
-            hasVariations = true;
-            return true;
-          }
-        });
-
         if(isProduct){
           var path = products[0].selectedVariation.file.attributes.path;
           var filename = products[0].selectedVariation.file.attributes.original_filename;
@@ -33,10 +25,13 @@ angular.module('PlattarConfigurator')
           this.injectedObjects["viewer"].setProduct();
         }
 
-        this.injectedObjects['main'].setHasVariations(hasVariations);
+        // this.injectedObjects['main'].setHasVariations(hasVariations);
       },
 
       selectVariation: function(variation){
+        if(!variation.file){
+          return;
+        }
         var path = variation.file.attributes.path;
         var filename = variation.file.attributes.original_filename;
 
@@ -48,6 +43,10 @@ angular.module('PlattarConfigurator')
 
       injectObject: function(type, obj){
         this.injectedObjects[type] = obj;
+      },
+
+      sendMessage: function(destination, func, data){
+        this.injectedObjects[destination][func](data);
       }
     }
   }

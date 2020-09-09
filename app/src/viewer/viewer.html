@@ -1,7 +1,5 @@
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
-	<ng-include ng-if='loaded && sceneId' src="'/annotation/annotation.html'"></ng-include>
-
-	<div class='header'>
+	<!-- <div class='header'>
 		<div ng-if='showAR' class='header-button' ng-click='toggleCamera()'>
 			<icon src='/icons/icon-camera.svg'></icon>
 		</div>
@@ -18,10 +16,10 @@
 		<div class='header-button' ng-click='resetTransforms()'>
 			<icon src='/icons/icon-reset.svg'></icon>
 		</div>
-	</div>
+	</div> -->
 
 	<div class='frame-padding'>
-		<iframe id="plattar-frame" ng-src="{{embedUrl}}" frameBorder="0" allow="camera; vr; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
+		<iframe id="plattar-frame" class='full' ng-src="{{embedUrl}}" frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
 
 		<div ng-attr-id="{{clickType ? 'walkthrough-mouse' : 'walkthrough-touch'}}" class='walkthrough'  ng-class='{"walkthrough-hidden": hideWalkthrough}'>
 
