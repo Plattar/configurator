@@ -49,18 +49,14 @@ angular.module('PlattarConfigurator')
           }
         });
 
-        if($scope.card.data.type == 'cardslider'){
+        if($scope.card.data.type() == 'cardslider'){
           $scope.card.slides = [];
 
           $rootScope.plattar.api.getCardSlider($scope.card.data.id, function(result){
             if($scope.card.data.attributes.slider_type == 'page'){
               $scope.card.data.attributes.page_ids.forEach(function(id, index){
-                var page = result.included.find(function(include){
-                  return include.id == id;
-                });
-                var file = result.included.find(function(include){
-                  return include.id == page.attributes.file_image_id;
-                });
+                var page = result.relationships.find(Plattar.Page, id);
+                var file = scene.relationships.find(Plattar.FileImage);
 
                 page.file = file;
                 page.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;
@@ -70,12 +66,8 @@ angular.module('PlattarConfigurator')
             }
             else if($scope.card.data.attributes.slider_type == 'scene'){
               $scope.card.data.attributes.scene_ids.forEach(function(id, index){
-                var scene = result.included.find(function(include){
-                  return include.id == id;
-                });
-                var file = result.included.find(function(include){
-                  return include.id == scene.attributes.file_image_id;
-                });
+                var scene = result.relationships.find(Plattar.Scene, id);
+                var file = scene.relationships.find(Plattar.FileImage);
 
                 scene.file = file;
                 scene.file.attributes.effective_uri = config.cdnUrl + file.attributes.path + file.attributes.original_filename;

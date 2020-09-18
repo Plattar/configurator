@@ -270,174 +270,144 @@ function PlattarApiIntegration(params){
 	}
 
 	// Function calls to the Plattar API to get scene/product data
-	this.apiCache = {};
+	var server = Plattar.Server.default();
+	// server.origin(server.dev);
+
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
-			var cacheKey = '/api/v2/'+fileType+'/'+fileId;
-			if(self.apiCache[cacheKey]){
-				successFunc(self.apiCache[cacheKey]);
-				return;
+			var factory;
+			switch(fileType){
+				case 'fileimage':
+					factory = new Plattar.ImageFile(fileId);
+					break;
+				case 'filemodel':
+					factory = new Plattar.ModelFile(fileId);
+					break;
+				case 'filevideo':
+					factory = new Plattar.VideoFile(fileId);
+					break;
+				case 'fileaudio':
+					factory = new Plattar.AudioFile(fileId);
+					break;
 			}
 
-			$.get(apiUrl + cacheKey, function(result){
+			factory.get().then(function(result){
 				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
-				self.apiCache[cacheKey] = result.data;
-				successFunc(result.data);
+				successFunc(result);
 			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			.catch(errorFunc);
 		},
 
 		getScene: function(sceneId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scene/'+sceneId, function(result){
-				successFunc(result.data);
-			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			var scene = new Plattar.Scene(sceneId);
+			scene.get()
+			.then(successFunc)
+			.catch(errorFunc);
 		},
 
 		getScriptEvent: function(scriptEventId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scriptevent/'+scriptEventId, function(result){
-				successFunc(result.data);
-			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			var script = new Plattar.ScriptEvent(scriptEventId);
+			script.get()
+			.then(successFunc)
+			.catch(errorFunc);
 		},
 
 		getPage: function(pageId, successFunc, errorFunc) {
 			var cardTypes = ["cardtitle", "cardparagraph", "cardimage", "cardbutton", "cardiframe", "cardrow", "cardyoutube", "cardvideo", "cardhtml", "cardslider", "cardmap"];
-			var cacheKey = '/api/v2/page/'+pageId;
-			if(self.apiCache[cacheKey]){
-				successFunc(clone(self.apiCache[cacheKey]));
-				return;
-			}
 
-			$.get(apiUrl + cacheKey+'?include='+cardTypes.toString(), function(result){
-				result.cards = result.included.filter(function(include) {
-					return cardTypes.indexOf(include.type) != -1;
-				})
-				.sort(function(a, b) {
-					return a.attributes.sort_order - b.attributes.sort_order;
-				});
-				delete result.included;
+			var page = new Plattar.Page(pageId);
+			page.include(Plattar.CardTitle, Plattar.CardParagraph, Plattar.CardImage, Plattar.CardButton, Plattar.CardIFrame, Plattar.CardRow, Plattar.CardYoutube, Plattar.CardVideo, Plattar.CardHTML, Plattar.CardSlider, Plattar.CardMap);
 
-				self.apiCache[cacheKey] = result;
-				successFunc(clone(result));
+			page.get()
+			.then(function(result){
+				page.cards = [];
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardTitle));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardParagraph));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardImage));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardButton));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardIFrame));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardRow));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardYoutube));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardVideo));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardHTML));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardSlider));
+				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardMap));
+
+				successFunc(result);
 			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			.catch(errorFunc);
 		},
 
 		getCardSlider: function(id, successFunc, errorFunc) {
-			var cacheKey = '/api/v2/cardslider/'+id;
-			if(self.apiCache[cacheKey]){
-				successFunc(clone(self.apiCache[cacheKey]));
-				return;
-			}
+			var cardSlider = new Plattar.CardSlider(id);
+			cardSlider.include(Plattar.Page.include(Plattar.FileImage), Plattar.Scene.include(Plattar.FileImage));
 
-			$.get(apiUrl + cacheKey+'?include=page.fileimage,scene.fileimage', function(result){
-				self.apiCache[cacheKey] = result;
-				successFunc(result);
-			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			cardSlider.get()
+			.then(successFunc)
+			.catch(errorFunc);
 		},
 
 		listProducts: function(sceneId, successFunc, errorFunc) {
-			$.get(apiUrl + '/api/v2/scene/'+sceneId+'?include=product,product.productvariation,product.productvariation.filemodel,product.productvariation.fileimage,sceneproduct,sceneproduct.product,sceneproduct.product.productvariation,sceneproduct.product.productvariation.filemodel,sceneproduct.product.productvariation.fileimage', function(result){
-				if(result.included && result.included.length){
-					var products = result.included.filter(function(include){
-						return (include.type == 'product' && include.attributes.scene_id == sceneId);
-					})
-					.map(function(product){
-						product.instanceid = product.id;
-						return product;
-					});
+			var scene = new Plattar.Scene(sceneId);
+			scene.include(Plattar.Product.include(Plattar.ProductVariation.include(Plattar.FileModel)));
+			scene.include(Plattar.Product.include(Plattar.ProductVariation.include(Plattar.FileImage)));
+			scene.include(Plattar.SceneProduct.include(Plattar.Product.include(Plattar.ProductVariation.include(Plattar.FileModel))));
+			scene.include(Plattar.SceneProduct.include(Plattar.Product.include(Plattar.ProductVariation.include(Plattar.FileImage))));
 
-					// This part is for product instances in a scene. Map them to product types for simplification
-					var sceneproducts = result.included.filter(function(include){
-						return include.type == 'sceneproduct';
-					})
-					.map(function(sceneproduct){
-						var product = result.included.find(function(include){
-							return sceneproduct.attributes.product_id == include.id;
-						});
-						//clone each product
-						product = JSON.parse(JSON.stringify(product));
-						//overwrite variables
-						product.instanceid = sceneproduct.id;
-						product.attributes.sort_order = sceneproduct.attributes.sort_order;
-						product.attributes.title = sceneproduct.attributes.title;
-						product.attributes.scene_id = sceneproduct.attributes.scene_id;
-						return product;
-					})
+			scene.get()
+			.then(function(result){
+				var products = result.relationships.filter(Plattar.Product);
+				products.forEach(function(product){
+					product.instanceid = product.id;
+				});
+
+				var sceneProducts = result.relationships.filter(Plattar.SceneProduct)
+				.map(function(sceneProduct){
+					var product = sceneProduct.relationships.find(Plattar.Product);
+					product.instanceid = sceneProduct.id;
+					product.attributes.sort_order = sceneProduct.attributes.sort_order;
+					product.attributes.title = sceneProduct.attributes.title;
+					product.attributes.scene_id = sceneProduct.attributes.scene_id;
+
+					return product;
+				});
+
+				if(sceneProducts.length){
+					products = products.concat(sceneProducts);
+				}
+
+				products.forEach(function(product){
+					product.variations = product.relationships.filter(Plattar.ProductVariation)
 					.sort(function(a, b){
 						return a.attributes.sort_order - b.attributes.sort_order;
+					})
+					.map(function(variation){
+						var swatch;
+						if(variation.attributes.swatch_id){
+							swatch = variation.relationships.find(Plattar.FileImage, variation.attributes.swatch_id);
+							if(!swatch.attributes.thumbnail){
+								swatch.attributes.thumbnail = swatch.attributes.original_filename;
+							}
+							variation.swatch = encodeURI(cdnUrl + swatch.attributes.path + swatch.attributes.thumbnail);
+						}
+
+						var thumb = variation.relationships.find(Plattar.FileModel, variation.attributes.file_model_id);
+						if(thumb){
+							variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
+							if(!swatch){
+								variation.swatch = variation.thumbnail;
+							}
+						}
+						variation.file = thumb;
+						return variation;
 					});
 
-					//add to products array
-					if(sceneproducts.length){
-						products = products.concat(sceneproducts);
-					}
+					product.selectedVariation = product.relationships.find(Plattar.ProductVariation, product.attributes.product_variation_id);
+				});
 
-					products.forEach(function(product){
-						product.variations = result.included.filter(function(include){
-							return include.type == 'productvariation' && (include.attributes.product_id == product.id);
-						})
-						.sort(function(a, b){
-							return a.attributes.sort_order - b.attributes.sort_order;
-						});
-
-						product.variations.map(function(variation){
-							var thumb;
-							if(variation.attributes.swatch_id){
-								thumb = result.included.find(function(include){
-									return include.id == variation.attributes.swatch_id;
-								});
-								if(!thumb.attributes.thumbnail){
-									thumb.attributes.thumbnail = thumb.attributes.original_filename;
-								}
-							}
-							else{
-								thumb = result.included.find(function(include){
-									return include.id == variation.attributes.file_model_id;
-								});
-							}
-							if(thumb){
-								variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
-							}
-							variation.file = thumb;
-							return variation;
-						});
-
-						product.selectedVariation = product.variations.find(function(variation){
-							return variation.id == product.attributes.product_variation_id;
-						});
-					});
-
-					successFunc(products);
-				}
+				successFunc(products);
 			})
-			.fail(function(error){
-				if(errorFunc){
-					errorFunc(error);
-				}
-			});
+			.catch(errorFunc);
 		}
 	};
 }

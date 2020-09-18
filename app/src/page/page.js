@@ -32,28 +32,28 @@ angular.module('PlattarConfigurator')
 			$scope.visible = true;
 
 			$rootScope.plattar.api.getPage(pageid, function(page){
-				safeEval(page.data.attributes.script_event_ids, 'load', {entity: page});
+				safeEval(page.attributes.script_event_ids, 'load', {entity: page});
 
 				$scope.pages.push(page);
 				page.index = Math.random();
 
-				if(page.data.attributes.background_color){
-					var colour = new Colour(page.data.attributes.background_color);
+				if(page.attributes.background_color){
+					var colour = new Colour(page.attributes.background_color);
 					if(colour.isDark(200)){
-						page.data.attributes.text_color = 'rgb(255, 255, 255)';
+						page.attributes.text_color = 'rgb(255, 255, 255)';
 					}
 					else{
-						page.data.attributes.text_color = 'rgb(0, 0, 0)';
+						page.attributes.text_color = 'rgb(0, 0, 0)';
 					}
 				}
 				else{
-					page.data.attributes.background_color = 'rgb(255, 255, 255)';
-					page.data.attributes.text_color = 'rgb(0, 0, 0)';
+					page.attributes.background_color = 'rgb(255, 255, 255)';
+					page.attributes.text_color = 'rgb(0, 0, 0)';
 				}
 
 				page.background = {};
-				if(page.data.attributes.background_image_id){
-					$rootScope.plattar.api.getFile(page.data.attributes.background_image_id, 'fileimage', function(image){
+				if(page.attributes.background_image_id){
+					$rootScope.plattar.api.getFile(page.attributes.background_image_id, 'fileimage', function(image){
 						$timeout(function(){
 							page.background = image;
 						});
@@ -74,11 +74,11 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.closePage = function(page){
-			if(!page.data){
+			if(!page.attributes){
 				return;
 			}
 			page.visible = false;
-			safeEval(page.data.attributes.script_event_ids, 'destroy', {entity: page});
+			safeEval(page.attributes.script_event_ids, 'destroy', {entity: page});
 
 			// remove page from stack
 			$timeout(function(){

@@ -1,5 +1,5 @@
 <div class='card'
-	 ng-switch on="data.type"
+	 ng-switch on="data.type()"
 >
 	<div ng-switch-when="cardtitle">
 		<ng-include src="'/page/card/templates/card-title.html'"></ng-include>
@@ -47,6 +47,6 @@
 
 	<div ng-switch-default class="">
 		<h1>Unknown card</h1>
-		<p>{{card.data.type}}</p>
+		<p>{{card.type()}}</p>
 	</div>
 </div>

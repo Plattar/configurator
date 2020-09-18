@@ -8,14 +8,14 @@
 			ng-repeat='page in pages track by $index'
 			ng-class='{"visible": page.visible}'
 			ng-style='{
-									color: page.data.attributes.text_color,
-								  "background-color": page.data.attributes.background_color,
+									color: page.attributes.text_color,
+								  "background-color": page.attributes.background_color,
       						"background-image": "url("+page.background.attributes.effective_uri+")"
 								}'
 		>
 			<div class='page-toggle' ng-click='closePage(page)'>
 				<icon src='/icons/icon-x.svg'
-					ng-style='{fill: page.data.attributes.text_color}'
+					ng-style='{fill: page.attributes.text_color}'
 				></icon>
 			</div>
 
