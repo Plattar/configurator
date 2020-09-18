@@ -78,9 +78,9 @@ angular.module('PlattarConfigurator')
 				return;
 			}
 
-			// if(product is the top){
+			if(product == $scope.products[0]){
 				$scope.selectedThumbnail = variation.thumbnail;
-			// }
+			}
 
 			product.selectedVariation = variation;
 			communicator.selectVariation(variation);
