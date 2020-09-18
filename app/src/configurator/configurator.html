@@ -6,6 +6,11 @@
 
 		<h1>{{scene.attributes.title}}</h1>
 
+		<div class='preview-container'>
+			<img class='preview-image' ng-src="{{selectedThumbnail}}" ng-style='{opacity: previewThumbnail ? 0 : 1}'>
+			<img class='preview-image' ng-src="{{previewThumbnail}}" ng-style='{opacity: previewThumbnail ? 1 : 0}'>
+		</div>
+
 		<!-- Loop for all products -->
 		<div
 			ng-repeat='product in products'
@@ -16,9 +21,8 @@
 			}'
 			class='product-view'
 		>
-			<hr>
-
-			<h3>{{product.attributes.title}} - {{product.selectedVariation.attributes.title}}</h3>
+			<h3 class='title'>{{product.attributes.title}}</h3>
+			<h3>{{product.selectedVariation.attributes.title}}</h3>
 
 			<div class='slider-container'>
 				<div class='slider'>
@@ -32,8 +36,10 @@
 					>
 						<div class='variation-container'
 							ng-click='selectVariation(product, variation)'
+							ng-mouseover="previewVariation(variation)"
+							ng-mouseleave="previewVariation()"
 						>
-							<img ng-src="{{variation.thumbnail}}" smoothload>
+							<img ng-src="{{variation.swatch}}" smoothload>
 						</div>
 					</div>
 				</div>

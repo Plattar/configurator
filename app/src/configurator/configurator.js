@@ -12,6 +12,8 @@ angular.module('PlattarConfigurator')
 		$scope.hasVariations = false;
 
 		$scope.canAugment = PlattarIntegration.canAugment;
+		$scope.previewThumbnail = '';
+		$scope.selectedThumbnail = '';
 
 		$scope.plattar.api.getScene(config.sceneId,
 			function (result) {
@@ -49,6 +51,10 @@ angular.module('PlattarConfigurator')
 
 			$scope.hasVariations = false;
       $scope.products.some(function(product){
+      	if(!$scope.previewThumbnail){
+      		$scope.selectedThumbnail = product.selectedVariation.thumbnail;
+      	}
+
         if(product.variations.length > 1){
 					$scope.hasVariations = true;
           return true;
@@ -58,10 +64,23 @@ angular.module('PlattarConfigurator')
 			$scope.$apply();
 		});
 
+		$scope.previewVariation = function (variation) {
+			if(variation){
+				$scope.previewThumbnail = variation.thumbnail;
+			}
+			else{
+				$scope.previewThumbnail = undefined;
+			}
+		};
+
 		$scope.selectVariation = function (product, variation) {
 			if(!variation.visiblePreview){
 				return;
 			}
+
+			// if(product is the top){
+				$scope.selectedThumbnail = variation.thumbnail;
+			// }
 
 			product.selectedVariation = variation;
 			communicator.selectVariation(variation);

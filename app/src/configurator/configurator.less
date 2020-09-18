@@ -5,7 +5,7 @@
 @bounceOutSmall: cubic-bezier(1, -0.2, 0.8, 1.1);
 
 @panel-width: 360px;
-@swatch-size: 35px;
+@swatch-size: 40px;
 
 .configurator-container{
   position: absolute;
@@ -53,9 +53,11 @@
 }
 
 .configurator{
+  background: #eeeeee;
   height: 100%;
   overflow-y: auto;
   padding: 0 20px;
+  text-align: center;
 
   .configurator-toggle{
     position: absolute;
@@ -87,20 +89,43 @@
 
   h1{
     color: #282828;
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 400;
     margin: 20px 0 10px 0;
   }
 
   h3{
+    &.title{
+      color: #282828;
+    }
     color: #9B9B9B;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
   }
 
   hr{
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  .preview-container{
+    height: 0;
+    width: 60%;
+    padding-top: 60%;
+    margin: auto;
+    position: relative;
+
+    .preview-image{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transition: opacity 0.6s;
+      position: absolute;
+    }
   }
 
   .slider-container{
@@ -110,15 +135,16 @@
 
     .sliderr{
       width: max-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
   .product-view{
-    // max-height: 150px;
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
-    // border-left: 1px #9B9B9B solid;
-    padding-left: 5px;
+    margin-bottom: 40px;
 
     &.squashed{
       max-height: 0;
@@ -126,33 +152,36 @@
   }
 
   .variation-selected{
-    height: calc(@swatch-size + 25px);
-    width: @swatch-size;
     display: inline-block;
-    margin: 0 10px;
+    margin: 0 5px;
     transition: border-color 0.5s, width 0.5s, margin 0.5s, opacity 0.5s;
-    border-width: 2px;
+    border-width: 1px;
     border-color: transparent;
-    border-bottom-style: solid;
+    border-style: solid;
+    border-radius: 50%;
     opacity: 1;
 
     .variation-container{
-      margin: 10px 0;
+      margin: 5px;
       height: @swatch-size;
       width: @swatch-size;
       border-radius: 50%;
       overflow: hidden;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
-      transition: width 0.5s;
+      box-shadow: 1px 2px 5px rgba(0,0,0,0.25);
+      transition: width 0.5s, height 0.5s;
 
       img{
         width: 100%;
         height: 100%;
-        // background: white;
       }
     }
     &.selected{
       border-color: rgba(69, 178, 235, 1.0);
+
+      .variation-container{
+        height: calc(@swatch-size + 6px);
+        width: calc(@swatch-size + 6px);
+      }
     }
     &.squashed{
       margin: 0;
