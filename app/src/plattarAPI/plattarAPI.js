@@ -392,6 +392,10 @@ function PlattarApiIntegration(params){
 					product.selectedVariation = product.relationships.find(Plattar.ProductVariation, product.attributes.product_variation_id);
 				});
 
+				products = products.sort(function(a, b){
+					return a.attributes.sort_order - b.attributes.sort_order;
+				});
+
 				successFunc(products);
 			})
 			.catch(errorFunc);
