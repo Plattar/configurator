@@ -313,25 +313,12 @@ function PlattarApiIntegration(params){
 		},
 
 		getPage: function(pageId, successFunc, errorFunc) {
-			var cardTypes = ["cardtitle", "cardparagraph", "cardimage", "cardbutton", "cardiframe", "cardrow", "cardyoutube", "cardvideo", "cardhtml", "cardslider", "cardmap"];
-
 			var page = new Plattar.Page(pageId);
 			page.include(Plattar.CardTitle, Plattar.CardParagraph, Plattar.CardImage, Plattar.CardButton, Plattar.CardIFrame, Plattar.CardRow, Plattar.CardYoutube, Plattar.CardVideo, Plattar.CardHTML, Plattar.CardSlider, Plattar.CardMap);
 
 			page.get()
 			.then(function(result){
-				page.cards = [];
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardTitle));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardParagraph));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardImage));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardButton));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardIFrame));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardRow));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardYoutube));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardVideo));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardHTML));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardSlider));
-				page.cards = page.cards.concat(page.relationships.filter(Plattar.CardMap));
+				page.cards = page.relationships.filter(Plattar.CardObject);
 
 				successFunc(result);
 			})

@@ -53,7 +53,7 @@
 }
 
 .configurator{
-  background: white;
+  background: #eeeeee;
   height: 100%;
   overflow-y: auto;
   padding: 0 20px;
@@ -91,7 +91,7 @@
     color: #282828;
     font-size: 32px;
     font-weight: 400;
-    margin: 20px 0 10px 0;
+    margin: 40px 0 10px 0;
   }
 
   h3{
@@ -101,6 +101,7 @@
     color: #9B9B9B;
     font-size: 18px;
     font-weight: 400;
+    margin-bottom: 8px;
   }
 
   hr{
@@ -113,6 +114,7 @@
     width: 60%;
     padding-top: 60%;
     margin: auto;
+    margin-bottom: 30px;
     position: relative;
 
     .preview-image{
@@ -132,6 +134,7 @@
     width: 100%;
     overflow-x: auto;
     white-space: nowrap;
+    margin-top: 15px;
 
     .sliderr{
       width: max-content;
@@ -153,7 +156,7 @@
 
   .variation-selected{
     display: inline-block;
-    margin: 0 5px;
+    margin: 0 8px;
     transition: border-color 0.5s, width 0.5s, margin 0.5s, opacity 0.5s;
     border-width: 1px;
     border-color: transparent;
@@ -168,7 +171,8 @@
       border-radius: 50%;
       overflow: hidden;
       box-shadow: 1px 2px 5px rgba(0,0,0,0.25);
-      transition: width 0.5s, height 0.5s;
+      opacity: 0.8;
+      transition: width 0.5s, height 0.5s, opacity 0.5s;
 
       img{
         width: 100%;
@@ -176,11 +180,12 @@
       }
     }
     &.selected{
-      border-color: rgba(69, 178, 235, 1.0);
+      border-color: rgba(57, 126, 255, 1.0);
 
       .variation-container{
         height: calc(@swatch-size + 6px);
         width: calc(@swatch-size + 6px);
+        opacity: 1;
       }
     }
     &.squashed{
