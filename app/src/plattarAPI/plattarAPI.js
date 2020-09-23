@@ -271,7 +271,7 @@ function PlattarApiIntegration(params){
 
 	// Function calls to the Plattar API to get scene/product data
 	var server = Plattar.Server.default();
-	server.origin(server.dev);
+	// server.origin(server.dev);
 
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
