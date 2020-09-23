@@ -271,7 +271,7 @@ function PlattarApiIntegration(params){
 
 	// Function calls to the Plattar API to get scene/product data
 	var server = Plattar.Server.default();
-	// server.origin(server.dev);
+	server.origin(server.dev);
 
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
@@ -318,7 +318,10 @@ function PlattarApiIntegration(params){
 
 			page.get()
 			.then(function(result){
-				page.cards = page.relationships.filter(Plattar.CardObject);
+				page.cards = page.relationships.filter(Plattar.CardObject)
+				.sort(function(a, b){
+					return a.attributes.sort_order - b.attributes.sort_order;
+				});
 
 				successFunc(result);
 			})
