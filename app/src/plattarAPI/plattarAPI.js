@@ -16,12 +16,16 @@ function PlattarApiIntegration(params){
 
 	var apiUrl = params.apiUrl;
 	var cdnUrl = params.cdnUrl;
+	var environment = params.environment;
 	var iframe = document.querySelector('#plattar-frame');
 	var self = this;
 	this.debug = false;
 	this.showAnnotation = false;
 	this.onReady = function(){console.log('Not initialised properly')};
 	this.onSceneChange = function(){console.log('No scene change listener set')};
+	// Function calls to the Plattar API to get scene/product data
+	var server = Plattar.Server.default();
+	server.origin(server[environment || 'prod']);
 
 	this.init = function(params, cb){
 		this.onReady = cb;
@@ -32,6 +36,10 @@ function PlattarApiIntegration(params){
 		}
 		if(params.cdnUrl){
 			cdnUrl = params.cdnUrl;
+		}
+		if(params.environment){
+			environment = params.environment;
+			server.origin(server[environment]);
 		}
 
 		sendMessage('initpreview', {
@@ -268,10 +276,6 @@ function PlattarApiIntegration(params){
 		obj.index = Math.random();
 		return obj;
 	}
-
-	// Function calls to the Plattar API to get scene/product data
-	var server = Plattar.Server.default();
-	// server.origin(server.dev);
 
 	this.api = {
 		getFile: function(fileId, fileType, successFunc, errorFunc) {
