@@ -278,16 +278,16 @@ function PlattarApiIntegration(params){
 			var factory;
 			switch(fileType){
 				case 'fileimage':
-					factory = new Plattar.ImageFile(fileId);
+					factory = new Plattar.FileImage(fileId);
 					break;
 				case 'filemodel':
-					factory = new Plattar.ModelFile(fileId);
+					factory = new Plattar.FileModel(fileId);
 					break;
 				case 'filevideo':
-					factory = new Plattar.VideoFile(fileId);
+					factory = new Plattar.FileVideo(fileId);
 					break;
 				case 'fileaudio':
-					factory = new Plattar.AudioFile(fileId);
+					factory = new Plattar.FileAudio(fileId);
 					break;
 			}
 
