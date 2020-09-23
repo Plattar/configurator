@@ -292,7 +292,7 @@ function PlattarApiIntegration(params){
 			}
 
 			factory.get().then(function(result){
-				result.data.attributes.effective_uri = cdnUrl + result.data.attributes.path + result.data.attributes.original_filename;
+				result.attributes.effective_uri = cdnUrl + result.attributes.path + result.attributes.original_filename;
 				successFunc(result);
 			})
 			.catch(errorFunc);
