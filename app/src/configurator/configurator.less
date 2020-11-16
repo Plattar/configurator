@@ -4,7 +4,7 @@
 @bounceInSmall: cubic-bezier(0.2, -0.4, 0, 1.1);
 @bounceOutSmall: cubic-bezier(1, -0.2, 0.8, 1.1);
 
-@panel-width: 360px;
+@configurator-width: 400px;
 @swatch-size: 40px;
 
 .configurator-container{
@@ -12,78 +12,104 @@
   top: 100%;
   height: 100%;
   transition: top 0.75s @bounceOutSmall;
-  background: rgba(255, 255, 255, 0.8);
   z-index: 8;
+  box-shadow: 0 0 50px rgba(0,0,0,0.25);
+  background: white;
 
   &.hidden{
     width: 0;
   }
+
+  .page-title{
+    justify-content: space-between;
+    padding: 10px 30px;
+
+    h2{
+      font-size: 28px;
+      width: 45%;
+      margin: 0;
+    }
+
+    icon{
+      svg{
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
 }
+
 @media (max-width: 768px) {
   .configurator-container{
+    @topgap: 200px;
     width: 100%;
     left: 0;
-  }
-  .configurator-container-visible{
-    top: 70px;
-    height: 90%;
-    transition: top 0.75s @bounceInSmall;
+    box-shadow: none;
+    top: 100%;
+    height: calc(100% - @topgap);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
 
-    .configurator{
-      .configurator-toggle{
-        top: -30px;
-        left: 75%;
+    &.visible{
+      top: @topgap;
+      transition: top 0.75s @bounceInSmall;
 
-        icon svg{
-          transform: rotate(45deg);
+      .configurator{
+        .configurator-toggle{
+          top: -30px;
+          left: 75%;
+
+          icon svg{
+            transform: rotate(45deg);
+          }
         }
       }
     }
   }
 }
+
 @media (min-width: 768px) {
   .configurator-container{
-    position: unset;
-    top: unset;
-    background: white;
-    width: @panel-width;
+    // position: unset;
+    top: 0;
+    width: @configurator-width;
+    right: calc(-@configurator-width + 40px);
+    transition: right 0.5s;
+
+    &.visible{
+      right: 0;
+
+      .configurator-toggle{
+        icon{
+          svg{
+            transform: rotate(90deg);
+          }
+        }
+      }
+    }
   }
 }
 
 .configurator{
-  background: #eeeeee;
   height: 100%;
   overflow-y: auto;
-  padding: 0 20px;
-  text-align: center;
+  padding: 0 20px 0 40px;
+  text-align: left;
+
 
   .configurator-toggle{
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -55px;
-    margin: auto;
-    height: 50px;
-    width: 50px;
-    background: radial-gradient(black, white);
-    border-radius: 50%;
-    box-shadow: 1px 3px 7px rgba(200,200,200,1);
-    z-index: 10;
-    transition: top 0.75s, left 0.75s;
-
     icon{
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 10px;
+      display: block;
       svg{
-        width: 100%;
-        height: 100%;
-        transition: transform 0.75s;
+        transform: rotate(-90deg);
+        transition: transform 0.5s;
+        width: 20px;
+        height: 20px;
       }
-    }
-  }
-  @media (min-width: 768px) {
-    .configurator-toggle{
-      display: none;
     }
   }
 
@@ -91,17 +117,25 @@
     color: #282828;
     font-size: 32px;
     font-weight: 400;
-    margin: 40px 0 10px 0;
+    margin: 40px 0 20px 0;
   }
 
   h3{
-    &.title{
-      color: #282828;
+    span.variation-title{
+      padding-left: 5px;
     }
-    color: #9B9B9B;
+    text-transform: uppercase;
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 8px;
+
+    icon{
+      padding: 5px;
+      svg{
+        width: 15px;
+        height: 15px;
+      }
+    }
   }
 
   hr{
@@ -109,48 +143,35 @@
     margin-bottom: 0.5rem;
   }
 
-  .preview-container{
-    height: 0;
-    width: 60%;
-    padding-top: 60%;
-    margin: auto;
-    margin-bottom: 30px;
-    position: relative;
-
-    .preview-image{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      transition: opacity 0.6s;
-      position: absolute;
-    }
-  }
-
-  .slider-container{
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    margin-top: 15px;
-
-    .sliderr{
-      width: max-content;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
   .product-view{
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
+    margin-left: 20px;
 
     &.squashed{
       max-height: 0;
+    }
+
+    .slider-container{
+      width: calc(100% - 20px);
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-top: 15px;
+      margin-left: 20px;
+
+      .slider{
+        margin-bottom: 10px;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+
+        &.vertical{
+          flex-wrap: wrap;
+          width: 100%;
+        }
+      }
     }
   }
 
@@ -160,34 +181,64 @@
     transition: border-color 0.5s, width 0.5s, margin 0.5s, opacity 0.5s;
     border-width: 1px;
     border-color: transparent;
-    border-style: solid;
-    border-radius: 50%;
     opacity: 1;
 
-    .variation-container{
-      margin: 5px;
-      height: @swatch-size;
-      width: @swatch-size;
+    &.blank{
+      .variation-container{
+        border-radius: 50%;
+        width: @swatch-size;
+        height: @swatch-size;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.25) inset;
+      }
+    }
+
+    &.square{
+      border-top-style: solid;
+    }
+
+    &.circle{
       border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 1px 2px 5px rgba(0,0,0,0.25);
+      border-style: solid;
+
+      .variation-container{
+        border-radius: 50%;
+        width: @swatch-size;
+        overflow: hidden;
+        box-shadow: 1px 2px 5px rgba(0,0,0,0.25);
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+
+    .variation-container{
+      margin: 8px;
+      height: @swatch-size;
       opacity: 0.8;
-      transition: width 0.5s, height 0.5s, opacity 0.5s;
+      transition: width 0.5s, height 0.5s, opacity 0.5s, margin 0.5s;
 
       img{
-        width: 100%;
         height: 100%;
       }
     }
+
     &.selected{
       border-color: rgba(57, 126, 255, 1.0);
 
       .variation-container{
         height: calc(@swatch-size + 6px);
-        width: calc(@swatch-size + 6px);
+        margin: 5px;
         opacity: 1;
       }
+
+      &.circle, &.blank{
+        .variation-container{
+          width: calc(@swatch-size + 6px);
+        }
+      }
     }
+
     &.squashed{
       margin: 0;
       opacity: 0;

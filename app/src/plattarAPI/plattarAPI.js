@@ -176,6 +176,10 @@ function PlattarApiIntegration(params){
 		sendMessage('toggleCamera', {active: active});
 	};
 
+	this.panToCamera = function(id) {
+		sendMessage('panToCamera', {id: id});
+	};
+
 	// Enables the help prompts to appear
 	this.activateHelp = function() {
 		sendMessage('activateHelp', {});
@@ -191,16 +195,18 @@ function PlattarApiIntegration(params){
 		sendMessage('clearannotation', {});
 	};
 
-	this.selectPanorama = function(panoramaId) {
-		// sendMessage('panToCamera', {id: cameraId});
+	this.setAnnotation = function(data) {
+		// sendMessage('tuisetannotation', {});
+		sendMessage('setannotation', {id: data.id});
+	};
 
+	this.selectPanorama = function(panoramaId) {
 		sendMessage('runscript', {
 			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",
 			params: {
 				id: panoramaId
 			}
 		});
-		// sendMessage('selectpanorama', {id: panoramaId});
 	};
 
 	// Cross-browser compatible fullscreen enabling
@@ -309,6 +315,36 @@ function PlattarApiIntegration(params){
 			.catch(errorFunc);
 		},
 
+		listCameras: function(sceneId, successFunc, errorFunc) {
+			var scene = new Plattar.Scene(sceneId);
+			scene.include(Plattar.SceneCamera, Plattar.SceneCamera.include(Plattar.FileImage));
+
+			scene.get()
+			.then(function(result){
+				var cameras = result.relationships.filter(Plattar.SceneCamera)
+				.sort(function(a, b){
+					return a.attributes.sort_order - b.attributes.sort_order;
+				});
+				cameras.forEach(function(camera){
+					camera.image = camera.relationships.find(Plattar.FileImage, camera.attributes.file_image_id);
+				});
+				successFunc(cameras);
+			})
+			.catch(errorFunc);
+		},
+
+		listAnnotations: function(sceneId, successFunc, errorFunc) {
+			var scene = new Plattar.Scene(sceneId);
+			scene.include(Plattar.SceneAnnotation);
+
+			scene.get()
+			.then(function(result){
+				var annotations = result.relationships.filter(Plattar.SceneAnnotation);
+				successFunc(annotations);
+			})
+			.catch(errorFunc);
+		},
+
 		getScriptEvent: function(scriptEventId, successFunc, errorFunc) {
 			var script = new Plattar.ScriptEvent(scriptEventId);
 			script.get()
@@ -388,9 +424,9 @@ function PlattarApiIntegration(params){
 						var thumb = variation.relationships.find(Plattar.FileModel, variation.attributes.file_model_id);
 						if(thumb){
 							variation.thumbnail = encodeURI(cdnUrl + thumb.attributes.path + thumb.attributes.thumbnail);
-							if(!swatch){
+							/*if(!swatch){
 								variation.swatch = variation.thumbnail;
-							}
+							}*/
 						}
 						variation.file = thumb;
 						return variation;

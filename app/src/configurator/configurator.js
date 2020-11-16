@@ -4,16 +4,17 @@
 
 angular.module('PlattarConfigurator')
 .controller('configurator', [
-	'$scope', 'config', 'Tracker', 'communicator', 'PlattarIntegration', '$rootScope', '$sce',
-	function($scope, config, Tracker, communicator, PlattarIntegration, $rootScope, $sce) {
+	'$scope', 'config', 'Tracker', 'communicator', 'PlattarIntegration', '$rootScope', '$sce', '$rootScope',
+	'$timeout',
+	function($scope, config, Tracker, communicator, PlattarIntegration, $rootScope, $sce, $rootScope,
+		$timeout) {
 		$scope.error = undefined;
 		communicator.injectObject('configurator', $scope);
 
 		$scope.hasVariations = false;
+		$rootScope.configuratorVisible = false;
 
 		$scope.canAugment = PlattarIntegration.canAugment;
-		$scope.previewThumbnail = '';
-		$scope.selectedThumbnail = '';
 
 		$scope.plattar.api.getScene(config.sceneId,
 			function (result) {
@@ -51,12 +52,11 @@ angular.module('PlattarConfigurator')
 
 			$scope.hasVariations = false;
       $scope.products.some(function(product){
-      	if(!$scope.previewThumbnail){
-      		$scope.selectedThumbnail = product.selectedVariation.thumbnail;
-      	}
-
         if(product.variations.length > 1){
 					$scope.hasVariations = true;
+					$timeout(function(){
+						$scope.toggleVisibility();
+					}, 500)
           return true;
         }
       });
@@ -64,22 +64,16 @@ angular.module('PlattarConfigurator')
 			$scope.$apply();
 		});
 
-		$scope.previewVariation = function (variation) {
-			if(variation){
-				$scope.previewThumbnail = variation.thumbnail;
-			}
-			else{
-				$scope.previewThumbnail = undefined;
-			}
+		$scope.toggleExpanded = function(product){
+			product.expanded = !product.expanded;
 		};
 
 		$scope.selectVariation = function (product, variation) {
-			if(!variation.visiblePreview){
+			if(product.selectedVariation == variation){
 				return;
 			}
-
-			if(product == $scope.products[0]){
-				$scope.selectedThumbnail = variation.thumbnail;
+			if(!variation.visiblePreview){
+				return;
 			}
 
 			product.selectedVariation = variation;
@@ -95,8 +89,14 @@ angular.module('PlattarConfigurator')
 			$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
 		};
 
-		$scope.toggleVisibility = function () {
-			$('.configurator-container').toggleClass('configurator-container-visible');
+		$scope.toggleVisibility = function (thing) {
+			if(thing == 'view'){
+				communicator.sendMessage('viewer', 'toggleVisibility');
+				$rootScope.configuratorVisible = false;
+			}
+			else{
+				$rootScope.configuratorVisible = !$rootScope.configuratorVisible;
+			}
 		};
 
 		$scope.openAR = function(){

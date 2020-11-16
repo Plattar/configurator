@@ -1,15 +1,21 @@
-<div class='configurator-container' ng-controller="configurator" ng-class='{"hidden": !hasVariations}'>
+<div class='configurator-container' ng-controller="configurator" ng-class='{"hidden": !hasVariations, "visible": configuratorVisible}'>
+
+	<div class='page-title show-small'>
+		<h2 class='light-font' ng-click='toggleVisibility("view")'>View</h2>
+		<div ng-click='toggleVisibility()'>
+			<icon src='/icons/icon-arrow.svg'></icon>
+		</div>
+		<h2 class='dark-font text-right' ng-click='toggleVisibility()'>Configure</h2>
+	</div>
 
 	<div class='configurator' ng-if='hasVariations'>
 
-		<div class='configurator-toggle' ng-click='toggleVisibility()'><icon src='/icons/icon-plus.svg'></icon></div>
+		<!-- <div class='configurator-toggle' ng-click='toggleVisibility()'><icon src='/icons/icon-arrow.svg'></icon></div> -->
 
-		<h1>{{scene.attributes.title}}</h1>
+		<div class='configurator-toggle show-big' ng-click='toggleVisibility()'><icon src='/icons/icon-arrow.svg'></icon></div>
 
-		<div class='preview-container'>
-			<img class='preview-image' ng-src="{{selectedThumbnail}}" ng-style='{opacity: previewThumbnail ? 0 : 1}'>
-			<img class='preview-image' ng-src="{{previewThumbnail}}" ng-style='{opacity: previewThumbnail ? 1 : 0}'>
-		</div>
+		<h1 class='dark-font'>{{scene.attributes.title}}</h1>
+		<p class='light-font' ng-if='scene.attributes.custom_json.description'>{{scene.attributes.custom_json.description}}</p>
 
 		<!-- Loop for all products -->
 		<div
@@ -17,12 +23,18 @@
 			ng-if='product.variations.length > 1'
 			ng-style='{"margin-left" : (relationship[product.instanceid].level * 10) + "px"}'
 			ng-class='{
-				"squashed": !product.visiblePreview
+				"squashed": !product.visiblePreview,
+				"vertical": product.expanded
 			}'
 			class='product-view'
 		>
-			<h3 class='title'>{{product.attributes.title}}</h3>
-			<h3>{{product.selectedVariation.attributes.title}}</h3>
+			<h3 class='title dark-font'>
+				<icon	src='/icons/icon-arrow.svg' ng-click='toggleExpanded(product)'></icon>
+				{{product.attributes.title}}
+				<span class='variation-title light-font'>
+					{{product.selectedVariation.attributes.title}}
+				</span>
+			</h3>
 
 			<div class='slider-container'>
 				<div class='slider'>
@@ -30,16 +42,17 @@
 					<div class='variation-selected'
 						ng-class='{
 							"selected": variation == product.selectedVariation,
-							"squashed": !variation.visiblePreview
+							"squashed": !variation.visiblePreview,
+							"square": !variation.swatch,
+							"circle": variation.swatch && variation.thumbnail,
+							"blank": !variation.swatch && !variation.thumbnail
 						}'
 						ng-repeat='variation in product.variations'
 					>
 						<div class='variation-container'
 							ng-click='selectVariation(product, variation)'
-							ng-mouseover="previewVariation(variation)"
-							ng-mouseleave="previewVariation()"
 						>
-							<img ng-src="{{variation.swatch}}" smoothload>
+							<img ng-src="{{variation.swatch || variation.thumbnail}}" smoothload>
 						</div>
 					</div>
 				</div>

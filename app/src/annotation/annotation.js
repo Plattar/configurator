@@ -15,8 +15,12 @@ angular.module('PlattarConfigurator')
 
     $scope.annotation = null;
     $scope.annotationactive = false;
+    var timeout;
 
     $scope.handleAnnotation = function(data) {
+      if(timeout){
+        clearTimeout(timeout);
+      }
       if(data.page_link_id){
         communicator.sendMessage('pages', 'closeAllPages', {});
         communicator.sendMessage('pages', 'openPage', data.page_link_id);
@@ -36,6 +40,9 @@ angular.module('PlattarConfigurator')
     };
 
     $scope.openAnnotation = function(annotationData) {
+      if(annotationData.type != 'button'){
+        return;
+      }
       $scope.annotation = annotationData;
 
       if($scope.annotation.url){
@@ -43,10 +50,11 @@ angular.module('PlattarConfigurator')
       }
 
       $timeout(function() {
+        console.log(annotationData)
         if (annotationData.file_video_id) {
           $scope.plattar.api.getFile(annotationData.file_video_id, 'filevideo', function(result) {
-            $scope.annotation.file = result.attributes.effective_uri;
-            $scope.annotation.fileType = result.type;
+            $scope.annotation.file = result.sourcePath;
+            $scope.annotation.fileType = 'filevideo';
             $scope.annotationactive = true;
             $scope.$apply();
           }, function(error) {
@@ -55,8 +63,9 @@ angular.module('PlattarConfigurator')
         }
         else if (annotationData.file_image_id && annotationData.type != 'button') {
           $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
-            $scope.annotation.file = result.attributes.effective_uri;
-            $scope.annotation.fileType = result.type;
+            console.log(result)
+            $scope.annotation.file = result.sourcePath;
+            $scope.annotation.fileType = 'fileimage';
             $scope.annotationactive = true;
             $scope.$apply();
           }, function(error) {
@@ -77,12 +86,12 @@ angular.module('PlattarConfigurator')
 
     $scope.clearAnnotation = function() {
       $scope.annotationactive = false;
-      $timeout(function() {
+      timeout = $timeout(function() {
         $scope.annotation.title = undefined;
         $scope.annotation.fileType = undefined;
         $scope.annotation.file = undefined;
         $scope.annotation.text = undefined;
-      }, 300);
+      }, 1000);
       $scope.plattar.closeAnnotation();
 
       $scope.plattar.sendMessage('pantocamera', {title:'start camera'})

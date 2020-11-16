@@ -12,13 +12,14 @@ angular.module('PlattarConfigurator')
 
         if(isProduct){
           var path = products[0].selectedVariation.file.attributes.path;
-          var filename = products[0].selectedVariation.file.attributes.original_filename;
+          var gltfFileman = products[0].selectedVariation.file.attributes.gltf_filename;
+          var usdzFilename = products[0].selectedVariation.file.attributes.usdz_filename;
 
           this.injectedObjects["viewer"].setProduct({
             title: products[0].attributes.title,
             product_url: products[0].attributes.product_url,
-            gltfUrl: config.cdnUrl + path + filename,
-            usdzUrl: config.cdnUrl + path + 'model-conv.usdz',
+            gltfUrl: config.cdnUrl + path + gltfFileman,
+            usdzUrl: config.cdnUrl + path + usdzFilename
           });
         }
         else{

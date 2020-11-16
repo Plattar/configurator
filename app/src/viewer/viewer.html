@@ -1,27 +1,11 @@
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
-	<!-- <div class='header'>
-		<div ng-if='showAR' class='header-button' ng-click='toggleCamera()'>
-			<icon src='/icons/icon-camera.svg'></icon>
-		</div>
-
-		<div class='header-button' ng-click='goFullscreen()'>
-			<icon ng-if='!isFullscreen' src='/icons/icon-fullscreen.svg'></icon>
-			<icon ng-if='isFullscreen' src='/icons/icon-fullscreen-in.svg'></icon>
-		</div>
-
-		<div class='header-button' ng-click='activateHelp($event)'>
-			<icon src='/icons/icon-help.svg'></icon>
-		</div>
-
-		<div class='header-button' ng-click='resetTransforms()'>
-			<icon src='/icons/icon-reset.svg'></icon>
-		</div>
-	</div> -->
-
-	<div class='frame-padding'>
+	<div class='frame-padding' ng-class='{
+		verticalDisplace: controlsVisible,
+		horiztonalDisplace: configuratorVisible
+	}'>
 		<iframe id="plattar-frame" class='full' ng-src="{{embedUrl}}" frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
 
-		<div ng-attr-id="{{clickType ? 'walkthrough-mouse' : 'walkthrough-touch'}}" class='walkthrough'  ng-class='{"walkthrough-hidden": hideWalkthrough}'>
+		<!-- <div ng-attr-id="{{clickType ? 'walkthrough-mouse' : 'walkthrough-touch'}}" class='walkthrough'  ng-class='{"walkthrough-hidden": hideWalkthrough}'>
 
 			<div class='frame1 frame' ng-class='{"frame-hidden": hideframe1}'>
 				<p ng-if='clickType'>
@@ -40,8 +24,44 @@
 					<icon src='/icons/two-fingers.svg'></icon> Use two fingers to pull/push
 				</p>
 			</div>
+		</div> -->
+	</div>
 
+	<div class='controls-container' ng-class='{visible: controlsVisible, "right-padding": configuratorVisible}'>
+		<div class='controls show-big'>
+			<icon class='arrow big' src='/icons/icon-arrow.svg' ng-click='toggleVisibility()'></icon>
 		</div>
 
+		<div class='controls show-small'>
+			<h2 class='dark-font'>View</h2>
+			<div ng-click='toggleVisibility()'>
+				<icon class='arrow' src='/icons/icon-arrow.svg'></icon>
+			</div>
+			<h2 class='light-font text-right' ng-click='toggleVisibility("configure")'>Configure</h2>
+		</div>
+
+		<div class='qwe'>
+			<div ng-if='!cameras || !cameras.length'></div>
+			<div>
+				<div ng-repeat='camera in cameras' ng-class='{"selected": camera == selectedCamera}' class='camera'>
+					<h2 ng-click='panToCamera(camera)'>
+						<!-- {{camera.attributes.title}} -->
+						<img ng-src="{{camera.image.sourcePath}}">
+					</h2>
+				</div>
+			</div>
+
+			<div class='extra'>
+				<div class='presentation' ng-click='playPresentation();'>
+					<div class='play'>
+						<icon src='/icons/icon-play.svg'></icon>
+					</div>
+					<h2>View Presentation</h2>
+				</div>
+				<div class='options'>
+					<!-- <icon src='/icons/icon-arrow.svg'></icon> -->
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

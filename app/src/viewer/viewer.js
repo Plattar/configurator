@@ -2,8 +2,8 @@
 	Controls the Panel that contains the controls and 3d view
 */
 angular.module('PlattarConfigurator')
-.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout', 'communicator',
-	function($scope, config, $sce, Tracker, $timeout, communicator) {
+.controller('viewer', ['$scope', 'config', '$sce', 'Tracker', '$timeout', 'communicator', '$rootScope',
+	function($scope, config, $sce, Tracker, $timeout, communicator, $rootScope) {
 
 		var canQuicklook = (function() {
 			var tempAnchor = document.createElement('a');
@@ -14,17 +14,34 @@ angular.module('PlattarConfigurator')
 
 		communicator.injectObject('viewer', $scope);
 
-		var url = config.apiUrl + '/webgleditor/preview/index.html';
-
-		$scope.embedUrl = $sce.trustAsResourceUrl(url);
+		$scope.embedUrl = $sce.trustAsResourceUrl(config.apiUrl + '/webgleditor/preview/index.html?allowAR=false');
 		$scope.hideWalkthrough = true;
 		$scope.hideframe1 = true;
 		$scope.hideframe2 = true;
 		$scope.clickType = !mobilecheck();
 		$scope.isFullscreen = false;
 		$scope.showAR = false;
-		$scope.product = undefined;
 		var cameraEnabled = false;
+		$scope.product = undefined;
+		$rootScope.controlsVisible = false;
+		$timeout(function(){
+			$rootScope.controlsVisible = true;
+		}, 500);
+
+		$scope.selectedCamera = undefined;
+		$scope.cameras = undefined;
+		setTimeout(function(){
+			$scope.plattar.api.listCameras(config.sceneId, function(cameras){
+				$scope.selectedCamera = cameras[0];
+				$scope.cameras = cameras;
+				console.log($scope.cameras)
+			});
+
+			$scope.plattar.api.listAnnotations(config.sceneId, function(annotations){
+				$scope.annotations = annotations;
+				console.log($scope.annotations)
+			});
+		},1000);
 
 		if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
 			$scope.showAR = true;
@@ -32,6 +49,35 @@ angular.module('PlattarConfigurator')
 		else if(/android/i.test(navigator.userAgent)){
 			$scope.showAR = true;
 		}
+
+		$scope.panToCamera = function(camera){
+			$scope.plattar.panToCamera(camera.id);
+			$scope.selectedCamera = camera;
+		};
+
+		$scope.toggleVisibility = function(thing){
+			if(thing == 'configure'){
+				communicator.sendMessage('configurator', 'toggleVisibility');
+				$rootScope.controlsVisible = false;
+			}
+			else{
+				$rootScope.controlsVisible = !$rootScope.controlsVisible;
+			}
+		};
+
+		$scope.playPresentation = function(){
+			$scope.cameras.forEach(function(camera, count){
+				$timeout(function(){
+					var annotation = $scope.annotations.find(function(annotation){
+						return annotation.attributes.scene_camera_id == camera.id;
+					});
+					$scope.plattar.panToCamera(camera.id);
+					if(annotation){
+						$scope.plattar.setAnnotation(annotation);
+					}
+				}, 4000*count);
+			});
+		};
 
 		$scope.toggleCamera = function() {
 			//detect ios

@@ -1,7 +1,18 @@
 body{
 	// font-family: 'Nunito Sans', sans-serif;
-	font-family: 'Inter', sans-serif;
+	// font-family: 'Inter', sans-serif;
+	font-family: 'Bebas Neue', sans-serif;
   line-height: 1.2;
+}
+
+.dark-font{
+	color: #273029;
+}
+.medium-font{
+	color: #1f2d3d;
+}
+.light-font{
+	color: #8492a6;
 }
 
 .smoothload{
@@ -62,24 +73,44 @@ button:focus, .btn:focus{
 	outline: none;
 }
 
+@media (max-width: 768px) {
+  .show-small{
+    display: flex;
+  }
+  .show-big{
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .show-small{
+    display: none;
+  }
+  .show-big{
+    display: flex;
+  }
+}
 
 // Webkit scollbar changes
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 9px;
+  height: 9px;
 }
 
 ::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(240,240,240,0.8);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  // background: rgba(240,240,240,0.8);
+  background: #e3e5e4;
 }
 
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(200,200,200,0.8);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  // background: rgba(200,200,200,0.8);
+  background: #273029;
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(200,200,200,0.4);
+  background: #273029;
+	// background: rgba(200,200,200,0.4);
 }

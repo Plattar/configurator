@@ -8,49 +8,83 @@
 	z-index: 15;
 
 	.annotation{
-		// display: none;
 		position: absolute;
-		bottom: -100%;
-		// max-width: 600px;
 		height: 90%;
+		max-width: 0px;
 		left: 0;
 		right: 0;
 		margin: auto;
-		transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out;
+		transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out, max-width 0.5s ease-in-out;
 		color: #000;
 		z-index: 1;
+		bottom: 5%;
+		transition-delay: 0.25s;
+
+		&.annotation-visible{
+			max-width: 500px;
+			bottom: 5%;
+			transition-delay: 0s;
+			// display: block;
+
+			.frame{
+				transition-delay: 0.25s;
+				width: 500px;
+			}
+		}
+
+		.annotation-bar{
+			height: 3px;
+			background-color: black;
+			width: 100%;
+			margin-bottom: 10px;
+		}
 
 		.frame{
-			pointer-events: none;
-			margin: 0 5%;
-			border-radius: 10px;
-			text-align: center;
+			pointer-events: auto;
 			position: relative;
-			color: #282828;
+			width: 0px;
+			overflow: hidden;
 
 			display: flex;
 			flex-flow: column;
 			max-height: 100%;
+			transition: width 0.5s ease-in-out, background 0.5s;
+			border: none;
 
-			&.border{
-				padding: 10px;
-				background: rgba(255, 255, 255, 0.75);
-				box-shadow: 0px 2px 8px rgba(0,0,0,0.5);
-			// overflow: hidden;
+			.frame-inner{
+				width: 500px;
+				transition: padding 0.5s;
+			}
+
+			&.borderr{
+				background: white;
+				// box-shadow: 0px 2px 8px rgba(0,0,0,0.5);
+
+				.frame-inner{
+					padding: 10px;
+				}
+
+				h1{
+					margin-left: 12px;
+				}
+
+				.button-close svg{
+					left: 0px;
+				}
 			}
 
 			h1{
 				flex: 0 1 auto;
-				margin-top: 0;
 				font-weight: bold;
-				margin: auto;
 				margin-bottom: 10px;
-				max-width: 88%;
 				font-size: 24px;
+				letter-spacing: 0.5px;
+				transition: margin-left 0.5s;
 			}
 
 			p{
 				white-space: pre-line;
+				margin-left: 12px;
 				margin-bottom: 0;
 				margin-top: 10px;
 				font-size: 18px;
@@ -65,14 +99,18 @@
 				background-repeat: no-repeat;
 				flex: 1 1 auto;
 			}
+			img{
+				max-width: 100%;
+				max-height: 500px;
+			}
 
 			div.video{
-				height: 100vh;
+				// height: 100vh;
 				position: relative;
 				flex: 1 1 auto;
 
 				video{
-					position: absolute;
+					// position: absolute;
 					top: 0;
 					bottom: 0;
 					left: 0;
@@ -80,7 +118,7 @@
 					margin: auto;
 					width: auto;
 					max-width: 100%;
-					max-height: 100%;
+					max-height: 50vh;
 				}
 			}
 
@@ -104,27 +142,19 @@
 			}
 
 			.button-close{
-				top: -15px;
-				right: -15px;
 				height: 40px;
 				width: 40px;
-				max-height: 100px;
-				max-width: 100px;
-				border-radius: 5vh;
-				position: absolute;
-				pointer-events: auto;
+				// pointer-events: auto;
 
 				svg{
 					width: 40px;
 					height: 40px;
 					padding: 5px;
+					left: -12px;
+					position: relative;
+					transition: left 0.5s;
 				}
 			}
-		}
-
-		&.annotation-visible{
-			bottom: 5%;
-			display: block;
 		}
 	}
 }
