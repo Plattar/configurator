@@ -45,7 +45,7 @@ var isDev = function () {
 
 /* App Module */
 angular.module('PlattarConfigurator', [])
-.constant('config', {
+/*.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: 'https://cdn-dev.plattar.space/',
@@ -55,9 +55,9 @@ angular.module('PlattarConfigurator', [])
 	autorotate: false, //getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
 	reverseRotation: getParameterByName('reverseRotation') || false, // setting if the scene should automatically rotate on load
 	environment: 'dev'
-})
+})*/
 
-/*.constant('config', {
+.constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	debug: false,
@@ -67,7 +67,7 @@ angular.module('PlattarConfigurator', [])
 	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
 	reverseRotation: getParameterByName('reverseRotation') || false, // setting if the scene should automatically rotate on load
 	environment: isProd() ? 'prod' : 'staging'
-})*/
+})
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
