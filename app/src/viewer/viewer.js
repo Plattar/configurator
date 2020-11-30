@@ -25,8 +25,9 @@ angular.module('PlattarConfigurator')
 		$scope.product = undefined;
 		$rootScope.controlsVisible = false;
 		$timeout(function(){
-			$rootScope.controlsVisible = true;
+			$rootScope.controlsVisible = !$scope.isMobile;
 		}, 500);
+		$scope.annotationsVisible = true;
 
 		$scope.selectedCamera = undefined;
 		$scope.cameras = undefined;
@@ -233,6 +234,17 @@ angular.module('PlattarConfigurator')
 
 		$scope.setProduct = function(product) {
 			$scope.product = product;
+		};
+
+		$scope.toggleAnnotations = function(){
+			$scope.annotationsVisible = !$scope.annotationsVisible;
+
+			if($scope.annotationsVisible){
+				$scope.plattar.displayAnnotation({display: true});
+			}
+			else{
+				$scope.plattar.displayAnnotation({display: false});
+			}
 		};
 
 		$scope.setVariation = function(variation) {

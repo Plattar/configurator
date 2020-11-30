@@ -13,7 +13,7 @@
   height: 100%;
   transition: top 0.75s @bounceOutSmall;
   z-index: 8;
-  box-shadow: 0 0 50px rgba(0,0,0,0.25);
+  box-shadow: 0 0 50px rgba(0,0,0,0.1);
   background: white;
 
   &.hidden{
@@ -40,6 +40,25 @@
 }
 
 @media (max-width: 768px) {
+  .share{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    right: 20px;
+    bottom: 70px;
+    background-color: white;
+
+    svg{
+      width: 20px;
+      height: 20px;
+    }
+  }
+
   .configurator-container{
     @topgap: 200px;
     width: 100%;
@@ -49,6 +68,10 @@
     height: calc(100% - @topgap);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
+
+    .configurator{
+      padding: 20px 20px 0 20px;
+    }
 
     &.visible{
       top: @topgap;
@@ -79,10 +102,14 @@
     &.visible{
       right: 0;
 
+      .configurator{
+        padding: 0 20px;
+      }
+
       .configurator-toggle{
         icon{
           svg{
-            transform: rotate(90deg);
+            transform: rotate(180deg);
           }
         }
       }
@@ -95,7 +122,7 @@
   overflow-y: auto;
   padding: 0 20px 0 40px;
   text-align: left;
-
+  transition: padding 0.5s;
 
   .configurator-toggle{
     icon{
@@ -105,7 +132,7 @@
       padding: 10px;
       display: block;
       svg{
-        transform: rotate(-90deg);
+        transform: rotate(0deg);
         transition: transform 0.5s;
         width: 20px;
         height: 20px;
@@ -117,7 +144,25 @@
     color: #282828;
     font-size: 32px;
     font-weight: 400;
-    margin: 40px 0 20px 0;
+    margin: 50px 0 20px 0;
+  }
+
+  .share{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    right: 30px;
+    top: 40px;
+
+    svg{
+      width: 20px;
+      height: 20px;
+    }
   }
 
   h3{
@@ -131,6 +176,8 @@
 
     icon{
       padding: 5px;
+      padding-left: 0;
+      padding-right: 15px;
       svg{
         width: 15px;
         height: 15px;
@@ -147,7 +194,6 @@
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
     margin-bottom: 24px;
-    margin-left: 20px;
 
     &.squashed{
       max-height: 0;
@@ -166,8 +212,23 @@
         display: flex;
         align-items: center;
         justify-content: start;
+      }
+    }
 
-        &.vertical{
+    icon{
+      svg{
+        transform: rotate(180deg);
+        transition: transform 0.5s;
+      }
+    }
+    &.vertical{
+      icon{
+        svg{
+          transform: rotate(270deg);
+        }
+      }
+      .slider-container{
+        .slider{
           flex-wrap: wrap;
           width: 100%;
         }
@@ -215,7 +276,7 @@
     .variation-container{
       margin: 8px;
       height: @swatch-size;
-      opacity: 0.8;
+      opacity: 0.7;
       transition: width 0.5s, height 0.5s, opacity 0.5s, margin 0.5s;
 
       img{

@@ -45,19 +45,19 @@ var isDev = function () {
 
 /* App Module */
 angular.module('PlattarConfigurator', [])
-/*.constant('config', {
+.constant('config', {
 	origin: location.origin,
 	apiUrl: 'https://localhost',
 	cdnUrl: 'https://cdn-dev.plattar.space/',
 	debug: true,
 	universalGA: "UA-86801112-11",
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
-	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
+	autorotate: false, //getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
 	reverseRotation: getParameterByName('reverseRotation') || false, // setting if the scene should automatically rotate on load
 	environment: 'dev'
-})*/
+})
 
-.constant('config', {
+/*.constant('config', {
 	apiUrl: isProd() ? 'https://app.plattar.com' : 'https://staging.plattar.space',
 	cdnUrl: isProd() ? 'https://cdn.plattar.com/' : 'https://cdn-staging.plattar.space/',
 	debug: false,
@@ -67,7 +67,7 @@ angular.module('PlattarConfigurator', [])
 	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
 	reverseRotation: getParameterByName('reverseRotation') || false, // setting if the scene should automatically rotate on load
 	environment: isProd() ? 'prod' : 'staging'
-})
+})*/
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
 	//this allows us to avoid CORS erros from these site
@@ -76,12 +76,16 @@ angular.module('PlattarConfigurator', [])
 		]);
 }])
 .controller('mainController',
-	['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope', 'communicator',
-	function($scope, $element, $interval, $http, config, Tracker, $rootScope, communicator) {
+	['$scope', '$element', '$interval', '$http', 'config', 'Tracker', '$rootScope', 'communicator', '$document',
+	function($scope, $element, $interval, $http, config, Tracker, $rootScope, communicator, $document) {
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
 		communicator.injectObject('main', $scope);
+
+		if($document.width() < 768){
+			$rootScope.isMobile = true;
+		}
 
 		$scope.requestFullscreen = function() {
 			$scope.plattar.toggleFullscreen($element[0]);

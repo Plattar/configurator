@@ -1,3 +1,7 @@
+<div class='play show-small' ng-click='playPresentation();'>
+	<icon src='/icons/icon-play.svg'></icon>
+</div>
+
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
 	<div class='frame-padding' ng-class='{
 		verticalDisplace: controlsVisible,
@@ -33,15 +37,16 @@
 		</div>
 
 		<div class='controls show-small'>
-			<h2 class='dark-font'>View</h2>
+			<h2 class='dark-font' ng-click='toggleVisibility()'>View</h2>
 			<div ng-click='toggleVisibility()'>
-				<icon class='arrow' src='/icons/icon-arrow.svg'></icon>
+				<icon class='arrow' src='/icons/icon-double-arrow.svg'></icon>
 			</div>
 			<h2 class='light-font text-right' ng-click='toggleVisibility("configure")'>Configure</h2>
 		</div>
 
 		<div class='qwe'>
 			<div ng-if='!cameras || !cameras.length'></div>
+			<h4 ng-if='cameras && cameras.length' class='show-small'>Select Angle</h4>
 			<div>
 				<div ng-repeat='camera in cameras' ng-class='{"selected": camera == selectedCamera}' class='camera'>
 					<h2 ng-click='panToCamera(camera)'>
@@ -52,14 +57,55 @@
 			</div>
 
 			<div class='extra'>
-				<div class='presentation' ng-click='playPresentation();'>
+				<div class='presentation show-big' ng-click='playPresentation();'>
 					<div class='play'>
 						<icon src='/icons/icon-play.svg'></icon>
 					</div>
 					<h2>View Presentation</h2>
 				</div>
-				<div class='options'>
-					<!-- <icon src='/icons/icon-arrow.svg'></icon> -->
+
+				<div class='options show-big'>
+					<span class='tooltipp' ng-click='toggleAnnotations()'>
+						<icon ng-click='' src='/icons/icon-annotation.svg'></icon>
+						<span class='tooltiptext'>
+							{{annotationsVisible ? 'Hide' : 'Show'}} Annotations
+						</span>
+					</span>
+
+					<span class='tooltipp'>
+						<icon ng-click='' src='/icons/icon-ruler.svg'></icon>
+						<span class='tooltiptext'>
+							Show Measurements
+						</span>
+					</span>
+
+					<span class='tooltipp' ng-click='resetTransforms()'>
+						<icon src='/icons/icon-reset.svg'></icon>
+						<span class='tooltiptext'>
+							Reset View
+						</span>
+					</span>
+				</div>
+
+				<div class='options show-small' style='flex-direction: column;'>
+					<h4 class='show-small'>Viewer Tools</h4>
+
+					<div style='display: flex;'>
+						<span ng-click='toggleAnnotations()'>
+							<icon ng-click='' src='/icons/icon-annotation.svg'></icon>
+							<p>{{annotationsVisible ? 'Hide' : 'Show'}} Annotations</p>
+						</span>
+
+						<span>
+							<icon ng-click='' src='/icons/icon-ruler.svg'></icon>
+							<p>Show Measurements</p>
+						</span>
+
+						<span ng-click='resetTransforms()'>
+							<icon src='/icons/icon-reset.svg'></icon>
+							<p>Reset View</p>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>

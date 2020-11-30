@@ -200,6 +200,10 @@ function PlattarApiIntegration(params){
 		sendMessage('setannotation', {id: data.id});
 	};
 
+	this.displayAnnotation = function(data) {
+		sendMessage('displayannotation', data);
+	};
+
 	this.selectPanorama = function(panoramaId) {
 		sendMessage('runscript', {
 			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",

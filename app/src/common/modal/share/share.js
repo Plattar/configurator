@@ -1,12 +1,12 @@
 'use strict';
 /*
-	Controls the alert modal
+	Controls the share modal
 */
 
 angular.module('PlattarConfigurator')
-.controller('qrmodal', ['$scope', 'Tracker', '$rootScope', '$timeout', 'communicator',
+.controller('sharemodal', ['$scope', 'Tracker', '$rootScope', '$timeout', 'communicator',
 	function ($scope, Tracker, $rootScope, $timeout, communicator) {
-		communicator.injectObject('qrmodal', $scope);
+		communicator.injectObject('sharemodal', $scope);
 
 		$rootScope.onQR = function(img) {
 			$scope.img = img;
@@ -14,13 +14,14 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.closeModal = function(){
-			$('#qrmodal').modal('hide');
+			$('#sharemodal').modal('hide');
 		};
 
 		$scope.openModal = function(modalData){
-			console.log('asdad')
-			$scope.img = modalData.img;
-			$('#qrmodal').modal({
+			$scope.url = modalData.url;
+			$scope.title = modalData.title;
+
+			$('#sharemodal').modal({
 				backdrop: 'static',
 				keyboard: false
 			});

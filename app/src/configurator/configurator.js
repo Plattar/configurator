@@ -55,11 +55,41 @@ angular.module('PlattarConfigurator')
         if(product.variations.length > 1){
 					$scope.hasVariations = true;
 					$timeout(function(){
-						$scope.toggleVisibility();
+						if(!$scope.isMobile){
+							$scope.toggleVisibility();
+						}
 					}, 500)
           return true;
         }
       });
+
+      var url = new URL(location.href);
+			if(url.searchParams.get('conf')){
+				var conf = atob(url.searchParams.get('conf'));
+				console.log(url.searchParams.get('conf'))
+				console.log(conf)
+				conf.split('-').forEach(function(pair){
+					pair = pair.split(':');
+					var productslug = pair[0];
+					var variationslug = pair[1];
+					var product = $scope.products.find(function(product){
+						return product.id.indexOf(productslug) != -1;
+					});
+					if(!product){
+						return;
+					}
+					var variation = product.variations.find(function(variation){
+						return variation.id.indexOf(variationslug) != -1;
+					});
+					if(!variation){
+						return;
+					}
+
+					console.log(productslug, variationslug);
+					console.log(product.id, variation.id)
+					$scope.selectVariation(product, variation);
+				});
+			}
 
 			$scope.$apply();
 		});
@@ -105,7 +135,7 @@ angular.module('PlattarConfigurator')
 			}
 			else{
 				// show qr code
-				communicator.sendMessage('qrmodel', 'openModal', {img: PlattarIntegration.qrUrl});
+				communicator.sendMessage('qrmodal', 'openModal', {img: PlattarIntegration.qrUrl});
 			}
 		};
 
@@ -223,5 +253,38 @@ angular.module('PlattarConfigurator')
 				applyPreview();
 			}
 		}
+
+		$scope.share = function(){
+			// create a slug that describes this variation selection
+			var slug = '';
+			$scope.products.forEach(function(product){
+				if(slug != ''){
+					slug += '-';
+				}
+				slug += product.id.split('-').pop() + ':' + product.selectedVariation.id.split('-').pop();
+			});
+			console.log(slug)
+
+			slug = btoa(slug);
+
+			var url = new URL(location.href);
+			if(url.searchParams.has('conf')){
+				url.searchParams.delete('conf');
+			}
+			url.searchParams.append('conf', slug);
+
+			if(navigator.canShare){
+				navigator.share({
+					url: url.href,
+					title: $scope.scene.attributes.title
+				});
+			}
+			else{
+				communicator.sendMessage('sharemodal', 'openModal', {
+					url: url.href,
+					title: $scope.scene.attributes.title,
+				});
+			}
+		};
 	}
 ]);

@@ -1,9 +1,13 @@
+<div class='share show-small' ng-click='share();'>
+	<icon src='/icons/icon-share.svg'></icon>
+</div>
+
 <div class='configurator-container' ng-controller="configurator" ng-class='{"hidden": !hasVariations, "visible": configuratorVisible}'>
 
 	<div class='page-title show-small'>
 		<h2 class='light-font' ng-click='toggleVisibility("view")'>View</h2>
 		<div ng-click='toggleVisibility()'>
-			<icon src='/icons/icon-arrow.svg'></icon>
+			<icon src='/icons/icon-double-arrow.svg'></icon>
 		</div>
 		<h2 class='dark-font text-right' ng-click='toggleVisibility()'>Configure</h2>
 	</div>
@@ -14,7 +18,11 @@
 
 		<div class='configurator-toggle show-big' ng-click='toggleVisibility()'><icon src='/icons/icon-arrow.svg'></icon></div>
 
-		<h1 class='dark-font'>{{scene.attributes.title}}</h1>
+		<div class='share show-big' ng-click='share();'>
+			<icon src='/icons/icon-share.svg'></icon>
+		</div>
+
+		<h1 class='dark-font show-big'>{{scene.attributes.title}}</h1>
 		<p class='light-font' ng-if='scene.attributes.custom_json.description'>{{scene.attributes.custom_json.description}}</p>
 
 		<!-- Loop for all products -->
@@ -29,7 +37,7 @@
 			class='product-view'
 		>
 			<h3 class='title dark-font'>
-				<icon	src='/icons/icon-arrow.svg' ng-click='toggleExpanded(product)'></icon>
+				<icon ng-style='{opacity: product.variations.length >= 5 ? 1 : 0}'	src='/icons/icon-arrow.svg' ng-click='toggleExpanded(product)'></icon>
 				{{product.attributes.title}}
 				<span class='variation-title light-font'>
 					{{product.selectedVariation.attributes.title}}

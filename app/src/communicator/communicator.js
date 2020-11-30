@@ -47,6 +47,7 @@ angular.module('PlattarConfigurator')
       },
 
       sendMessage: function(destination, func, data){
+        console.log(this.injectedObjects)
         this.injectedObjects[destination][func](data);
       }
     }
