@@ -95,7 +95,7 @@ angular.module('PlattarConfigurator')
 		});
 
 		$scope.toggleExpanded = function(product){
-			product.expanded = !product.expanded;
+			product.collapsed = !product.collapsed;
 		};
 
 		$scope.selectVariation = function (product, variation) {

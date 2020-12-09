@@ -194,9 +194,18 @@
     overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
     margin-bottom: 24px;
+    max-height: 100px;
 
+    &.collapsed{
+      max-height: 20px;
+      icon{
+        svg{
+          transform: rotate(180deg);
+        }
+      }
+    }
     &.squashed{
-      max-height: 0;
+      max-height: 0px;
     }
 
     .slider-container{
@@ -217,7 +226,7 @@
 
     icon{
       svg{
-        transform: rotate(180deg);
+        transform: rotate(270deg);
         transition: transform 0.5s;
       }
     }

@@ -17,9 +17,25 @@ angular.module('PlattarConfigurator')
 			$('#sharemodal').modal('hide');
 		};
 
+		$scope.copyLink = function(event){
+      event.target.select();
+      try {
+        document.execCommand('copy');
+      }
+      catch (err) {
+      }
+		};
+
 		$scope.openModal = function(modalData){
-			$scope.url = modalData.url;
+			// $scope.url = modalData.url;
 			$scope.title = modalData.title;
+
+			var b64 = btoa(modalData.url);
+      var url = 'https://c.plattar.space/api/v2/shorten?base64='+b64;
+      $.get(url, function(result){
+        $scope.url = result;
+        $scope.$apply();
+      });
 
 			$('#sharemodal').modal({
 				backdrop: 'static',

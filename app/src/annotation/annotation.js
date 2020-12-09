@@ -50,7 +50,6 @@ angular.module('PlattarConfigurator')
       }
 
       $timeout(function() {
-        console.log(annotationData)
         if (annotationData.file_video_id) {
           $scope.plattar.api.getFile(annotationData.file_video_id, 'filevideo', function(result) {
             $scope.annotation.file = result.sourcePath;
@@ -63,7 +62,6 @@ angular.module('PlattarConfigurator')
         }
         else if (annotationData.file_image_id && annotationData.type != 'button') {
           $scope.plattar.api.getFile(annotationData.file_image_id, 'fileimage', function(result) {
-            console.log(result)
             $scope.annotation.file = result.sourcePath;
             $scope.annotation.fileType = 'fileimage';
             $scope.annotationactive = true;
