@@ -65,7 +65,7 @@
   .controls-container{
     padding: 10px;
     position: absolute;
-    bottom: calc(-@controls-height + 40px);
+    bottom: calc(-@controls-height + 30px);
     height: ~"max(200px, 20vh)";
     left: 0;
     right: 0;
@@ -102,6 +102,10 @@
           transform: rotate(0deg);
         }
       }
+    }
+
+    &.hidden{
+      bottom: -100vh;
     }
 
     &.visible{
@@ -149,8 +153,8 @@
         }
 
         .play{
-          width: 60px;
-          height: 60px;
+          width: 50px;
+          height: 50px;
           border-radius: 30px;
           box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
           display: flex;
@@ -167,8 +171,9 @@
       }
 
       .options{
-        text-align: right;
+        text-align: left;
         display: block;
+        margin-left: 55px;
 
         icon{
           padding: 10px;

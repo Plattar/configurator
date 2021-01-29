@@ -24,10 +24,13 @@ angular.module('PlattarConfigurator')
 		var cameraEnabled = false;
 		$scope.product = undefined;
 		$rootScope.controlsVisible = false;
+		$rootScope.controlsAvailable = false;
 		$timeout(function(){
 			$rootScope.controlsVisible = !$scope.isMobile;
 		}, 500);
 		$scope.annotationsVisible = true;
+		$scope.selectedAnnotation = true;
+		$scope.inPresentation = false;
 
 		$scope.selectedCamera = undefined;
 		$scope.cameras = undefined;
@@ -35,12 +38,18 @@ angular.module('PlattarConfigurator')
 			$scope.plattar.api.listCameras(config.sceneId, function(cameras){
 				$scope.selectedCamera = cameras[0];
 				$scope.cameras = cameras;
-				console.log($scope.cameras)
+				if($scope.cameras.length > 0){
+					$rootScope.controlsAvailable = true;
+				}
+				$scope.$apply();
 			});
 
 			$scope.plattar.api.listAnnotations(config.sceneId, function(annotations){
 				$scope.annotations = annotations;
-				console.log($scope.annotations)
+				if($scope.annotations.length > 0){
+					$rootScope.controlsAvailable = true;
+				}
+				$scope.$apply();
 			});
 		},1000);
 
@@ -67,17 +76,48 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.playPresentation = function(){
-			$scope.cameras.forEach(function(camera, count){
+			$scope.inPresentation = true;
+			$scope.nextAnnotation(0);
+
+			/*$scope.cameras.forEach(function(camera, count){
 				$timeout(function(){
 					var annotation = $scope.annotations.find(function(annotation){
 						return annotation.attributes.scene_camera_id == camera.id;
 					});
 					$scope.plattar.panToCamera(camera.id);
 					if(annotation){
-						$scope.plattar.setAnnotation(annotation);
+						$scope.openAnnotation(annotation);
+						$scope.plattar.setAnnotation($scope.selectedAnnotation);
 					}
 				}, 4000*count);
+			});*/
+		};
+
+		$scope.openAnnotation = function(data){
+			$scope.selectedAnnotation = $scope.annotations.find(function(annotation){
+				return annotation.id == data.id;
 			});
+		};
+
+		$scope.nextAnnotation = function(indexSet){
+			var index;
+			if(indexSet !== undefined){
+				index = indexSet;
+			}
+			if(!$scope.selectedAnnotation){
+				index = 0;
+			}
+			else{
+				index = $scope.annotations.indexOf($scope.selectedAnnotation);
+				index ++;
+			}
+
+			if(index >= $scope.annotations.length){
+				index = 0;
+			}
+
+			$scope.openAnnotation($scope.annotations[index]);
+			$scope.plattar.setAnnotation($scope.selectedAnnotation);
 		};
 
 		$scope.toggleCamera = function() {

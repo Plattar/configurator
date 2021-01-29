@@ -37,11 +37,15 @@ angular.module('PlattarConfigurator')
       if(data.file_video_id || data.file_image_id || data.text){
         $scope.openAnnotation(data);
       }
+
+      communicator.sendMessage('viewer', 'openAnnotation', data);
     };
 
     $scope.openAnnotation = function(annotationData) {
       if(annotationData.type != 'button'){
-        return;
+        if(annotationData.display !== 'none'){
+          return;
+        }
       }
       $scope.annotation = annotationData;
 

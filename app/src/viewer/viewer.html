@@ -4,7 +4,7 @@
 
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
 	<div class='frame-padding' ng-class='{
-		verticalDisplace: controlsVisible,
+		verticalDisplace: controlsVisible && controlsAvailable,
 		horiztonalDisplace: configuratorVisible
 	}'>
 		<iframe id="plattar-frame" class='full' ng-src="{{embedUrl}}" frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
@@ -31,7 +31,7 @@
 		</div> -->
 	</div>
 
-	<div class='controls-container' ng-class='{visible: controlsVisible, "right-padding": configuratorVisible}'>
+	<div class='controls-container' ng-class='{hidden: !controlsAvailable, visible: controlsVisible, "right-padding": configuratorVisible}'>
 		<div class='controls show-big'>
 			<icon class='arrow big' src='/icons/icon-arrow.svg' ng-click='toggleVisibility()'></icon>
 		</div>
@@ -57,11 +57,13 @@
 			</div>
 
 			<div class='extra'>
-				<div class='presentation show-big' ng-click='playPresentation();'>
+				<!-- <div class='presentation show-big' ng-click='playPresentation();'> -->
+				<div class='presentation show-big' ng-click='inPresentation ? nextAnnotation() : playPresentation();'>
 					<div class='play'>
 						<icon src='/icons/icon-play.svg'></icon>
 					</div>
-					<h2>View Presentation</h2>
+					<h2 ng-if='inPresentation'>Next Feature</h2>
+					<h2 ng-if='!inPresentation'>View Presentation</h2>
 				</div>
 
 				<div class='options show-big'>
@@ -72,12 +74,12 @@
 						</span>
 					</span>
 
-					<span class='tooltipp'>
+					<!-- <span class='tooltipp'>
 						<icon ng-click='' src='/icons/icon-ruler.svg'></icon>
 						<span class='tooltiptext'>
 							Show Measurements
 						</span>
-					</span>
+					</span> -->
 
 					<span class='tooltipp' ng-click='resetTransforms()'>
 						<icon src='/icons/icon-reset.svg'></icon>
