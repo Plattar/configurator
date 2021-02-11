@@ -50,7 +50,7 @@ angular.module('PlattarConfigurator')
       $scope.annotation = annotationData;
 
       if($scope.annotation.url){
-        $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
+        // $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
       }
 
       $timeout(function() {
@@ -81,7 +81,7 @@ angular.module('PlattarConfigurator')
         }
         else if(annotationData.url){
           // $scope.annotation.url = $sce.trustAsResourceUrl(annotationData.url);
-          $scope.annotationactive = true;
+          // $scope.annotationactive = true;
         }
       }, 0);
     };
