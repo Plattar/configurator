@@ -123,14 +123,14 @@ function PlattarApiIntegration(params){
 				self.onAnnotationChange(data.attributes);
 				break;
 
-			case 'openurl':
+			/*case 'openurl':
 				if(e.data.data.url){
 					// window.open(data.url, '_blank');
 					self.onAnnotationChange({
 						url: data.url
 					});
 				}
-				break;
+				break;*/
 
 			case 'selectannotation':
 				// Annotation has content to display
