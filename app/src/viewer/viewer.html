@@ -1,8 +1,9 @@
-<div class='play show-small' ng-click='playPresentation();'>
-	<icon src='/icons/icon-play.svg'></icon>
-</div>
 
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
+	<div class='play show-small' ng-click='playPresentation();'>
+		<icon src='/icons/icon-play.svg'></icon>
+	</div>
+
 	<div class='frame-padding' ng-class='{
 		verticalDisplace: controlsVisible && controlsAvailable,
 		horiztonalDisplace: configuratorVisible

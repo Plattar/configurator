@@ -258,12 +258,13 @@ angular.module('PlattarConfigurator')
 			// create a slug that describes this variation selection
 			var slug = '';
 			$scope.products.forEach(function(product){
-				if(slug != ''){
-					slug += '-';
+				if(product && product.selectedVariation){
+					if(slug != ''){
+						slug += '-';
+					}
+					slug += product.id.split('-').pop() + ':' + product.selectedVariation.id.split('-').pop();
 				}
-				slug += product.id.split('-').pop() + ':' + product.selectedVariation.id.split('-').pop();
 			});
-			console.log(slug)
 
 			slug = btoa(slug);
 
