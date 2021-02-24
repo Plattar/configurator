@@ -37,7 +37,9 @@ angular.module('PlattarConfigurator')
 		setTimeout(function(){
 			$scope.plattar.api.listCameras(config.sceneId, function(cameras){
 				$scope.selectedCamera = cameras[0];
-				$scope.cameras = cameras;
+				$scope.cameras = cameras.filter(function(camera){
+					return camera.attributes.file_image_id;
+				});
 				if($scope.cameras.length > 0){
 					$rootScope.controlsAvailable = true;
 				}

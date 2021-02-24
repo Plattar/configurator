@@ -14,7 +14,7 @@
         <!-- <div class='img' ng-if='annotation.fileType == "fileimage"' style="background-image:url({{annotation.file}})"></div> -->
 
         <div ng-if='annotation.fileType == "filevideo"' class='video'>
-          <video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay></video>
+          <video ng-src="{{annotation.file}}" id="annotation-video" controls playsInline='true' autoPlay muted></video>
         </div>
 
         <div ng-if='annotation.url' class='iframe'>

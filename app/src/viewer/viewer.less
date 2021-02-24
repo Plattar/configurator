@@ -1,4 +1,4 @@
-@controls-height: 20vh;
+@controls-height: 150px;
 @configurator-width: 400px;
 
 @media (max-width: 768px) {
@@ -65,8 +65,10 @@
   .controls-container{
     padding: 10px;
     position: absolute;
-    bottom: calc(-@controls-height + 30px);
-    height: ~"max(200px, 20vh)";
+    // bottom: calc(-@controls-height + 30px);
+    // height: ~"max(200px, 20vh)";
+    bottom: -110px;
+    height: 150px;
     left: 0;
     right: 0;
     background-color: white;
@@ -114,6 +116,12 @@
       icon.arrow{
         svg{
           transform: rotate(270deg);
+        }
+      }
+
+      @media (min-width: 768px) {
+        .qwe .extra{
+          margin-top: -10px;
         }
       }
     }
@@ -174,6 +182,9 @@
         text-align: left;
         display: block;
         margin-left: 55px;
+        @media (max-width: 768px) {
+          margin-left: 0;
+        }
 
         icon{
           padding: 10px;
@@ -192,6 +203,8 @@
 
       .extra{
         width: 200px;
+        margin-top: 10px;
+        transition: margin-top 0.3s;
       }
     }
 

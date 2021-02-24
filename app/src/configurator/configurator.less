@@ -193,9 +193,9 @@
 
   .product-view{
     overflow-y: hidden;
-    transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out, margin-bottom 0.5s ease-in-out;
     margin-bottom: 24px;
-    max-height: 100px;
+    max-height: 120px;
 
     &.collapsed{
       max-height: 20px;
@@ -207,6 +207,7 @@
     }
     &.squashed{
       max-height: 0px;
+      margin-bottom: 0;
     }
 
     .slider-container{
