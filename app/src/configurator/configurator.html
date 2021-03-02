@@ -58,7 +58,7 @@
 						ng-repeat='variation in product.variations'
 					>
 						<div class='variation-container'
-							ng-click='selectVariation(product, variation)'
+							ng-click='selectVariation(product, variation); scrollTo($event);'
 						>
 							<img ng-src="{{variation.swatch || variation.thumbnail}}" smoothload>
 						</div>

@@ -51,19 +51,19 @@ angular.module('PlattarConfigurator')
 			applyPreview();
 
 			$scope.hasVariations = false;
-      $scope.products.some(function(product){
-        if(product.variations.length > 1){
+			$scope.products.some(function(product){
+				if(product.variations.length > 1){
 					$scope.hasVariations = true;
 					$timeout(function(){
 						if(!$scope.isMobile){
 							$scope.toggleVisibility();
 						}
 					}, 500)
-          return true;
-        }
-      });
+					return true;
+				}
+			});
 
-      var url = new URL(location.href);
+			var url = new URL(location.href);
 			if(url.searchParams.get('conf')){
 				var conf = atob(url.searchParams.get('conf'));
 				console.log(url.searchParams.get('conf'))
@@ -117,6 +117,15 @@ angular.module('PlattarConfigurator')
 			//load the variations
 			// loadVariations();
 			$scope.plattar.loadVariation(product.instanceid, product.selectedVariation.id);
+		};
+
+		$scope.scrollTo = function(event){
+			var el = event.currentTarget;
+			// el.parentElement.parentElement.parentElement.scrollTo({left: el.offsetLeft-8});
+
+			$(el.parentElement.parentElement.parentElement).animate({
+				scrollLeft: el.offsetLeft-8
+			}, 300);
 		};
 
 		$scope.toggleVisibility = function (thing) {
