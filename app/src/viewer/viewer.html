@@ -1,6 +1,6 @@
 
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
-	<div class='play show-small' ng-click='playPresentation();'>
+	<div class='play show-small' ng-click='playPresentation();' ng-if='controlsAvailable'>
 		<icon src='/icons/icon-play.svg'></icon>
 	</div>
 
