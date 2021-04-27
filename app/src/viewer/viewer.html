@@ -1,6 +1,10 @@
 
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
-	<div class='play show-small' ng-click='playPresentation();' ng-if='controlsAvailable'>
+	<div class='play-isolated show-small' ng-click='playPresentation();' ng-if='presentationAvailable'>
+		<icon src='/icons/icon-play.svg'></icon>
+	</div>
+
+	<div class='play-isolated' ng-click='playPresentation();' ng-if='!controlsAvailable && presentationAvailable'>
 		<icon src='/icons/icon-play.svg'></icon>
 	</div>
 
@@ -59,7 +63,7 @@
 
 			<div class='extra'>
 				<!-- <div class='presentation show-big' ng-click='playPresentation();'> -->
-				<div class='presentation show-big' ng-click='inPresentation ? nextAnnotation() : playPresentation();'>
+				<div class='presentation show-big' ng-click='inPresentation ? nextAnnotation() : playPresentation();' ng-if='presentationAvailable'>
 					<div class='play'>
 						<icon src='/icons/icon-play.svg'></icon>
 					</div>

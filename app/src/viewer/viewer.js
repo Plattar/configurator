@@ -29,8 +29,9 @@ angular.module('PlattarConfigurator')
 			$rootScope.controlsVisible = !$scope.isMobile;
 		}, 500);
 		$scope.annotationsVisible = true;
-		$scope.selectedAnnotation = true;
+		$scope.selectedAnnotation = undefined;
 		$scope.inPresentation = false;
+		$scope.presentationAvailable = false;
 
 		$scope.selectedCamera = undefined;
 		$scope.cameras = undefined;
@@ -49,7 +50,7 @@ angular.module('PlattarConfigurator')
 			$scope.plattar.api.listAnnotations(config.sceneId, function(annotations){
 				$scope.annotations = annotations;
 				if($scope.annotations.length > 0){
-					$rootScope.controlsAvailable = true;
+					$rootScope.presentationAvailable = true;
 				}
 				$scope.$apply();
 			});
