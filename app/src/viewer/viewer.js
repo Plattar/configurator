@@ -50,7 +50,7 @@ angular.module('PlattarConfigurator')
 			$scope.plattar.api.listAnnotations(config.sceneId, function(annotations){
 				$scope.annotations = annotations;
 				if($scope.annotations.length > 0){
-					$rootScope.presentationAvailable = true;
+					$scope.presentationAvailable = true;
 				}
 				$scope.$apply();
 			});

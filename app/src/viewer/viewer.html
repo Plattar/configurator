@@ -1,10 +1,10 @@
 
 <div ng-controller="viewer" class='viewer' ng-class='{"fullscreen": isFullscreen}'>
-	<div class='play-isolated show-small' ng-click='playPresentation();' ng-if='presentationAvailable'>
+	<div class='play-isolated show-small' ng-click='nextAnnotation();' ng-if='presentationAvailable'>
 		<icon src='/icons/icon-play.svg'></icon>
 	</div>
 
-	<div class='play-isolated' ng-click='playPresentation();' ng-if='!controlsAvailable && presentationAvailable'>
+	<div class='play-isolated' ng-click='nextAnnotation();' ng-if='!controlsAvailable && presentationAvailable'>
 		<icon src='/icons/icon-play.svg'></icon>
 	</div>
 
