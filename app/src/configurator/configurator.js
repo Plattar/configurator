@@ -18,7 +18,7 @@ angular.module('PlattarConfigurator')
 
 		$scope.listHeight = function(){
 			if($scope.products){
-				return 200+Math.max(0, 500-$scope.products.length*144);
+				return 200+Math.max(0, (document.body.offsetHeight-250)-$scope.products.length*144);
 			}
 			return 0;
 		}
