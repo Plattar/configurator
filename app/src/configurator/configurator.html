@@ -1,9 +1,17 @@
 
 <div class='configurator-container' ng-controller="configurator" ng-class='{
-	"hidden": !hasVariations,
-	"visible": configuratorVisible,
-	"display-mob": !controlsAvailable
-}'>
+		"hidden": !hasVariations,
+		"visible": configuratorVisible,
+		"display-mob": !controlsAvailable
+	}'
+>
+
+<style type="text/css">
+	.configurator-container.visible{
+		height: {{"calc(100% - "+listHeight()+"px);"}};
+		top: {{listHeight()+"px"}};
+	}
+</style>
 	<div class='share show-small' ng-click='share();'>
 		<icon src='/icons/icon-share.svg'></icon>
 	</div>

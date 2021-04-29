@@ -16,6 +16,13 @@ angular.module('PlattarConfigurator')
 
 		$scope.canAugment = PlattarIntegration.canAugment;
 
+		$scope.listHeight = function(){
+			if($scope.products){
+				return 200+Math.max(0, 400-$scope.products.length*144);
+			}
+			return 0;
+		}
+
 		$scope.plattar.api.getScene(config.sceneId,
 			function (result) {
 				$scope.scene = result;
@@ -283,7 +290,7 @@ angular.module('PlattarConfigurator')
 			}
 			url.searchParams.append('conf', slug);
 
-			if(navigator.canShare){
+			if(navigator.canShare && navigator.canShare()){
 				navigator.share({
 					url: url.href,
 					title: $scope.scene.attributes.title
