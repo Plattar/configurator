@@ -290,6 +290,17 @@ angular.module('PlattarConfigurator')
 			}
 		};
 
+		$scope.toggleMeasurements = function(){
+			$scope.measurementsVisible = !$scope.measurementsVisible;
+
+			if($scope.measurementsVisible){
+				$scope.plattar.displayMeasurements({display: true});
+			}
+			else{
+				$scope.plattar.displayMeasurements({display: false});
+			}
+		};
+
 		$scope.setVariation = function(variation) {
 			if($scope.product){
 				$scope.product.gltfUrl = variation.gltfUrl;

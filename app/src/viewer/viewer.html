@@ -73,18 +73,18 @@
 
 				<div class='options show-big'>
 					<span class='tooltipp' ng-click='toggleAnnotations()'>
-						<icon ng-click='' src='/icons/icon-annotation.svg'></icon>
+						<icon src='/icons/icon-annotation.svg'></icon>
 						<span class='tooltiptext'>
 							{{annotationsVisible ? 'Hide' : 'Show'}} Annotations
 						</span>
 					</span>
 
-					<!-- <span class='tooltipp'>
-						<icon ng-click='' src='/icons/icon-ruler.svg'></icon>
+					<span class='tooltipp' ng-click='toggleMeasurements();'>
+						<icon src='/icons/icon-ruler.svg'></icon>
 						<span class='tooltiptext'>
-							Show Measurements
+							{{measurementsVisible ? 'Hide' : 'Show'}} Measurements
 						</span>
-					</span> -->
+					</span>
 
 					<span class='tooltipp' ng-click='resetTransforms()'>
 						<icon src='/icons/icon-reset.svg'></icon>
@@ -103,10 +103,10 @@
 							<p>{{annotationsVisible ? 'Hide' : 'Show'}} Annotations</p>
 						</span>
 
-						<!-- <span>
-							<icon ng-click='' src='/icons/icon-ruler.svg'></icon>
-							<p>Show Measurements</p>
-						</span> -->
+						<span>
+							<icon ng-click='toggleMeasurements();' src='/icons/icon-ruler.svg'></icon>
+							<p>{{measurementsVisible ? 'Hide' : 'Show'}} Measurements</p>
+						</span>
 
 						<span ng-click='resetTransforms()'>
 							<icon src='/icons/icon-reset.svg'></icon>
