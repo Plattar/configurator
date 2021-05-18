@@ -55,7 +55,9 @@ var externalScripts = [
   'angular/angular.js',
   'popper.js/dist/umd/popper.js',
   'bootstrap/dist/js/bootstrap.js',
-  '@plattar/plattar-api/build/es2015/plattar-api.js'
+  '@plattar/plattar-api/build/es2015/plattar-api.js',
+  '@plattar/context-messenger/build/es2015/plattar-context-messenger.js',
+  '@plattar/plattar-web/build/es2015/plattar-web.js'
 ];
 
 var externalStyles = [

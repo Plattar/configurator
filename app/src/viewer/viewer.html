@@ -12,28 +12,16 @@
 		verticalDisplace: controlsVisible && controlsAvailable,
 		horiztonalDisplace: configuratorVisible
 	}'>
-		<iframe id="plattar-frame" class='full' ng-src="{{embedUrl}}" frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe>
+		<!-- <iframe id="plattar-frame" class='full' ng-src="{{embedUrl}}" frameBorder="0" allow="camera; autoplay; xr-spatial-tracking" allowfullscreen></iframe> -->
 
-		<!-- <div ng-attr-id="{{clickType ? 'walkthrough-mouse' : 'walkthrough-touch'}}" class='walkthrough'  ng-class='{"walkthrough-hidden": hideWalkthrough}'>
-
-			<div class='frame1 frame' ng-class='{"frame-hidden": hideframe1}'>
-				<p ng-if='clickType'>
-					Click & hold left mouse button to rotate
-				</p>
-				<p ng-if='!clickType'>
-					<icon src='/icons/one-finger.svg'></icon> Use one finger to rotate
-				</p>
-			</div>
-
-			<div class='frame2 frame' ng-class='{"frame-hidden": hideframe2}'>
-				<p ng-if='clickType'>
-					Use the scroll wheel to pull/push
-				</p>
-				<p ng-if='!clickType'>
-					<icon src='/icons/two-fingers.svg'></icon> Use two fingers to pull/push
-				</p>
-			</div>
-		</div> -->
+		<plattar-viewer
+			id='plattar-viewer'
+			class='full'
+			ng-scene-id='{{sceneId}}'
+			server='{{config.environment}}'
+			width='100%'
+			height='100%'
+		></plattar-viewer>
 	</div>
 
 	<div class='controls-container' ng-class='{hidden: !controlsAvailable, visible: controlsVisible, "right-padding": configuratorVisible}'>
@@ -79,12 +67,12 @@
 						</span>
 					</span>
 
-					<span class='tooltipp' ng-click='toggleMeasurements();'>
+					<!-- <span class='tooltipp' ng-click='toggleMeasurements();'>
 						<icon src='/icons/icon-ruler.svg'></icon>
 						<span class='tooltiptext'>
 							{{measurementsVisible ? 'Hide' : 'Show'}} Measurements
 						</span>
-					</span>
+					</span> -->
 
 					<span class='tooltipp' ng-click='resetTransforms()'>
 						<icon src='/icons/icon-reset.svg'></icon>
@@ -103,10 +91,10 @@
 							<p>{{annotationsVisible ? 'Hide' : 'Show'}} Annotations</p>
 						</span>
 
-						<span>
+						<!-- <span>
 							<icon ng-click='toggleMeasurements();' src='/icons/icon-ruler.svg'></icon>
 							<p>{{measurementsVisible ? 'Hide' : 'Show'}} Measurements</p>
-						</span>
+						</span> -->
 
 						<span ng-click='resetTransforms()'>
 							<icon src='/icons/icon-reset.svg'></icon>

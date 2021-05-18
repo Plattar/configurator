@@ -66,7 +66,7 @@ angular.module('PlattarConfigurator', [])
 	sceneId: getParameterByName('sceneId'), // getting sceneId from url
 	autorotate: getParameterByName('autorotate') || true, // setting if the scene should automatically rotate on load
 	reverseRotation: getParameterByName('reverseRotation') || false, // setting if the scene should automatically rotate on load
-	environment: isProd() ? 'prod' : 'staging'
+	environment: isProd() ? 'production' : 'staging'
 })
 
 .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
@@ -81,6 +81,7 @@ angular.module('PlattarConfigurator', [])
 
 		$scope.loaded = false;
 		$scope.sceneId = config.sceneId;
+		$rootScope.config = config;
 		communicator.injectObject('main', $scope);
 
 		if($document.width() < 768){

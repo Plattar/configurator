@@ -25,10 +25,14 @@ function PlattarApiIntegration(params){
 	this.onSceneChange = function(){console.log('No scene change listener set')};
 	// Function calls to the Plattar API to get scene/product data
 	var server = Plattar.Server.default();
+	if(environment == 'production'){
+		environment = 'prod';
+	}
 	server.origin(server[environment || 'prod']);
 
+	this.messenger = undefined;
+
 	this.init = function(params, cb){
-		this.onReady = cb;
 		iframe = document.querySelector('#plattar-frame');
 
 		if(params.apiUrl){
@@ -39,17 +43,21 @@ function PlattarApiIntegration(params){
 		}
 		if(params.environment){
 			environment = params.environment;
+			if(environment == 'production'){
+				environment = 'prod';
+			}
 			server.origin(server[environment]);
 		}
 
-		sendMessage('initpreview', {
-			origin: location.origin,
-			options: {
-				autorotate: params.autorotate,
-				reverseRotation: params.reverseRotation,
-				isConfigurator: true
+		var initInterval = setInterval(function(){
+			var viewer = document.getElementById('plattar-viewer');
+
+			if (viewer) {
+				self.messenger = viewer.messenger;
+				clearInterval(initInterval);
+				cb();
 			}
-		});
+		}, 100);
 	};
 
 	// Sennding messages to the 3d Engine
@@ -151,12 +159,6 @@ function PlattarApiIntegration(params){
 
 	// Used for opening a new scene
 	this.openScene = function(sceneId) {
-		//Lose the existing scene if there is one, and load the new scene
-		sendMessage('losescene', {});
-		sendMessage('loadscene', {
-			sceneId: sceneId
-		});
-
 		//Callback function to reload variation UI when the scene is changed
 		if(self.onSceneChange){
 			self.onSceneChange(sceneId);
@@ -165,56 +167,61 @@ function PlattarApiIntegration(params){
 
 	// Used to set a variation for a product
 	this.loadVariation = function(productId, variationId) {
-		sendMessage('loadproduct', {
-			productId: productId,
-			variationId: variationId
-		});
+    self.messenger.selectVariation(productId, variationId);
 	};
 
 	// Turns the camera view on/off as the background of the scene
 	this.toggleCamera = function(active) {
-		sendMessage('toggleCamera', {active: active});
+		// sendMessage('toggleCamera', {active: active});
 	};
 
 	this.panToCamera = function(id) {
-		sendMessage('panToCamera', {id: id});
+    self.messenger.moveToCamera(id);
+		// sendMessage('panToCamera', {id: id});
 	};
 
 	// Enables the help prompts to appear
 	this.activateHelp = function() {
-		sendMessage('activateHelp', {});
+		// sendMessage('activateHelp', {});
 	};
 
 	// Returns the product back to its original position/rotation
 	this.resetTransforms = function() {
-		sendMessage('resetTransform', {} );
+    self.messenger.moveToCamera('default');
+		// sendMessage('resetTransform', {} );
 	};
 
 	this.closeAnnotation = function() {
-		// sendMessage('tuiselectannotation', {});
-		sendMessage('clearannotation', {});
+    self.messenger.closeAnnotation();
 	};
 
 	this.setAnnotation = function(data) {
-		// sendMessage('tuisetannotation', {});
-		sendMessage('setannotation', {id: data.id});
+		// sendMessage('setannotation', {id: data.id});
+  	self.messenger.openAnnotation(data.id);
 	};
 
 	this.displayAnnotation = function(data) {
-		sendMessage('displayannotation', data);
+		if(data.display){
+    	self.messenger.showAnnotations();
+		}
+		else{
+    	self.messenger.hideAnnotations();
+		}
 	};
 
 	this.displayMeasurements = function(data) {
-		sendMessage('displaymeasurements', data);
+		console.warn('NYI');
+		// sendMessage('displaymeasurements', data);
 	};
 
 	this.selectPanorama = function(panoramaId) {
-		sendMessage('runscript', {
+		console.warn('NYI');
+		/*sendMessage('runscript', {
 			script: "PLATTAR.Actions.selectPanorama(params.id);PLATTAR.eventHandler.send('tui,cms', 'panToCamera', {id: params.id,time: 2000,rotation: false,pivot: 'self'});",
 			params: {
 				id: panoramaId
 			}
-		});
+		});*/
 	};
 
 	// Cross-browser compatible fullscreen enabling
