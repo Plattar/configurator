@@ -14,6 +14,7 @@ var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var connect = require('gulp-connect');
 var rename = require("gulp-rename");
+var replace = require("gulp-replace");
 
 var env;
 
@@ -128,6 +129,7 @@ gulp.task('externalScripts', function () {
   return gulp.src(scripts)
     .pipe(plumber())
     .pipe(sourcemaps.init())
+    .pipe(replace('g.Plattar = f();', 'var plat = f();if(typeof Plattar != "undefined"){Object.keys(Plattar).forEach(function(key){g.Plattar[key] = Plattar[key];});}else{g.Plattar = plat;}'))
     // .pipe(gulpif(env == 'prod', uglify({})))
     .pipe(concat('external-bundle.js'))
     .pipe(gulpif(env == 'dev', sourcemaps.write()))

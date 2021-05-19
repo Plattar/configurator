@@ -95,7 +95,7 @@ angular.module('PlattarConfigurator', [])
 		// Creates the connection to the iframe renderer
 		angular.element(function () {
 			// Creating the Plattar engine/api link
-			$rootScope.plattar = $scope.plattar = window.PlattarApiIntegration;
+			$rootScope.plattar = $scope.plattar = new PlattarApiIntegration(config);
 			$rootScope.plattar.debug = config.debug || getParameterByName('debug');
 
 			// Setting up a callback for when the scene changes

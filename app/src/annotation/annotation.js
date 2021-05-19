@@ -85,18 +85,5 @@ angular.module('PlattarConfigurator')
         }
       }, 0);
     };
-
-    $scope.clearAnnotation = function() {
-      $scope.annotationactive = false;
-      timeout = $timeout(function() {
-        $scope.annotation.title = undefined;
-        $scope.annotation.fileType = undefined;
-        $scope.annotation.file = undefined;
-        $scope.annotation.text = undefined;
-      }, 1000);
-      $scope.plattar.closeAnnotation();
-
-      $scope.plattar.sendMessage('pantocamera', {title:'start camera'})
-    }
   }
 ]);

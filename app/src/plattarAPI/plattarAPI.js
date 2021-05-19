@@ -60,26 +60,6 @@ function PlattarApiIntegration(params){
 		}, 100);
 	};
 
-	// Sennding messages to the 3d Engine
-	function sendMessage(action, data){
-		// make this timeout after 5 attempts
-		if(!iframe) { // used to repeat the call if the iframe isn't ready yet
-			setTimeout(function(){
-				sendMessage(action, data);
-			}, 500);
-			return;
-		}
-
-		action = action.toLowerCase();
-		if(iframe !== window){
-			if(self.debug){
-				console.log('%c' + action, "background: #61ff61; color: #000; padding:4px 8px;", data);
-			}
-			iframe.contentWindow.postMessage({eventName: action, data: data || {}}, apiUrl);
-		}
-	}
-	this.sendMessage = sendMessage;
-
 	function sendMessageUpwards(action, data, count) {
 		var count = count || 0;
 		var data = data || {};
@@ -87,7 +67,7 @@ function PlattarApiIntegration(params){
 			if (count < 5) {
 				setTimeout(function () {
 					count++;
-					sendMessage(action, data, count);
+					sendMessageUpwards(action, data, count);
 				}, 500);
 			}
 			return;
@@ -99,63 +79,6 @@ function PlattarApiIntegration(params){
 		}
 	}
 	this.sendMessageUpwards = sendMessageUpwards;
-
-	// Receiving messages from the 3d engine
-	window.addEventListener('message', function(e){
-		if(self.debug){
-			console.log('%c' + e.data.eventName, "background: #6170ff; color: #000; padding:4px 8px;", e.data.data);
-		}
-		var data = e.data.data;
-
-		switch(e.data.eventName){
-			case 'setup':
-				parentWindow = {
-					source: event.source,
-					origin: event.origin
-				};
-				sendMessageUpwards('setupconfirm', {});
-				break;
-
-			case 'previewready':
-				self.onReady();
-				break;
-
-			case 'analyticstracker':
-				self.onTrackData(e.data.data.eventString);
-				break;
-
-			case 'pressbutton':
-				if(data.type == 'scenemodel' || data.type == 'scenebutton'){
-					data.attributes.type = 'button';
-				}
-				self.onAnnotationChange(data.attributes);
-				break;
-
-			case 'openurl':
-				if(e.data.data.url){
-					// window.open(data.url, '_blank');
-					self.onAnnotationChange({
-						url: data.url
-					});
-				}
-				break;
-
-			case 'selectannotation':
-				// Annotation has content to display
-				self.onAnnotationChange(data);
-
-				/*if(data.url){
-					// Open the website in a new tab
-					window.open(data.url, '_blank');
-				}
-				// Annotation is linking to a different scene
-				else if(data.scene_id){
-					// Open the new scene
-					self.openScene(data.scene_id);
-				}*/
-				break;
-		}
-	});
 
 	// Used for opening a new scene
 	this.openScene = function(sceneId) {
@@ -222,74 +145,6 @@ function PlattarApiIntegration(params){
 				id: panoramaId
 			}
 		});*/
-	};
-
-	// Cross-browser compatible fullscreen enabling
-	var isFullscreen = false;
-	var storedCss = {};
-	function goFullscreen(elem){
-		if(elem){
-			var docEl = window.document.documentElement;
-			var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-
-			if(requestFullScreen){
-				requestFullScreen.call(elem);
-			}
-			else{
-				// iOS device fallback
-				storedCss.position = $(elem).css('position');
-				storedCss.top = $(elem).css('top');
-				storedCss.left = $(elem).css('left');
-				storedCss.bottom = $(elem).css('bottom');
-				storedCss.right = $(elem).css('right');
-				storedCss.height = $(elem).css('height');
-
-				$(elem).css({
-					position: 'fixed',
-					top: 0,
-					left: 0,
-					bottom: 0,
-					right: 0,
-					height: '100%'
-				});
-			}
-		}
-		else{
-			sendMessage('goFullscreen', {} );
-		}
-		isFullscreen = true;
-	}
-
-	// Cross-browser compatible fullscreen exiting
-	function exitFullscreen(elem){
-		if(elem){
-			// Cross-browser compatible code
-			if (document.exitFullscreen) {
-				document.exitFullscreen();
-			} else if (document.webkitExitFullscreen) {
-				document.webkitExitFullscreen();
-			} else if (document.mozCancelFullScreen) {
-				document.mozCancelFullScreen();
-			} else if (document.msExitFullscreen) {
-				document.msExitFullscreen();
-			}
-			else{
-				// iOS device fallback
-				$(elem).css(storedCss);
-			}
-		}
-		isFullscreen = false;
-	}
-
-	// Toggles the fullscreen state
-	this.toggleFullscreen = function(elem){
-		var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-		if(isFullscreen || fullscreenElement){
-			exitFullscreen(elem);
-		}
-		else{
-			goFullscreen(elem);
-		}
 	};
 
 	function clone(object){
@@ -460,5 +315,3 @@ function PlattarApiIntegration(params){
 		}
 	};
 }
-
-window.PlattarApiIntegration = new PlattarApiIntegration();
