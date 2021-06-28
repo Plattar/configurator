@@ -23,6 +23,14 @@ angular.module('PlattarConfigurator')
 			return 0;
 		}
 
+		var loaded = false;
+		$scope.plattar.onLoaded = function(params){
+			if(!params.loading){
+				loaded = true;
+				applyPreview();
+			}
+		};
+
 		$scope.plattar.api.getScene(config.sceneId,
 			function (result) {
 				$scope.scene = result;

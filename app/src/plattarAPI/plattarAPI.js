@@ -132,6 +132,12 @@ function PlattarApiIntegration(params){
 				}
 				break;
 
+			case 'setLoading':
+				if(e.data.data && self.onLoaded){
+					self.onLoaded(data);
+				}
+				break;
+
 			case 'selectannotation':
 				// Annotation has content to display
 				self.onAnnotationChange(data);
