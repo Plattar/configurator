@@ -132,7 +132,7 @@ function PlattarApiIntegration(params){
 				}
 				break;
 
-			case 'setLoading':
+			case 'setloading':
 				if(e.data.data && self.onLoaded){
 					self.onLoaded(data);
 				}
