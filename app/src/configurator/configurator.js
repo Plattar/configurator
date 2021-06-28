@@ -26,7 +26,6 @@ angular.module('PlattarConfigurator')
 		var loaded = false;
 		$scope.plattar.onLoaded = function(params){
 			if(!params.loading){
-				loaded = true;
 				applyPreview();
 			}
 		};
@@ -114,6 +113,7 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.selectVariation = function (product, variation) {
+			loaded = true;
 			if(product.selectedVariation == variation){
 				return;
 			}
