@@ -25,7 +25,8 @@ angular.module('PlattarConfigurator')
 
 		var loaded = false;
 		$scope.plattar.onLoaded = function(params){
-			if(!params.loading){
+			if(params.loading === false && !loaded){
+				loaded = true;
 				applyPreview();
 			}
 		};
@@ -113,7 +114,6 @@ angular.module('PlattarConfigurator')
 		};
 
 		$scope.selectVariation = function (product, variation) {
-			loaded = true;
 			if(product.selectedVariation == variation){
 				return;
 			}
@@ -185,7 +185,6 @@ angular.module('PlattarConfigurator')
 				// Go through all the products and update the preview visibility
 				if(product.selectedVariation){
 					var obj = $scope.relationship[product.instanceid][product.selectedVariation.id];
-
 					Object.keys(obj).forEach(function(productId){
 						// get product by id
 						var prod = $scope.products.find(function(product){
@@ -206,7 +205,10 @@ angular.module('PlattarConfigurator')
 							// set visiblePreview to false
 							variation.visiblePreview = false;
 
-							if(prod.selectedVariation == variation){
+							if(!prod.selectedVariation){
+								$scope.plattar.loadVariation(prod.instanceid, null);
+							}
+							else if(prod.selectedVariation == variation){
 								prod.selectedVariation = undefined;
 								// hide variation
 								$scope.plattar.loadVariation(prod.instanceid, null);
