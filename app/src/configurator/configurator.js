@@ -26,7 +26,6 @@ angular.module('PlattarConfigurator')
 		var loaded = false;
 		$scope.plattar.onLoaded = function(params){
 			if(params.loading === false && !loaded){
-				loaded = true;
 				applyPreview();
 			}
 		};
