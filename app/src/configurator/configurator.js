@@ -17,8 +17,13 @@ angular.module('PlattarConfigurator')
 		$scope.canAugment = PlattarIntegration.canAugment;
 
 		$scope.listHeight = function(){
-			if($scope.products){
-				return 200+Math.max(0, (document.body.offsetHeight-275)-$scope.products.length*144);
+			if($scope.products && $scope.products.length){
+				var prods = $scope.products.filter(function(product){
+					return product.visiblePreview;
+				});
+				if(prods && prods.length){
+					return 200+Math.max(0, (document.body.offsetHeight-275)-prods.length*144);
+				}
 			}
 			return 0;
 		}
